@@ -45,7 +45,7 @@
   .section.dark p.lead{color:var(--dark-muted);}
 
   /* ---- nav ---- */
-  .nav{position:sticky; top:0; z-index:50; background:#FAF9F9; border-bottom:1px solid transparent; transition:box-shadow .35s ease-in-out, border-color .35s ease-in-out;}
+  .nav{position:sticky; top:0; z-index:50; background:#ffffff; border-bottom:1px solid transparent; transition:box-shadow .35s ease-in-out, border-color .35s ease-in-out;}
   .nav.scrolled{box-shadow:0 2px 14px rgba(20,25,15,.07); border-color:var(--line);}
   .nav-top{max-height:190px; opacity:1; overflow:hidden; text-align:center; padding:22px 0 12px; transition:max-height .4s ease-in-out, opacity .3s ease-in-out, padding .4s ease-in-out;}
   .nav.scrolled .nav-top{max-height:0; opacity:0; padding-top:0; padding-bottom:0;}
@@ -227,7 +227,7 @@
   .hero-left .proof-item{padding-right:14px;}
   .hero-left .proof-item + .proof-item{padding-left:16px;}
   .yolka{display:flex; flex-direction:column; align-items:center; gap:14px;}
-  .yolka-bezel{position:relative; width:100%; max-width:430px; padding:16px; border-radius:30px; background:linear-gradient(160deg,#1d2219,#0d100b); box-shadow:0 30px 60px -28px rgba(20,25,15,.55), inset 0 0 0 1px rgba(255,255,255,.06);}
+  .yolka-bezel{position:relative; width:100%; max-width:344px; padding:13px; border-radius:26px; background:linear-gradient(160deg,#1d2219,#0d100b); box-shadow:0 30px 60px -28px rgba(20,25,15,.55), inset 0 0 0 1px rgba(255,255,255,.06);}
   .yolka-bezel canvas{display:block; width:100%; height:auto; aspect-ratio:1/1; border-radius:14px; background:#0d0d0d;}
   .y-toast{position:absolute; left:50%; top:30px; transform:translate(-50%,-8px); opacity:0; pointer-events:none; display:flex; align-items:center; gap:8px; padding:7px 13px; border-radius:100px; background:rgba(250,249,249,.96); color:var(--ink); font-size:12.5px; font-weight:700; box-shadow:0 8px 20px -8px rgba(0,0,0,.5); transition:opacity .35s ease-in-out, transform .35s ease-in-out; white-space:nowrap;}
   .y-toast.on{opacity:1; transform:translate(-50%,0);}
@@ -237,7 +237,7 @@
   .y-chip.season{background:var(--signal-soft); border-color:transparent; color:var(--signal);}
   .y-chip.act{color:var(--ink);}
   .y-note{font-size:12.5px; line-height:1.6; color:var(--muted); max-width:42ch; text-align:center; margin:0;}
-  @media (max-width:960px){ .hero-grid{grid-template-columns:minmax(0,1fr); gap:36px;} .hero-left .proof{grid-template-columns:minmax(0,1fr);} .hero-left .proof-item{padding-right:0;} .hero-left .proof-item + .proof-item{padding-left:0;} .yolka-bezel{max-width:380px;} }
+  @media (max-width:960px){ .hero-grid{grid-template-columns:minmax(0,1fr); gap:36px;} .hero-left .proof{grid-template-columns:minmax(0,1fr);} .hero-left .proof-item{padding-right:0;} .hero-left .proof-item + .proof-item{padding-left:0;} .yolka-bezel{max-width:304px;} }
   @media (prefers-reduced-motion:reduce){ .y-toast{transition:none;} }
 
   .contact-panel{border-radius:28px; padding:60px 52px; position:relative; overflow:hidden; background:radial-gradient(560px circle at 15% 0%, rgba(255,255,255,.14), transparent 60%), linear-gradient(135deg, var(--signal), var(--signal-deep)); color:#fff;}
@@ -280,9 +280,8 @@
     <div class="logo-sm"><img src="logo-front.jpg" alt="">Yolky Sense</div>
     <div class="navlinks" id="navLinks">
       <a href="#noise">Шум</a>
-      <a href="#how">Фильтр</a>
-      <a href="#month">Месяц</a>
-      <a href="#cases">Кейсы</a>
+      <a href="#how">Как это устроено</a>
+      <a href="#month">Первый месяц</a>
       <a href="#trust">Доверие</a>
       <a href="#cta">Контакты</a>
       <span class="nav-indicator" id="navIndicator"></span>
@@ -291,7 +290,7 @@
 </div>
 
 <!-- HERO -->
-<div class="section" id="hero" style="padding-top:88px; padding-bottom:96px; background:radial-gradient(640px circle at 92% -10%, rgba(30,92,62,.07), transparent 60%), radial-gradient(rgba(20,25,15,.035) 1px, transparent 1.5px) 0 0/26px 26px, var(--bg);">
+<div class="section" id="hero" style="padding-top:36px; padding-bottom:96px; background:radial-gradient(640px circle at 92% -10%, rgba(30,92,62,.07), transparent 60%), radial-gradient(rgba(20,25,15,.035) 1px, transparent 1.5px) 0 0/26px 26px, var(--bg);">
   <div class="wrap">
     <div class="hero-grid">
     <div class="hero-left">
@@ -525,36 +524,6 @@
       <span>11 разделов: ритм двора по часам, пары «кто с кем», инциденты, темп разработки, что дальше.</span>
     </div>
     <p class="m-src">Откуда цифры: живая база на Mac Mini, снимок 3 октября 2026, последний день неполный. Точность считается по находкам, которые проверил человек, это нижняя граница ошибки. Полный отчёт опубликован без имён людей и кличек животных.</p>
-  </div>
-</div>
-
-<!-- CASES -->
-<div class="section" id="cases" style="background:var(--surface);">
-  <div class="wrap">
-    <div class="kicker"><span class="bar"></span><div class="eyebrow">Где это важно</div></div>
-    <h2 class="h reveal">От квартиры до посёлка</h2>
-    <p class="lead" style="margin-bottom:44px;">Три сценария, для которых сегодня выстроены продукт и его дальнейшее развитие.</p>
-    <div class="grid-3">
-      <div class="card reveal">
-        <div class="num-tag">Сценарий 01</div>
-        <div class="icon-circle signal"><svg class="icon" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/><circle cx="9.5" cy="16" r="1.4" fill="currentColor" stroke="none"/><circle cx="14.5" cy="16" r="1.4" fill="currentColor" stroke="none"/></svg></div>
-        <h3>Дом и близкие</h3>
-        <p>Пожилые родители, дети, режим отсутствия. Yolky Sense узнаёт членов семьи и питомцев — и беспокоит только когда в кадре кто-то незнакомый.</p>
-      </div>
-      <div class="card reveal">
-        <div class="num-tag">Сценарий 02</div>
-        <div class="icon-circle signal"><svg class="icon" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></div>
-        <h3>Загородный дом и аренда</h3>
-        <p>Полная картина участка — без постоянной слежки. Вместо ленты приходит сводка: кто приезжал, что происходило.</p>
-      </div>
-      <div class="card reveal">
-        <div class="num-tag">Сценарий 03</div>
-        <div class="icon-circle accent2"><svg class="icon" viewBox="0 0 24 24"><path d="M3 20h18M5 20V9l4-3 4 3v11M13 20v-6h4v6"/><circle cx="19" cy="8" r="2"/></svg></div>
-        <h3>Посёлки и управляющие компании</h3>
-        <div class="badge vision" style="margin:8px 0;"><span>Видение</span></div>
-        <p>Аналитика въезда и выезда, распознавание автомобилей, интеграция со шлагбаумами — сегодня на стадии концепта, не реализовано.</p>
-      </div>
-    </div>
   </div>
 </div>
 
