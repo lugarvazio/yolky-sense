@@ -356,6 +356,11 @@
   }
   @media (max-width:640px){ .wrap-wide{padding:0 12px;} .stage-text .h1-hero{font-size:36px !important;} .stage-text{padding:24px 18px 4px;} .w-btn{padding:7px 10px; font-size:12px;} }
   @media (prefers-reduced-motion:reduce){ .w-ev{animation:none;} .stage-mist span{animation:none;} }
+  /* ---- demo video ---- */
+  .demo-frame{position:relative; max-width:1040px; margin:0 auto; aspect-ratio:16/9; border-radius:22px; overflow:hidden; background:#0d100b; box-shadow:0 34px 70px -40px rgba(20,25,15,.5), 0 0 0 1px rgba(20,25,15,.08);}
+  .demo-frame video{display:block; width:100%; height:100%; background:#0d100b;}
+  .demo-cap{max-width:1040px; margin:14px auto 0; font-size:13px; color:var(--muted); text-align:center;}
+  @media (max-width:640px){ .demo-frame{border-radius:14px;} }
 </style>
 <script type="importmap">
 { "imports": {
@@ -393,6 +398,7 @@
       <a href="#how">Как это устроено</a>
       <a href="#month">Первый месяц</a>
       <a href="#trust">Доверие</a>
+      <a href="#demo">В действии</a>
       <a href="#cta">Контакты</a>
       <span class="nav-indicator" id="navIndicator"></span>
     </div>
@@ -699,6 +705,19 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- DEMO -->
+<div class="section" id="demo" style="background:var(--surface);">
+  <div class="wrap">
+    <div class="kicker"><span class="bar"></span><div class="eyebrow">В действии</div></div>
+    <h2 class="h reveal">Минута, чтобы увидеть систему целиком</h2>
+    <p class="lead" style="margin-bottom:36px;">Живой интерфейс на нашем доме: события, сущности, зоны и правила, аналитика и 3D-карта участка — за 60 секунд.</p>
+    <div class="demo-frame reveal">
+      <video controls playsinline preload="none" poster="poster-ru.jpg" aria-label="Видео-обзор продукта"><source src="intro-ru.mp4" type="video/mp4"></video>
+    </div>
+    <div class="demo-cap">60 секунд · со звуком</div>
   </div>
 </div>
 
