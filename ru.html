@@ -361,6 +361,15 @@
   .demo-frame video{display:block; width:100%; height:100%; background:#0d100b;}
   .demo-cap{max-width:1040px; margin:14px auto 0; font-size:13px; color:var(--muted); text-align:center;}
   @media (max-width:640px){ .demo-frame{border-radius:14px;} }
+  /* ---- chart micro-animations ---- */
+  .how-stat{min-height:64px;}
+  .how-stat.anim .was{transition:font-size .8s cubic-bezier(.3,.7,.2,1) .8s, color .5s ease .8s, text-decoration-color .4s ease 1.25s;}
+  .how-stat.anim:not(.go) .was{font-size:58px; color:var(--ink); text-decoration-color:transparent;}
+  .how-stat.anim .arr{transition:opacity .4s ease 1.7s, transform .4s ease 1.7s;}
+  .how-stat.anim:not(.go) .arr{opacity:0; transform:translateX(-8px);}
+  .how-stat.anim .now{transform-origin:left bottom; transition:opacity .5s ease 1.9s, transform .7s cubic-bezier(.2,1.4,.4,1) 1.9s, filter .5s ease 1.9s;}
+  .how-stat.anim:not(.go) .now{opacity:0; transform:scale(.7); filter:blur(6px);}
+  .m-pt{will-change:left;}
 </style>
 <script type="importmap">
 { "imports": {
@@ -1166,5 +1175,6 @@ else{frame();if('IntersectionObserver' in window){new IntersectionObserver(es=>r
 
 </script>
 <script type="module" src="world.js"></script>
+<script src="charts-anim.js" defer></script>
 </body>
 </html>
