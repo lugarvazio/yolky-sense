@@ -361,6 +361,17 @@
   .demo-frame video{display:block; width:100%; height:100%; background:#0d100b;}
   .demo-cap{max-width:1040px; margin:14px auto 0; font-size:13px; color:var(--muted); text-align:center;}
   @media (max-width:640px){ .demo-frame{border-radius:14px;} }
+  /* ---- playground ---- */
+  .pg-head{margin-bottom:8px;}
+  .pg-row{display:grid; grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:56px; align-items:center; margin-top:56px;}
+  .pg-row + .pet-row{margin-top:56px;}
+  .pg-video{position:relative; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#0d100b; box-shadow:0 30px 60px -28px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.14);}
+  .pg-video video{display:block; width:100%; height:100%; background:#0d100b;}
+  .pg-chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px;}
+  .pg-chips span{font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.3px; padding:6px 11px; border-radius:99px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); color:#dfe6dc;}
+  .pg-cap{font-size:12.5px; color:rgba(246,247,242,.45); margin-top:10px;}
+  @media (max-width:960px){ .pg-row{grid-template-columns:minmax(0,1fr); gap:28px;} .pg-row .pg-copy{order:-1;} }
+  @media (max-width:640px){ .pg-video{border-radius:12px;} }
   /* ---- chart micro-animations ---- */
   .how-stat{min-height:64px;}
   .how-stat.anim .was{transition:font-size .8s cubic-bezier(.3,.7,.2,1) .8s, color .5s ease .8s, text-decoration-color .4s ease 1.25s;}
@@ -408,6 +419,7 @@
       <a href="#month">Первый месяц</a>
       <a href="#trust">Доверие</a>
       <a href="#demo">В действии</a>
+      <a href="#playground">Песочница</a>
       <a href="#cta">Контакты</a>
       <span class="nav-indicator" id="navIndicator"></span>
     </div>
@@ -694,6 +706,46 @@
         </div>
       </div>
     </div>
+
+  </div>
+</div>
+
+<!-- DEMO -->
+<div class="section" id="demo" style="background:var(--surface);">
+  <div class="wrap">
+    <div class="kicker"><span class="bar"></span><div class="eyebrow">В действии</div></div>
+    <h2 class="h reveal">Минута, чтобы увидеть систему целиком</h2>
+    <p class="lead" style="margin-bottom:36px;">Живой интерфейс на нашем доме: события, сущности, зоны и правила, аналитика и 3D-карта участка — за 60 секунд.</p>
+    <div class="demo-frame reveal">
+      <video controls playsinline preload="none" poster="poster-ru.jpg" aria-label="Видео-обзор продукта"><source src="intro-ru.mp4" type="video/mp4"></video>
+    </div>
+    <div class="demo-cap">60 секунд · со звуком</div>
+  </div>
+</div>
+
+<!-- PLAYGROUND -->
+<div class="section dark" id="playground" style="color:var(--dark-text); background:radial-gradient(900px circle at 15% -10%, rgba(30,92,62,.28), transparent 60%), radial-gradient(rgba(255,255,255,.055) 1px, transparent 1.5px) 0 0/24px 24px, var(--dark-bg);">
+  <div class="wrap">
+    <div class="pg-head">
+      <div class="kicker"><span class="bar"></span><div class="eyebrow">Песочница</div></div>
+      <h2 class="h reveal">Уведомления, которым не нужен телефон</h2>
+      <p class="lead">Не каждое уведомление должно вибрировать в кармане. Здесь мы пробуем более спокойные и более игровые способы видеть, что происходит дома: в уголке экрана Мака и на крошечном пиксельном дисплее.</p>
+    </div>
+    <div class="pg-row reveal">
+      <div>
+        <div class="pg-video">
+          <video controls playsinline preload="none" poster="notch-poster-ru.jpg" aria-label="Yolky Notch: уведомления в чёлке MacBook"><source src="notch-ru.mp4" type="video/mp4"></video>
+        </div>
+        <div class="pg-cap">30 секунд · со звуком. Ролик собран из реальных событий.</div>
+      </div>
+      <div class="pet-copy pg-copy">
+        <div class="pet-k">Yolky Notch · macOS</div>
+        <h3>У чёлки наконец появилась работа</h3>
+        <p>Небольшое приложение в строке меню превращает чёлку MacBook в живое табло ваших камер. Кто-то пришёл — чёлка оживает и показывает, кто это. Клик открывает карточку события: кадр, камера, кто в кадре, а нажатие на кадр включает живое видео.</p>
+        <p style="margin-top:14px;">Узнала своего? Подтвердите или поправьте в одно касание — и система станет точнее. Последние события листаются, а режим «не беспокоить» помогает не отвлекаться, когда нужно сосредоточиться.</p>
+        <div class="pg-chips"><span>Живое видео</span><span>Разметка в одно касание</span><span>Очередь событий</span><span>Не беспокоить</span></div>
+      </div>
+    </div>
     <div class="pet-row reveal">
       <div class="pet-copy">
         <div class="pet-k">Тамагочи-маскот</div>
@@ -713,20 +765,6 @@
         </div>
       </div>
     </div>
-
-  </div>
-</div>
-
-<!-- DEMO -->
-<div class="section" id="demo" style="background:var(--surface);">
-  <div class="wrap">
-    <div class="kicker"><span class="bar"></span><div class="eyebrow">В действии</div></div>
-    <h2 class="h reveal">Минута, чтобы увидеть систему целиком</h2>
-    <p class="lead" style="margin-bottom:36px;">Живой интерфейс на нашем доме: события, сущности, зоны и правила, аналитика и 3D-карта участка — за 60 секунд.</p>
-    <div class="demo-frame reveal">
-      <video controls playsinline preload="none" poster="poster-ru.jpg" aria-label="Видео-обзор продукта"><source src="intro-ru.mp4" type="video/mp4"></video>
-    </div>
-    <div class="demo-cap">60 секунд · со звуком</div>
   </div>
 </div>
 

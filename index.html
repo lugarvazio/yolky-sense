@@ -361,6 +361,17 @@
   .demo-frame video{display:block; width:100%; height:100%; background:#0d100b;}
   .demo-cap{max-width:1040px; margin:14px auto 0; font-size:13px; color:var(--muted); text-align:center;}
   @media (max-width:640px){ .demo-frame{border-radius:14px;} }
+  /* ---- playground ---- */
+  .pg-head{margin-bottom:8px;}
+  .pg-row{display:grid; grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:56px; align-items:center; margin-top:56px;}
+  .pg-row + .pet-row{margin-top:56px;}
+  .pg-video{position:relative; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#0d100b; box-shadow:0 30px 60px -28px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.14);}
+  .pg-video video{display:block; width:100%; height:100%; background:#0d100b;}
+  .pg-chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px;}
+  .pg-chips span{font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.3px; padding:6px 11px; border-radius:99px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); color:#dfe6dc;}
+  .pg-cap{font-size:12.5px; color:rgba(246,247,242,.45); margin-top:10px;}
+  @media (max-width:960px){ .pg-row{grid-template-columns:minmax(0,1fr); gap:28px;} .pg-row .pg-copy{order:-1;} }
+  @media (max-width:640px){ .pg-video{border-radius:12px;} }
   /* ---- chart micro-animations ---- */
   .how-stat{min-height:64px;}
   .how-stat.anim .was{transition:font-size .8s cubic-bezier(.3,.7,.2,1) .8s, color .5s ease .8s, text-decoration-color .4s ease 1.25s;}
@@ -408,6 +419,7 @@
       <a href="#month">First month</a>
       <a href="#trust">Trust</a>
       <a href="#demo">In action</a>
+      <a href="#playground">Playground</a>
       <a href="#cta">Contacts</a>
       <span class="nav-indicator" id="navIndicator"></span>
     </div>
@@ -694,6 +706,46 @@
         </div>
       </div>
     </div>
+
+  </div>
+</div>
+
+<!-- DEMO -->
+<div class="section" id="demo" style="background:var(--surface);">
+  <div class="wrap">
+    <div class="kicker"><span class="bar"></span><div class="eyebrow">In action</div></div>
+    <h2 class="h reveal">One minute to see the whole system</h2>
+    <p class="lead" style="margin-bottom:36px;">The live interface on our own home: events, entities, zones and rules, analytics and the 3D property map — in 60 seconds.</p>
+    <div class="demo-frame reveal">
+      <video controls playsinline preload="none" poster="poster-en.jpg" aria-label="Product walkthrough video"><source src="intro-en.mp4" type="video/mp4"></video>
+    </div>
+    <div class="demo-cap">60 seconds · with sound</div>
+  </div>
+</div>
+
+<!-- PLAYGROUND -->
+<div class="section dark" id="playground" style="color:var(--dark-text); background:radial-gradient(900px circle at 15% -10%, rgba(30,92,62,.28), transparent 60%), radial-gradient(rgba(255,255,255,.055) 1px, transparent 1.5px) 0 0/24px 24px, var(--dark-bg);">
+  <div class="wrap">
+    <div class="pg-head">
+      <div class="kicker"><span class="bar"></span><div class="eyebrow">Playground</div></div>
+      <h2 class="h reveal">Alerts that don’t need your phone</h2>
+      <p class="lead">Not every notification has to be a buzz in your pocket. This is where we try calmer, more playful ways to see what’s happening at home — in the corner of a Mac screen and on a tiny pixel display.</p>
+    </div>
+    <div class="pg-row reveal">
+      <div>
+        <div class="pg-video">
+          <video controls playsinline preload="none" poster="notch-poster-en.jpg" aria-label="Yolky Notch: notifications in the MacBook notch"><source src="notch-en.mp4" type="video/mp4"></video>
+        </div>
+        <div class="pg-cap">30 seconds · with sound. The footage is rendered from real events.</div>
+      </div>
+      <div class="pet-copy pg-copy">
+        <div class="pet-k">Yolky Notch · macOS</div>
+        <h3>The notch finally has a job</h3>
+        <p>A small menu-bar app turns the MacBook notch into a live ticker for your cameras. When someone arrives, the notch comes alive and shows who it is. One click opens the event card — the frame, the camera, who’s in it — and a tap on the frame switches to the live view.</p>
+        <p style="margin-top:14px;">Recognized someone you know? Confirm or correct it in one tap, and the system gets smarter. Recent events are a swipe away; a do-not-disturb mode keeps it quiet when you need focus.</p>
+        <div class="pg-chips"><span>Live view</span><span>One-tap labeling</span><span>Event queue</span><span>Do not disturb</span></div>
+      </div>
+    </div>
     <div class="pet-row reveal">
       <div class="pet-copy">
         <div class="pet-k">Tamagotchi mascot</div>
@@ -713,20 +765,6 @@
         </div>
       </div>
     </div>
-
-  </div>
-</div>
-
-<!-- DEMO -->
-<div class="section" id="demo" style="background:var(--surface);">
-  <div class="wrap">
-    <div class="kicker"><span class="bar"></span><div class="eyebrow">In action</div></div>
-    <h2 class="h reveal">One minute to see the whole system</h2>
-    <p class="lead" style="margin-bottom:36px;">The live interface on our own home: events, entities, zones and rules, analytics and the 3D property map — in 60 seconds.</p>
-    <div class="demo-frame reveal">
-      <video controls playsinline preload="none" poster="poster-en.jpg" aria-label="Product walkthrough video"><source src="intro-en.mp4" type="video/mp4"></video>
-    </div>
-    <div class="demo-cap">60 seconds · with sound</div>
   </div>
 </div>
 
