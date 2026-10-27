@@ -301,12 +301,14 @@
   .w-btn:hover{color:var(--signal); border-color:var(--signal);}
   .w-btn .icon{width:16px; height:16px;}
   .w-hint{font-size:11.5px; color:var(--muted); background:rgba(255,255,255,.7); padding:3px 10px; border-radius:100px;}
+  @media (min-width:961px){
   .stage.night{--ink:#eef1f6; --muted:#aab2bf; --line:rgba(255,255,255,.14);}
   .stage.night .badge{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.16); color:#eef1f6;}
   .stage.night .word-layer{color:#b9ecce !important; filter:none;}
   .stage.night .word-layer .word-text{color:#fff !important;}
   .stage.night .word-underline path{stroke:#8fd6ac !important;}
   .stage.night .proof-link{color:#8fd6ac;}
+  }
   .stage-text, .stage-text *{transition:color .9s ease-in-out, background-color .9s ease-in-out, border-color .9s ease-in-out;}
   .stage-text .word-layer{transition:none;}
   /* туман по краям — как на карте неоткрытых областей */
@@ -422,6 +424,19 @@
   .how-stat.anim .now{transform-origin:left bottom; transition:opacity .5s ease 1.9s, transform .7s cubic-bezier(.2,1.4,.4,1) 1.9s, filter .5s ease 1.9s;}
   .how-stat.anim:not(.go) .now{opacity:0; transform:scale(.7); filter:blur(6px);}
   .m-pt{will-change:left;}
+  /* ---- hero on phones: scene in its own rounded card, text on the page background ---- */
+  @media (max-width:960px){
+    .stage{background:transparent; box-shadow:none; border-radius:0; overflow:visible; isolation:auto;}
+    .stage::before,.stage::after{display:none;}
+    .stage-scene{height:400px; border-radius:24px; overflow:hidden; background:var(--sky); box-shadow:0 24px 50px -30px rgba(20,25,15,.45), inset 0 0 0 1px rgba(20,25,15,.06);}
+    .stage-scene::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:radial-gradient(ellipse 74% 80% at 50% 52%, transparent 58%, color-mix(in srgb, var(--sky) 80%, transparent) 82%, var(--sky) 100%);}
+    .stage-text{padding:26px 4px 0;}
+    .w-feed{top:12px; left:12px; right:auto; width:min(250px,64%);}
+    .w-sum{align-self:flex-start;}
+    .w-ev:nth-child(n+2){display:none;}
+    .w-btns{gap:6px;}
+    .w-btn{font-size:11.5px; padding:6px 9px;}
+  }
   /* ---- trust story: scroll-driven (cameras, Mac mini, phone, globe) ---- */
   .ts-story{--ts-bg:#0E1811; --ts-ink:rgba(246,247,242,.94); --ts-muted:rgba(246,247,242,.62); --ts-mint:#8fd6ac; --ts-signal:#1E5C3E; --ts-line:rgba(255,255,255,.12); overflow-x:clip; position:relative; height:1150vh; color:var(--ts-ink);}
   .ts-pin{position:sticky; top:68px; height:calc(100vh - 68px); max-width:1180px; margin:0 auto; padding:0 32px; display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr); gap:40px; align-items:center;}

@@ -53,7 +53,7 @@ function fit() {
   const w = mount.clientWidth || 800, h = mount.clientHeight || 600;
   const frac = wideMQ.matches ? 0.54 : 1;
   const a = w / h;
-  let visW = 56 / 1.2 / frac;   // сцена крупнее на 20%                       // метров по ширине кадра
+  let visW = wideMQ.matches ? 56 / 1.2 / frac : 62;   // десктоп: сцена крупнее на 20%; телефон: участок виден целиком
   let visH = visW / a;
   if (visH < 28) { visH = 28; visW = visH * a; }
   const s = (1 - frac) / 2 * visW;            // сдвиг: центр сцены — в центре правой части
