@@ -1028,6 +1028,7 @@ function sampleSky() {
 }
 // ---------- цикл ----------
 const clock = new THREE.Clock();
+let ready = false;
 let nextPass = 3;
 let simT = 0;
 function frame(dt) {
@@ -1058,6 +1059,7 @@ function frame(dt) {
   renderer.render(scene, camera);
   labelRenderer.render(scene, camera);
   if ((skyT -= dt) < 0) { skyT = 0.4; sampleSky(); }
+  if (!ready) { ready = true; requestAnimationFrame(() => stage.classList.add('world-ready')); }   // первый кадр готов — плавно убираем постер
 }
 const tick = () => frame(Math.min(clock.getDelta(), 0.05));
 let onScreen = true;

@@ -17,6 +17,14 @@
 <title>Yolky Sense</title>
 <meta name="description" content="A local AI filter for home cameras: less noise, more signal.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Playfair+Display:ital,wght@1,700&family=Caveat:wght@700&family=Comfortaa:wght@700&family=Bebas+Neue&family=Pacifico&display=swap">
+<link rel="preload" as="image" href="hero-poster.webp" media="(min-width:961px)" fetchpriority="high">
+<link rel="preload" as="image" href="hero-poster-m.webp" media="(max-width:960px)" fetchpriority="high">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/renderers/CSS2DRenderer.js">
+<link rel="modulepreload" href="site.js">
+<link rel="modulepreload" href="world.js">
 <style>
   :root{
     --bg:#F6F7F2; --surface:#FFFFFF; --surface-2:#FBFCF8;
@@ -424,6 +432,12 @@
   .how-stat.anim .now{transform-origin:left bottom; transition:opacity .5s ease 1.9s, transform .7s cubic-bezier(.2,1.4,.4,1) 1.9s, filter .5s ease 1.9s;}
   .how-stat.anim:not(.go) .now{opacity:0; transform:scale(.7); filter:blur(6px);}
   .m-pt{will-change:left;}
+  /* ---- 3D scene: poster while it loads ---- */
+  .stage-poster{position:absolute; inset:0; z-index:0; background:var(--sky) url("hero-poster.webp") center/cover no-repeat; transition:opacity .9s ease;}
+  .stage-mount{opacity:0; transition:opacity .9s ease;}
+  .stage.world-ready .stage-mount{opacity:1;}
+  .stage.world-ready .stage-poster{opacity:0; pointer-events:none;}
+  @media (max-width:960px){ .stage-poster{background-image:url("hero-poster-m.webp");} }
   /* ---- hero on phones: scene in its own rounded card, text on the page background ---- */
   @media (max-width:960px){
     .stage{background:transparent; box-shadow:none; border-radius:0; overflow:visible; isolation:auto;}
@@ -640,6 +654,7 @@
     </div>
       </div>
       <div class="stage-scene">
+        <div class="stage-poster" aria-hidden="true"></div>
         <div class="stage-mist" aria-hidden="true"><span></span><span></span></div>
         <div class="stage-mount" id="worldMount" role="img" aria-label="Interactive 3D model of a property: cars and people enter camera zones"></div>
         <div class="w-feed" aria-live="polite">
