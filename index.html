@@ -403,7 +403,7 @@
   .crowd-row::after{content:""; position:absolute; left:4%; right:4%; bottom:-10px; height:22px; border-radius:50%; background:radial-gradient(closest-side, rgba(20,25,15,.14), transparent); pointer-events:none;}
   .crowd-tag{position:absolute; left:calc(50% - var(--W) * var(--g) * .5); top:-4px; z-index:21; transform:translateX(-50%); white-space:nowrap; font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.4px; padding:6px 12px; border-radius:99px; background:var(--signal); color:#fff; box-shadow:0 8px 16px -6px rgba(30,92,62,.55); opacity:clamp(0, calc((var(--p) - .85) * 7), 1);}
   .crowd-sub{font-size:15.5px; line-height:1.65; color:var(--muted); max-width:560px; margin:36px auto 0;}
-  @media (max-width:640px){ .crowd{margin-top:60px;} .crowd-h span{font-size:21px;} .crowd-row{--g:.48;} .crowd-stage{margin-top:26px;} .crowd-tag{font-size:10.5px; padding:5px 10px;} }
+  @media (max-width:640px){ .crowd{margin-top:60px;} .crowd-h span{font-size:21px;} .crowd-row{--g:.62; --W:calc(100cqw / 3.5);} .crowd-stage{margin-top:14px; padding:30px 0 16px; overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%); mask-image:linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%);} .crowd-tag{font-size:10.5px; padding:5px 10px;} }
   /* ---- playground ---- */
   .pg-head{margin-bottom:8px;}
   .pg-row{display:grid; grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:56px; align-items:center; margin-top:56px;}
@@ -470,8 +470,8 @@
   .hd{display:flex; justify-content:space-between; align-items:flex-end; padding:3cqw 5.5cqw 2.4cqw; flex:none;}
   .hd small{display:block; color:#7a8274; font-size:3cqw; font-weight:700; letter-spacing:.3px; text-transform:uppercase;}
   .hd h4{margin:.8cqw 0 0; font-family:Unbounded,sans-serif; font-weight:700; font-size:7.6cqw; letter-spacing:-.4px; line-height:1;}
-  .live{display:flex; align-items:center; gap:1.5cqw; font:700 2.7cqw 'JetBrains Mono',monospace; letter-spacing:.5px; color:#1E5C3E; background:#DCEBE1; border-radius:99px; padding:1.4cqw 2.8cqw;}
-  .live i{width:1.9cqw; height:1.9cqw; border-radius:50%; background:#1E5C3E; animation:blink 1.6s ease-in-out infinite;}
+  .ts-live{display:flex; align-items:center; gap:1.5cqw; font:700 2.7cqw 'JetBrains Mono',monospace; letter-spacing:.5px; color:#1E5C3E; background:#DCEBE1; border-radius:99px; padding:1.4cqw 2.8cqw;}
+  .ts-live i{width:1.9cqw; height:1.9cqw; border-radius:50%; background:#1E5C3E; animation:blink 1.6s ease-in-out infinite;}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
   .kp{display:grid; grid-template-columns:repeat(3,1fr); gap:2cqw; padding:0 5.5cqw; flex:none;}
   .kp div{background:#fff; border:1px solid #E1E4D8; border-radius:3.4cqw; padding:2.4cqw 3cqw 2.2cqw;}
@@ -895,7 +895,7 @@
           <div class="push" id="push"><div class="bell"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0112 0v6l1.500 2h-15z"/><path d="M10 21a2 2 0 004 0"/></svg></div><div class="pt"><small data-c="pk"></small><b data-c="pn"></b><span data-c="ps"></span></div></div>
           <div class="ui" id="ui">
             <div class="sb"><span>9:41</span><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="15" width="3.500" height="6" rx="1"/><rect x="8" y="11" width="3.500" height="10" rx="1"/><rect x="14" y="7" width="3.500" height="14" rx="1"/><rect x="20" y="3" width="3" height="18" rx="1" opacity=".3"/></svg><svg viewBox="0 0 28 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="21" height="12" rx="3.500"/><rect x="4.500" y="8.500" width="14" height="7" rx="1.500" fill="currentColor" stroke="none"/><path d="M25 10v4" stroke-linecap="round"/></svg></span></div>
-            <div class="hd"><div><small data-c="sub"></small><h4 data-c="ttl"></h4></div><div class="live"><i></i><span data-c="live"></span></div></div>
+            <div class="hd"><div><small data-c="sub"></small><h4 data-c="ttl"></h4></div><div class="ts-live"><i></i><span data-c="live"></span></div></div>
             <div class="kp"><div class="g"><b>3</b><small data-c="k1"></small></div><div><b>96</b><small data-c="k2"></small></div><div><b>31</b><small data-c="k3"></small></div></div>
             <div class="fl"><span class="on" data-c="f0"></span><span data-c="f1"></span><span data-c="f2"></span><span data-c="f3"></span></div>
             <div class="feed" id="feed">
