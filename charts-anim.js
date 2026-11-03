@@ -140,7 +140,14 @@
     };
   });
 
-  // ---------- 3b. сравнение месяц к месяцу ----------
+  // ---------- 3b. stack totals ----------
+  var stack = document.querySelector('.m-stack');
+  if (stack) group(stack.closest('.m-panel') || stack, function (g) {
+    var cs = $('.m-stack-row b', g).map(prepCount).filter(Boolean);
+    return function () { cs.forEach(function (c, i) { runCount(c, i * 100, 1100); }); };
+  });
+
+  // ---------- 3c. сравнение месяц к месяцу ----------
   var cmp = document.querySelector('.m-cmp');
   if (cmp) group(cmp, function (g) {
     var cs = $('b', g).map(prepCount).filter(Boolean);

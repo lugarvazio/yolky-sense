@@ -174,6 +174,12 @@
   .m-cmp-card .k{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
   .m-cmp-card .pair{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted);margin-top:4px;}
   .m-cmp-card .pair b{font-family:Unbounded,sans-serif;font-size:20px;color:var(--ink);font-variant-numeric:tabular-nums;}
+
+  .m-cmp-note{margin-top:10px;font-size:12.5px;line-height:1.45;color:var(--muted);}
+  .m-stack{display:grid;gap:0;margin-top:16px;border-top:1px solid var(--line);}
+  .m-stack-row{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted);}
+  .m-stack-row b{font-family:Unbounded,sans-serif;font-size:22px;color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600;}
+
   @media (max-width:960px){ .m-cmp{grid-template-columns:repeat(2,minmax(0,1fr));} }
   @media (max-width:640px){ .m-cmp{grid-template-columns:minmax(0,1fr);} }
 
@@ -190,7 +196,7 @@
   .m-big small{font-size:.32em; letter-spacing:0; color:var(--ink); margin-left:4px; vertical-align:.9em;}
   .m-cap{font-size:15px; line-height:1.5; max-width:30ch; margin:12px 0 0 6px; color:var(--ink);}
   .m-was{margin:10px 0 6px 6px; font-size:13px; color:var(--muted);}
-  .m-was b{font-family:Unbounded, sans-serif; font-size:19px; color:var(--ink); text-decoration:line-through; text-decoration-color:#A6ACA0; text-decoration-thickness:2px; margin-left:6px;}
+  .m-was b{font-family:Unbounded, sans-serif; font-size:19px; color:var(--ink); margin-left:4px;}
   .m-kpis{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
   .m-kpi{background:var(--surface); padding:22px 22px 20px; display:flex; flex-direction:column; justify-content:center; gap:5px; min-width:0;}
   .m-kpi .v{font-family:Unbounded, sans-serif; font-weight:500; font-size:clamp(22px,2.6vw,30px); line-height:1.1; font-variant-numeric:tabular-nums;}
@@ -820,99 +826,71 @@
 <div class="section" id="month">
   <div class="wrap">
     <div class="kicker"><span class="bar"></span><div class="eyebrow">Statistic · two months of live data</div></div>
-    <h2 class="h reveal">Two months at a real home: quieter nights, more careful names</h2>
-    <p class="lead" style="margin-bottom:44px;">From Sep&nbsp;3 to Nov&nbsp;3, 2026 the system ran without days off. Below — month two and the totals for both. Not a forecast: a snapshot of the live Mac Mini database.</p>
+    <h2 class="h reveal">Two months at a real home, no days off</h2>
+    <p class="lead" style="margin-bottom:44px;">From Sep&nbsp;3 to Nov&nbsp;3, 2026 the system watched the yard around the clock on one Mac Mini. Below — the combined totals. The deep dive into month two is in the full report.</p>
 
     <div class="m-hero reveal">
-      <div class="m-finder" aria-label="Headline number for month two">
+      <div class="m-finder" aria-label="Headline number for two months">
         <span class="c1"></span><span class="c2"></span>
-        <div class="m-tag">Corrections · end of month two</div>
-        <div class="m-big">8<small>%</small></div>
-        <p class="m-cap">of appearances the system named that a human later corrected.</p>
-        <div class="m-was">at the end of month one <b>22%</b></div>
+        <div class="m-tag">Recorded over 62 days</div>
+        <div class="m-big">6,101</div>
+        <p class="m-cap">camera events. Not a demo or a mock — the live home database.</p>
+        <div class="m-was">month one <b>3,117</b> · month two <b>2,984</b></div>
       </div>
       <div class="m-kpis">
-        <div class="m-kpi"><div class="v">6,101</div><div class="l">events over two months<br>3,117 + 2,984</div></div>
-        <div class="m-kpi"><div class="v">37</div><div class="l">known now: 17 people, 14 vehicles and gear, 6 animals</div></div>
         <div class="m-kpi"><div class="v">17,796</div><div class="l">human hints over two months<br>the system learns from them</div></div>
-        <div class="m-kpi"><div class="v">10 cameras</div><div class="l">on one Mac Mini · was 8, load is lower</div></div>
+        <div class="m-kpi"><div class="v">37</div><div class="l">known now: 17 people, 14 vehicles and gear, 6 animals</div></div>
+        <div class="m-kpi"><div class="v">10</div><div class="l">cameras on one Mac Mini<br>started with eight</div></div>
+        <div class="m-kpi"><div class="v">1,133</div><div class="l">automated tests before each release<br>908 at the end of month one</div></div>
       </div>
     </div>
-
-    <div class="m-subhead reveal" style="margin-top:8px;">Month two · Oct 3 – Nov 3</div>
-    <div class="m-weeks">
-      <div class="m-panel reveal">
-        <div class="m-ph"><h3>Names on its own</h3><span class="m-hv" style="color:var(--signal)">70%</span></div>
-        <div class="sub">Month average. More cautious after self-training mistakes</div>
-        <div class="m-bars">
-          <div class="m-col" title="Oct 3–9: 80% (1,949 of 2,428)"><span class="m-val">80%</span><div class="m-fill hot" style="height:94px"></div></div>
-          <div class="m-col" title="Oct 10–16: 61% (1,118 of 1,836)"><span class="m-val">61%</span><div class="m-fill" style="height:72px"></div></div>
-          <div class="m-col" title="Oct 17–23: 74% (1,096 of 1,492)"><span class="m-val">74%</span><div class="m-fill" style="height:87px"></div></div>
-          <div class="m-col" title="Oct 24 – Nov 3: 65% (1,505 of 2,309)"><span class="m-val">65%</span><div class="m-fill" style="height:77px"></div></div>
-        </div>
-        <div class="m-xs"><span>Wk 1</span><span>Wk 2</span><span>Wk 3</span><span>Wk 4</span></div>
-      </div>
-      <div class="m-panel reveal">
-        <div class="m-ph"><h3>Human corrected</h3><span class="m-hv">8%</span></div>
-        <div class="sub">Of what the system named and a human reviewed</div>
-        <div class="m-bars">
-          <div class="m-col" title="Oct 3–9: 20%"><span class="m-val">20%</span><div class="m-fill" style="height:72px"></div></div>
-          <div class="m-col" title="Oct 10–16: 14%"><span class="m-val">14%</span><div class="m-fill" style="height:50px"></div></div>
-          <div class="m-col" title="Oct 17–23: 10%"><span class="m-val">10%</span><div class="m-fill ink" style="height:36px"></div></div>
-          <div class="m-col" title="Oct 24 – Nov 3: 8%"><span class="m-val">8%</span><div class="m-fill ink" style="height:29px"></div></div>
-        </div>
-        <div class="m-xs"><span>Wk 1</span><span>Wk 2</span><span>Wk 3</span><span>Wk 4</span></div>
-      </div>
-      <div class="m-panel reveal">
-        <div class="m-ph"><h3>Manual labeling</h3><span class="m-hv">213</span></div>
-        <div class="sub">Hints per day · last week</div>
-        <div class="m-bars">
-          <div class="m-col" title="Oct 3–9: 361/day"><span class="m-val">361</span><div class="m-fill" style="height:97px"></div></div>
-          <div class="m-col" title="Oct 10–16: 276/day"><span class="m-val">276</span><div class="m-fill" style="height:75px"></div></div>
-          <div class="m-col" title="Oct 17–23: 221/day"><span class="m-val">221</span><div class="m-fill" style="height:60px"></div></div>
-          <div class="m-col" title="Oct 24 – Nov 3: 213/day"><span class="m-val">213</span><div class="m-fill ink" style="height:58px"></div></div>
-        </div>
-        <div class="m-xs"><span>Wk 1</span><span>Wk 2</span><span>Wk 3</span><span>Wk 4</span></div>
-      </div>
-    </div>
-    <p class="m-note">The labeling spike early in October lined up with a guest who looked like a household member. The system now asks more often — and when it does name someone, corrections fell from 20% to 8%.</p>
 
     <div class="m-cmp reveal">
-      <div class="m-cmp-card"><div class="k">Evening false alarms</div><div class="pair"><span>mo. 1</span><b>476</b></div><div class="pair"><span>mo. 2</span><b>45</b></div></div>
-      <div class="m-cmp-card"><div class="k">Name corrections</div><div class="pair"><span>end of mo. 1</span><b>22%</b></div><div class="pair"><span>end of mo. 2</span><b>8%</b></div></div>
-      <div class="m-cmp-card"><div class="k">Vehicles by silhouette</div><div class="pair"><span>mo. 1</span><b>75%</b></div><div class="pair"><span>mo. 2</span><b>91%</b></div></div>
-      <div class="m-cmp-card"><div class="k">Automated tests</div><div class="pair"><span>mo. 1</span><b>908</b></div><div class="pair"><span>mo. 2</span><b>1,133</b></div></div>
+      <div class="m-cmp-card"><div class="k">Evening false alarms</div><div class="pair"><span>mo. 1</span><b>476</b></div><div class="pair"><span>mo. 2</span><b>45</b></div><div class="m-cmp-note">10× quieter</div></div>
+      <div class="m-cmp-card"><div class="k">Name corrections</div><div class="pair"><span>end of mo. 1</span><b>22%</b></div><div class="pair"><span>end of mo. 2</span><b>8%</b></div><div class="m-cmp-note">when a name is set, it holds better</div></div>
+      <div class="m-cmp-card"><div class="k">Vehicles by silhouette</div><div class="pair"><span>mo. 1</span><b>75%</b></div><div class="pair"><span>mo. 2</span><b>91%</b></div><div class="m-cmp-note">face stays at 95%</div></div>
+      <div class="m-cmp-card"><div class="k">Names on its own</div><div class="pair"><span>peak mo. 1</span><b>82%</b></div><div class="pair"><span>avg mo. 2</span><b>70%</b></div><div class="m-cmp-note">more cautious — asks more often</div></div>
     </div>
 
     <div class="m-duo">
       <div class="m-panel reveal">
-        <h3>False alarms by camera</h3>
-        <div class="sub">Share of reviewed findings. Gray — Oct 3–9, black — Oct 24 – Nov 3</div>
-        <div class="m-db"><div class="m-row"><div class="m-name">Door<small>home entrance</small></div><div class="m-lane" title="Door: было 5% (25 из 515), стало 7% (24 из 364)"><span class="m-seg" style="left:6.07%; width:calc(2.17%)"></span><span class="m-pt a" style="left:6.07%"></span><span class="m-pt b" style="left:8.24%"></span></div><div class="m-delta">5% → <b>7%</b></div></div><div class="m-row"><div class="m-name">Parking</div><div class="m-lane" title="Parking: было 19% (34 из 183), стало 1% (4 из 362)"><span class="m-seg" style="left:1.38%; width:calc(21.84%)"></span><span class="m-pt a" style="left:23.22%"></span><span class="m-pt b" style="left:1.38%"></span></div><div class="m-delta">19% → <b>1%</b></div></div><div class="m-row"><div class="m-name">Panorama<small>noisy scene</small></div><div class="m-lane" title="Panorama: было 17% (8 из 46), стало 16% (8 из 51)"><span class="m-seg" style="left:19.61%; width:calc(2.13%)"></span><span class="m-pt a" style="left:21.74%"></span><span class="m-pt b" style="left:19.61%"></span></div><div class="m-delta">17% → <b>16%</b></div></div><div class="m-row"><div class="m-name">Vestibule</div><div class="m-lane" title="Vestibule: было 3% (9 из 318), стало 3% (2 из 63)"><span class="m-seg" style="left:3.54%; width:calc(0.43%)"></span><span class="m-pt a" style="left:3.54%"></span><span class="m-pt b" style="left:3.97%"></span></div><div class="m-delta">3% → <b>3%</b></div></div><div class="m-row"><div class="m-name">Beyond the gate<small>street</small></div><div class="m-lane" title="Beyond the gate: было 4% (24 из 599), стало 1% (12 из 956)"><span class="m-seg" style="left:1.57%; width:calc(3.44%)"></span><span class="m-pt a" style="left:5.01%"></span><span class="m-pt b" style="left:1.57%"></span></div><div class="m-delta">4% → <b>1%</b></div></div><div class="m-row"><div class="m-name">Kitchen</div><div class="m-lane" title="Kitchen: было 0% (0 из 223), стало 0% (0 из 134)"><span class="m-seg" style="left:0.00%; width:calc(0.00%)"></span><span class="m-pt a" style="left:0.00%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">0% → <b>0%</b></div></div><div class="m-row"><div class="m-name">Room</div><div class="m-lane" title="Room: было 0% (0 из 474), стало 0% (0 из 187)"><span class="m-seg" style="left:0.00%; width:calc(0.00%)"></span><span class="m-pt a" style="left:0.00%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">0% → <b>0%</b></div></div><div class="m-row"><div class="m-name">Workshop</div><div class="m-lane" title="Workshop: было 0% (0 из 21), стало 0% (0 из 57)"><span class="m-seg" style="left:0.00%; width:calc(0.00%)"></span><span class="m-pt a" style="left:0.00%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">0% → <b>0%</b></div></div>
-          <div class="m-axis"><span></span><div class="t"><span style="left:0.0%">0%</span><span style="left:25.0%">20%</span><span style="left:50.0%">40%</span><span style="left:75.0%">60%</span><span style="left:100.0%">80%</span></div><span></span></div>
+        <h3>What two months add up to</h3>
+        <div class="sub">Same yard, same box, same metrics</div>
+        <div class="m-stack">
+          <div class="m-stack-row"><span>Events</span><b>6,101</b></div>
+          <div class="m-stack-row"><span>Human hints</span><b>17,796</b></div>
+          <div class="m-stack-row"><span>Days with data</span><b>62</b></div>
+          <div class="m-stack-row"><span>Cameras in use</span><b>8 → 10</b></div>
+          <div class="m-stack-row"><span>Product commits</span><b>420</b></div>
         </div>
       </div>
       <div class="m-panel reveal">
-        <h3>How often the system is right</h3>
-        <div class="sub">By recognition method, month two, human-reviewed only</div>
-        <div class="m-meth"><div class="m-mrow"><div class="m-name">Face<small>people · проверено 350</small></div><div class="m-track" title="Face, people: верно 332 из 350"><div class="m-tfill good" style="width:95%"></div></div><div class="m-chip good">95%</div></div><div class="m-mrow"><div class="m-name">Silhouette<small>vehicles · проверено 576</small></div><div class="m-track" title="Silhouette, vehicles: верно 522 из 576"><div class="m-tfill good" style="width:91%"></div></div><div class="m-chip good">91%</div></div><div class="m-mrow"><div class="m-name">Silhouette<small>people  counting the Neighbors family · проверено 4 131</small></div><div class="m-track" title="Silhouette, people, counting the Neighbors family: верно 3552 из 4131"><div class="m-tfill warn" style="width:86%"></div></div><div class="m-chip warn">86%</div></div><div class="m-mrow"><div class="m-name">Silhouette<small>animals and gear · проверено 67</small></div><div class="m-track" title="Silhouette, animals and gear: верно 57 из 67"><div class="m-tfill warn" style="width:85%"></div></div><div class="m-chip warn">85%</div></div><div class="m-mrow"><div class="m-name">Place in frame<small>vehicles · проверено 184</small></div><div class="m-track" title="Place in frame, vehicles: верно 58 из 184"><div class="m-tfill bad" style="width:32%"></div></div><div class="m-chip bad">32%</div></div></div>
-        <div class="m-legend"><span><i class="good"></i>90%+ trustworthy</span><span><i class="warn"></i>70–90% needs oversight</span><span><i class="bad"></i>below 70% not ready</span></div>
+        <h3>How often the system is right now</h3>
+        <div class="sub">Month two, human-reviewed findings only</div>
+        <div class="m-meth">
+          <div class="m-mrow"><div class="m-name">Face<small>people · reviewed 350</small></div><div class="m-track" title="Face: 332 of 350 correct"><div class="m-tfill good" style="width:95%"></div></div><div class="m-chip good">95%</div></div>
+          <div class="m-mrow"><div class="m-name">Silhouette<small>vehicles · reviewed 576</small></div><div class="m-track" title="Silhouette, vehicles: 522 of 576"><div class="m-tfill good" style="width:91%"></div></div><div class="m-chip good">91%</div></div>
+          <div class="m-mrow"><div class="m-name">Silhouette<small>people, counting the Neighbors family · reviewed 4,131</small></div><div class="m-track" title="Silhouette, people: 3,552 of 4,131"><div class="m-tfill warn" style="width:86%"></div></div><div class="m-chip warn">86%</div></div>
+          <div class="m-mrow"><div class="m-name">Silhouette<small>animals and gear · reviewed 67</small></div><div class="m-track" title="Silhouette, animals and gear: 57 of 67"><div class="m-tfill warn" style="width:85%"></div></div><div class="m-chip warn">85%</div></div>
+          <div class="m-mrow"><div class="m-name">Place in frame<small>vehicles · reviewed 184</small></div><div class="m-track" title="Place in frame: 58 of 184"><div class="m-tfill bad" style="width:32%"></div></div><div class="m-chip bad">32%</div></div>
+        </div>
+        <div class="m-legend"><span><i class="good"></i>90%+</span><span><i class="warn"></i>70–90%</span><span><i class="bad"></i>below 70%</span></div>
       </div>
     </div>
 
     <div class="m-subhead reveal">Weak spots — we show them ourselves</div>
     <div class="m-weak">
-      <div class="m-wk reveal"><div class="m-wtag">Twilight</div><h3>Evening false alarms: 476 → 45</h3><p>In month one, twilight was the main junk source. In month two night “ghosts” are filtered: night still holds ~2% of findings, and evening no longer floods the feed.</p></div>
-      <div class="m-wk reveal"><div class="m-wtag">Vehicles</div><h3>By place in frame — 32%</h3><p>By silhouette vehicles are already at 91%. Guessing “this car usually stands here” is still below the bar. Third month in a row — fix it or turn it off.</p></div>
-      <div class="m-wk reveal"><div class="m-wtag">Hardware</div><h3>One box — 10 cameras</h3><p>After the early-October unload the Mini runs more cameras at lower load. Memory is still tight — the next lever, not the product ceiling.</p></div>
+      <div class="m-wk reveal"><div class="m-wtag">Twilight</div><h3>Evening false alarms: 476 → 45</h3><p>Month one’s main junk source is mostly gone. Night still holds about 2% of findings — the yard is nearly quiet then.</p></div>
+      <div class="m-wk reveal"><div class="m-wtag">Vehicles</div><h3>By place in frame — 32%</h3><p>By silhouette already 91%. Guessing “this car usually stands here” is still below the bar — fix it or turn it off.</p></div>
+      <div class="m-wk reveal"><div class="m-wtag">Hardware</div><h3>10 cameras, tight memory</h3><p>After the unload the Mini runs more cameras at lower load. Free memory is still thin — the next lever.</p></div>
     </div>
 
     <div class="m-foot reveal">
-      <a class="btn btn-primary" href="https://lugarvazio.github.io/yolky-sense-report/month2.html" target="_blank" rel="noopener">Open the month-two report →</a>
+      <a class="btn btn-primary" href="https://lugarvazio.github.io/yolky-sense-report/month2.html" target="_blank" rel="noopener">Month-two report →</a>
       <a class="btn" href="https://lugarvazio.github.io/yolky-sense-report/" target="_blank" rel="noopener" style="background:transparent;border:1px solid var(--line);color:var(--ink);">Month one</a>
-      <span>Full charts: yard rhythm, pairs, incidents, month-to-month comparison.</span>
+      <span>Weeks, cameras, pairs and incidents — in the full charts.</span>
     </div>
-    <p class="m-src">Numbers come from the live Mac Mini database, snapshot Nov 3, 2026. Periods: Sep 3–Oct 3 and Oct 3–Nov 3. Accuracy is measured on findings a human reviewed — a lower bound on error. Public reports omit people’s names and pet nicknames.</p>
+    <p class="m-src">Numbers come from the live Mac Mini database, snapshot Nov 3, 2026. Periods: Sep 3–Oct 3 and Oct 3–Nov 3. Accuracy is measured on findings a human reviewed. Public reports omit people’s names and pet nicknames.</p>
   </div>
 </div>
 

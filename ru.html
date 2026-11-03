@@ -174,6 +174,12 @@
   .m-cmp-card .k{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
   .m-cmp-card .pair{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted);margin-top:4px;}
   .m-cmp-card .pair b{font-family:Unbounded,sans-serif;font-size:20px;color:var(--ink);font-variant-numeric:tabular-nums;}
+
+  .m-cmp-note{margin-top:10px;font-size:12.5px;line-height:1.45;color:var(--muted);}
+  .m-stack{display:grid;gap:0;margin-top:16px;border-top:1px solid var(--line);}
+  .m-stack-row{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted);}
+  .m-stack-row b{font-family:Unbounded,sans-serif;font-size:22px;color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600;}
+
   @media (max-width:960px){ .m-cmp{grid-template-columns:repeat(2,minmax(0,1fr));} }
   @media (max-width:640px){ .m-cmp{grid-template-columns:minmax(0,1fr);} }
 
@@ -190,7 +196,7 @@
   .m-big small{font-size:.32em; letter-spacing:0; color:var(--ink); margin-left:4px; vertical-align:.9em;}
   .m-cap{font-size:15px; line-height:1.5; max-width:30ch; margin:12px 0 0 6px; color:var(--ink);}
   .m-was{margin:10px 0 6px 6px; font-size:13px; color:var(--muted);}
-  .m-was b{font-family:Unbounded, sans-serif; font-size:19px; color:var(--ink); text-decoration:line-through; text-decoration-color:#A6ACA0; text-decoration-thickness:2px; margin-left:6px;}
+  .m-was b{font-family:Unbounded, sans-serif; font-size:19px; color:var(--ink); margin-left:4px;}
   .m-kpis{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
   .m-kpi{background:var(--surface); padding:22px 22px 20px; display:flex; flex-direction:column; justify-content:center; gap:5px; min-width:0;}
   .m-kpi .v{font-family:Unbounded, sans-serif; font-weight:500; font-size:clamp(22px,2.6vw,30px); line-height:1.1; font-variant-numeric:tabular-nums;}
@@ -820,99 +826,71 @@
 <div class="section" id="month">
   <div class="wrap">
     <div class="kicker"><span class="bar"></span><div class="eyebrow">Статистика · два месяца живых данных</div></div>
-    <h2 class="h reveal">Два месяца на реальном доме: меньше шума ночью, осторожнее с именами</h2>
-    <p class="lead" style="margin-bottom:44px;">С 3 сентября по 3 ноября 2026 система работала без выходных. Ниже — второй месяц и сумма за оба. Это не прогноз: снимок живой базы на Mac Mini.</p>
+    <h2 class="h reveal">Два месяца на реальном доме без выходных</h2>
+    <p class="lead" style="margin-bottom:44px;">С 3 сентября по 3 ноября 2026 система смотрела двор круглосуточно на одном Mac Mini. Ниже — общие цифры за оба месяца. Разбор второго месяца — в полном отчёте по ссылке.</p>
 
     <div class="m-hero reveal">
-      <div class="m-finder" aria-label="Главная цифра второго месяца">
+      <div class="m-finder" aria-label="Главная цифра за два месяца">
         <span class="c1"></span><span class="c2"></span>
-        <div class="m-tag">Исправлений · конец второго месяца</div>
-        <div class="m-big">8<small>%</small></div>
-        <p class="m-cap">названных системой появлений человек потом поправил.</p>
-        <div class="m-was">в конце первого месяца <b>22%</b></div>
+        <div class="m-tag">Записано за 62 дня</div>
+        <div class="m-big">6 101</div>
+        <p class="m-cap">событий с камер. Это не демо и не макет — живая база дома.</p>
+        <div class="m-was">первый месяц <b>3 117</b> · второй <b>2 984</b></div>
       </div>
       <div class="m-kpis">
-        <div class="m-kpi"><div class="v">6 101</div><div class="l">событий за два месяца<br>3 117 + 2 984</div></div>
-        <div class="m-kpi"><div class="v">37</div><div class="l">знакомых сейчас: 17 людей, 14 машин и техники, 6 животных</div></div>
         <div class="m-kpi"><div class="v">17 796</div><div class="l">подсказок от человека за два месяца<br>на них система учится</div></div>
-        <div class="m-kpi"><div class="v">10 камер</div><div class="l">на одном Mac Mini · было 8, нагрузка ниже</div></div>
+        <div class="m-kpi"><div class="v">37</div><div class="l">знакомых сейчас: 17 людей, 14 машин и техники, 6 животных</div></div>
+        <div class="m-kpi"><div class="v">10</div><div class="l">камер на одном Mac Mini<br>стартовали с восьми</div></div>
+        <div class="m-kpi"><div class="v">1 133</div><div class="l">автотеста перед выкаткой<br>в конце первого месяца было 908</div></div>
       </div>
     </div>
-
-    <div class="m-subhead reveal" style="margin-top:8px;">Второй месяц · 3 окт – 3 ноя</div>
-    <div class="m-weeks">
-      <div class="m-panel reveal">
-        <div class="m-ph"><h3>Называет сама</h3><span class="m-hv" style="color:var(--signal)">70%</span></div>
-        <div class="sub">Среднее за месяц. Стала осторожнее после ошибок самообучения</div>
-        <div class="m-bars">
-          <div class="m-col" title="3–9 окт: 80% (1 949 из 2 428)"><span class="m-val">80%</span><div class="m-fill hot" style="height:94px"></div></div>
-          <div class="m-col" title="10–16 окт: 61% (1 118 из 1 836)"><span class="m-val">61%</span><div class="m-fill" style="height:72px"></div></div>
-          <div class="m-col" title="17–23 окт: 74% (1 096 из 1 492)"><span class="m-val">74%</span><div class="m-fill" style="height:87px"></div></div>
-          <div class="m-col" title="24 окт – 3 ноя: 65% (1 505 из 2 309)"><span class="m-val">65%</span><div class="m-fill" style="height:77px"></div></div>
-        </div>
-        <div class="m-xs"><span>1 нед</span><span>2 нед</span><span>3 нед</span><span>4 нед</span></div>
-      </div>
-      <div class="m-panel reveal">
-        <div class="m-ph"><h3>Человек исправил</h3><span class="m-hv">8%</span></div>
-        <div class="sub">Из названного системой и проверенного человеком</div>
-        <div class="m-bars">
-          <div class="m-col" title="3–9 окт: 20% (381 из 1 949)"><span class="m-val">20%</span><div class="m-fill" style="height:72px"></div></div>
-          <div class="m-col" title="10–16 окт: 14% (153 из 1 086)"><span class="m-val">14%</span><div class="m-fill" style="height:50px"></div></div>
-          <div class="m-col" title="17–23 окт: 10% (94 из 947)"><span class="m-val">10%</span><div class="m-fill ink" style="height:36px"></div></div>
-          <div class="m-col" title="24 окт – 3 ноя: 8% (94 из 1 235)"><span class="m-val">8%</span><div class="m-fill ink" style="height:29px"></div></div>
-        </div>
-        <div class="m-xs"><span>1 нед</span><span>2 нед</span><span>3 нед</span><span>4 нед</span></div>
-      </div>
-      <div class="m-panel reveal">
-        <div class="m-ph"><h3>Ручная разметка</h3><span class="m-hv">213</span></div>
-        <div class="sub">Подсказок в день · последняя неделя</div>
-        <div class="m-bars">
-          <div class="m-col" title="3–9 окт: 361 в день"><span class="m-val">361</span><div class="m-fill" style="height:97px"></div></div>
-          <div class="m-col" title="10–16 окт: 276 в день"><span class="m-val">276</span><div class="m-fill" style="height:75px"></div></div>
-          <div class="m-col" title="17–23 окт: 221 в день"><span class="m-val">221</span><div class="m-fill" style="height:60px"></div></div>
-          <div class="m-col" title="24 окт – 3 ноя: 213 в день"><span class="m-val">213</span><div class="m-fill ink" style="height:58px"></div></div>
-        </div>
-        <div class="m-xs"><span>1 нед</span><span>2 нед</span><span>3 нед</span><span>4 нед</span></div>
-      </div>
-    </div>
-    <p class="m-note">Пик разметки в начале октября совпал с гостевым визитом похожего человека. Система стала чаще спрашивать, зато когда ставит имя — ошибается реже: исправления упали с 20% до 8%.</p>
 
     <div class="m-cmp reveal">
-      <div class="m-cmp-card"><div class="k">Ложные вечером</div><div class="pair"><span>мес. 1</span><b>476</b></div><div class="pair"><span>мес. 2</span><b>45</b></div></div>
-      <div class="m-cmp-card"><div class="k">Исправления имени</div><div class="pair"><span>конец мес. 1</span><b>22%</b></div><div class="pair"><span>конец мес. 2</span><b>8%</b></div></div>
-      <div class="m-cmp-card"><div class="k">Машины по силуэту</div><div class="pair"><span>мес. 1</span><b>75%</b></div><div class="pair"><span>мес. 2</span><b>91%</b></div></div>
-      <div class="m-cmp-card"><div class="k">Автотесты</div><div class="pair"><span>мес. 1</span><b>908</b></div><div class="pair"><span>мес. 2</span><b>1 133</b></div></div>
+      <div class="m-cmp-card"><div class="k">Ложные вечером</div><div class="pair"><span>мес. 1</span><b>476</b></div><div class="pair"><span>мес. 2</span><b>45</b></div><div class="m-cmp-note">в 10 раз тише</div></div>
+      <div class="m-cmp-card"><div class="k">Исправления имени</div><div class="pair"><span>конец мес. 1</span><b>22%</b></div><div class="pair"><span>конец мес. 2</span><b>8%</b></div><div class="m-cmp-note">когда имя поставлено — оно вернее</div></div>
+      <div class="m-cmp-card"><div class="k">Машины по силуэту</div><div class="pair"><span>мес. 1</span><b>75%</b></div><div class="pair"><span>мес. 2</span><b>91%</b></div><div class="m-cmp-note">лицо держит 95%</div></div>
+      <div class="m-cmp-card"><div class="k">Узнаёт сама</div><div class="pair"><span>пик мес. 1</span><b>82%</b></div><div class="pair"><span>среднее мес. 2</span><b>70%</b></div><div class="m-cmp-note">стала осторожнее — и спрашивает чаще</div></div>
     </div>
 
     <div class="m-duo">
       <div class="m-panel reveal">
-        <h3>Ложные тревоги по камерам</h3>
-        <div class="sub">Доля среди размеченного. Серая точка — 3–9 октября, чёрная — 24 октября – 3 ноября</div>
-        <div class="m-db"><div class="m-row"><div class="m-name">Дверь<small>вход в дом</small></div><div class="m-lane" title="Дверь: было 5% (25 из 515), стало 7% (24 из 364)"><span class="m-seg" style="left:6.07%; width:calc(2.17%)"></span><span class="m-pt a" style="left:6.07%"></span><span class="m-pt b" style="left:8.24%"></span></div><div class="m-delta">5% → <b>7%</b></div></div><div class="m-row"><div class="m-name">Парковка</div><div class="m-lane" title="Парковка: было 19% (34 из 183), стало 1% (4 из 362)"><span class="m-seg" style="left:1.38%; width:calc(21.84%)"></span><span class="m-pt a" style="left:23.22%"></span><span class="m-pt b" style="left:1.38%"></span></div><div class="m-delta">19% → <b>1%</b></div></div><div class="m-row"><div class="m-name">Панорама<small>шумная сцена</small></div><div class="m-lane" title="Панорама: было 17% (8 из 46), стало 16% (8 из 51)"><span class="m-seg" style="left:19.61%; width:calc(2.13%)"></span><span class="m-pt a" style="left:21.74%"></span><span class="m-pt b" style="left:19.61%"></span></div><div class="m-delta">17% → <b>16%</b></div></div><div class="m-row"><div class="m-name">Тамбур</div><div class="m-lane" title="Тамбур: было 3% (9 из 318), стало 3% (2 из 63)"><span class="m-seg" style="left:3.54%; width:calc(0.43%)"></span><span class="m-pt a" style="left:3.54%"></span><span class="m-pt b" style="left:3.97%"></span></div><div class="m-delta">3% → <b>3%</b></div></div><div class="m-row"><div class="m-name">За воротами<small>улица</small></div><div class="m-lane" title="За воротами: было 4% (24 из 599), стало 1% (12 из 956)"><span class="m-seg" style="left:1.57%; width:calc(3.44%)"></span><span class="m-pt a" style="left:5.01%"></span><span class="m-pt b" style="left:1.57%"></span></div><div class="m-delta">4% → <b>1%</b></div></div><div class="m-row"><div class="m-name">Кухня</div><div class="m-lane" title="Кухня: было 0% (0 из 223), стало 0% (0 из 134)"><span class="m-seg" style="left:0.00%; width:calc(0.00%)"></span><span class="m-pt a" style="left:0.00%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">0% → <b>0%</b></div></div><div class="m-row"><div class="m-name">Комната</div><div class="m-lane" title="Комната: было 0% (0 из 474), стало 0% (0 из 187)"><span class="m-seg" style="left:0.00%; width:calc(0.00%)"></span><span class="m-pt a" style="left:0.00%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">0% → <b>0%</b></div></div><div class="m-row"><div class="m-name">Мастерская</div><div class="m-lane" title="Мастерская: было 0% (0 из 21), стало 0% (0 из 57)"><span class="m-seg" style="left:0.00%; width:calc(0.00%)"></span><span class="m-pt a" style="left:0.00%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">0% → <b>0%</b></div></div>
-          <div class="m-axis"><span></span><div class="t"><span style="left:0.0%">0%</span><span style="left:25.0%">20%</span><span style="left:50.0%">40%</span><span style="left:75.0%">60%</span><span style="left:100.0%">80%</span></div><span></span></div>
+        <h3>Что накопилось за два месяца</h3>
+        <div class="sub">Одинаковые мерки, один дом, одна коробка</div>
+        <div class="m-stack">
+          <div class="m-stack-row"><span>События</span><b>6 101</b></div>
+          <div class="m-stack-row"><span>Подсказки человека</span><b>17 796</b></div>
+          <div class="m-stack-row"><span>Дней без паузы в данных</span><b>62</b></div>
+          <div class="m-stack-row"><span>Камер в работе</span><b>8 → 10</b></div>
+          <div class="m-stack-row"><span>Коммитов в продукт</span><b>420</b></div>
         </div>
       </div>
       <div class="m-panel reveal">
-        <h3>Как часто система права</h3>
-        <div class="sub">По способу узнавания, второй месяц, только проверенное человеком</div>
-        <div class="m-meth"><div class="m-mrow"><div class="m-name">Лицо<small>люди · проверено 350</small></div><div class="m-track" title="Лицо, люди: верно 332 из 350"><div class="m-tfill good" style="width:95%"></div></div><div class="m-chip good">95%</div></div><div class="m-mrow"><div class="m-name">Силуэт<small>машины · проверено 576</small></div><div class="m-track" title="Силуэт, машины: верно 522 из 576"><div class="m-tfill good" style="width:91%"></div></div><div class="m-chip good">91%</div></div><div class="m-mrow"><div class="m-name">Силуэт<small>люди  с учётом семьи «Соседи» · проверено 4 131</small></div><div class="m-track" title="Силуэт, люди, с учётом семьи «Соседи»: верно 3552 из 4131"><div class="m-tfill warn" style="width:86%"></div></div><div class="m-chip warn">86%</div></div><div class="m-mrow"><div class="m-name">Силуэт<small>животные и техника · проверено 67</small></div><div class="m-track" title="Силуэт, животные и техника: верно 57 из 67"><div class="m-tfill warn" style="width:85%"></div></div><div class="m-chip warn">85%</div></div><div class="m-mrow"><div class="m-name">Место в кадре<small>машины · проверено 184</small></div><div class="m-track" title="Место в кадре, машины: верно 58 из 184"><div class="m-tfill bad" style="width:32%"></div></div><div class="m-chip bad">32%</div></div></div>
-        <div class="m-legend"><span><i class="good"></i>90%+ можно доверять</span><span><i class="warn"></i>70–90% нужен присмотр</span><span><i class="bad"></i>ниже 70% пока не годится</span></div>
+        <h3>Как часто система права сейчас</h3>
+        <div class="sub">Второй месяц, только находки, которые проверил человек</div>
+        <div class="m-meth">
+          <div class="m-mrow"><div class="m-name">Лицо<small>люди · проверено 350</small></div><div class="m-track" title="Лицо: верно 332 из 350"><div class="m-tfill good" style="width:95%"></div></div><div class="m-chip good">95%</div></div>
+          <div class="m-mrow"><div class="m-name">Силуэт<small>машины · проверено 576</small></div><div class="m-track" title="Силуэт, машины: верно 522 из 576"><div class="m-tfill good" style="width:91%"></div></div><div class="m-chip good">91%</div></div>
+          <div class="m-mrow"><div class="m-name">Силуэт<small>люди, с учётом семьи «Соседи» · проверено 4 131</small></div><div class="m-track" title="Силуэт, люди: верно 3 552 из 4 131"><div class="m-tfill warn" style="width:86%"></div></div><div class="m-chip warn">86%</div></div>
+          <div class="m-mrow"><div class="m-name">Силуэт<small>животные и техника · проверено 67</small></div><div class="m-track" title="Силуэт, животные и техника: верно 57 из 67"><div class="m-tfill warn" style="width:85%"></div></div><div class="m-chip warn">85%</div></div>
+          <div class="m-mrow"><div class="m-name">Место в кадре<small>машины · проверено 184</small></div><div class="m-track" title="Место в кадре: верно 58 из 184"><div class="m-tfill bad" style="width:32%"></div></div><div class="m-chip bad">32%</div></div>
+        </div>
+        <div class="m-legend"><span><i class="good"></i>90%+</span><span><i class="warn"></i>70–90%</span><span><i class="bad"></i>ниже 70%</span></div>
       </div>
     </div>
 
     <div class="m-subhead reveal">Слабые места — мы показываем их сами</div>
     <div class="m-weak">
-      <div class="m-wk reveal"><div class="m-wtag">Сумерки</div><h3>Вечерние ложные: 476 → 45</h3><p>В первом месяце сумерки были главным источником мусора. Во втором ночные «призраки» отфильтрованы: на ночь по-прежнему ~2% находок, а вечер перестал заливать ленту.</p></div>
-      <div class="m-wk reveal"><div class="m-wtag">Машины</div><h3>По месту в кадре — 32%</h3><p>По силуэту машины уже 91%. Догадка «здесь обычно стоит эта машина» всё ещё ниже порога. Третий месяц подряд — решать: чинить или выключить.</p></div>
-      <div class="m-wk reveal"><div class="m-wtag">Железо</div><h3>Одна коробка — 10 камер</h3><p>После разгрузки в начале октября Mini тянет больше камер при меньшей нагрузке. Память всё ещё тесная — это следующий рычаг, а не потолок продукта.</p></div>
+      <div class="m-wk reveal"><div class="m-wtag">Сумерки</div><h3>Вечерние ложные: 476 → 45</h3><p>Главный шум первого месяца почти снят. Ночь по-прежнему даёт около 2% находок — двор в это время почти молчит.</p></div>
+      <div class="m-wk reveal"><div class="m-wtag">Машины</div><h3>По месту в кадре — 32%</h3><p>По силуэту уже 91%. Догадка «здесь обычно стоит эта машина» всё ещё ниже порога — чинить или выключить.</p></div>
+      <div class="m-wk reveal"><div class="m-wtag">Железо</div><h3>10 камер, память тесная</h3><p>После разгрузки Mini тянет больше камер при меньшей нагрузке. Свободных десятков мегабайт всё ещё мало — следующий рычаг.</p></div>
     </div>
 
     <div class="m-foot reveal">
-      <a class="btn btn-primary" href="https://lugarvazio.github.io/yolky-sense-report/month2.html" target="_blank" rel="noopener">Открыть отчёт за второй месяц →</a>
+      <a class="btn btn-primary" href="https://lugarvazio.github.io/yolky-sense-report/month2.html" target="_blank" rel="noopener">Отчёт за второй месяц →</a>
       <a class="btn" href="https://lugarvazio.github.io/yolky-sense-report/" target="_blank" rel="noopener" style="background:transparent;border:1px solid var(--line);color:var(--ink);">Первый месяц</a>
-      <span>Полная инфографика: ритм двора, пары, инциденты, сравнение месяц к месяцу.</span>
+      <span>Недели, камеры, пары и инциденты — в полной инфографике.</span>
     </div>
-    <p class="m-src">Откуда цифры: живая база на Mac Mini, снимок 3 ноября 2026. Периоды: 3.09–3.10 и 3.10–3.11. Точность — по находкам, которые проверил человек, это нижняя граница ошибки. Публичные отчёты без имён людей и кличек животных.</p>
+    <p class="m-src">Откуда цифры: живая база на Mac Mini, снимок 3 ноября 2026. Периоды: 3.09–3.10 и 3.10–3.11. Точность — по находкам, которые проверил человек. Публичные отчёты без имён людей и кличек животных.</p>
   </div>
 </div>
 
