@@ -140,6 +140,13 @@
     };
   });
 
+  // ---------- 3b. сравнение месяц к месяцу ----------
+  var cmp = document.querySelector('.m-cmp');
+  if (cmp) group(cmp, function (g) {
+    var cs = $('b', g).map(prepCount).filter(Boolean);
+    return function () { cs.forEach(function (c, i) { runCount(c, i * 90, 1100); }); };
+  });
+
   // ---------- 4. левый график: было → стало «коррекцией» ----------
   var duo = $('.m-duo > .m-panel');
   var left = duo[0], right = duo[1];

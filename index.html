@@ -167,7 +167,16 @@
   .how-card > *{min-width:0;}
   .how-stat .now{font-size:clamp(40px,11vw,58px); font-weight:800; color:var(--signal); letter-spacing:-1.5px; line-height:1;}
 
-  /* ---- first month ---- */
+  /* ---- statistics / months ---- */
+
+  .m-cmp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:28px 0 8px;}
+  .m-cmp-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 16px;}
+  .m-cmp-card .k{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .m-cmp-card .pair{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted);margin-top:4px;}
+  .m-cmp-card .pair b{font-family:Unbounded,sans-serif;font-size:20px;color:var(--ink);font-variant-numeric:tabular-nums;}
+  @media (max-width:960px){ .m-cmp{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  @media (max-width:640px){ .m-cmp{grid-template-columns:minmax(0,1fr);} }
+
   #month{background:#EDF0E6;}
   .m-hero{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.1fr); gap:22px; margin-bottom:22px;}
   .m-finder{position:relative; padding:30px 34px 28px; background:var(--surface); border-radius:var(--radius);}
@@ -590,7 +599,7 @@
     <div class="navlinks" id="navLinks">
       <a href="#noise">Noise</a>
       <a href="#how">How it works</a>
-      <a href="#month">First month</a>
+      <a href="#month">Statistic</a>
       <a href="#trust">Trust</a>
       <a href="#demo">In action</a>
       <a href="#playground">Playground</a>
@@ -645,12 +654,12 @@
         <span class="word-text">matters</span>
       </span>
     </span></h1>
-    <p style="font-size:18.5px; line-height:1.65; color:var(--muted); max-width:580px; margin:0 0 30px;">Yolky Sense is a local AI filter for home cameras. It recognizes your people, remembers false alarms and tells you only what really matters. In its first month at a real home it named 82%&nbsp;of appearances on its own and asked a human for help 4.6×&nbsp;less often.</p>
+    <p style="font-size:18.5px; line-height:1.65; color:var(--muted); max-width:580px; margin:0 0 30px;">Yolky Sense is a local AI filter for home cameras. It recognizes your people, remembers false alarms and tells you only what really matters. Over two months at a real home evening false alarms fell 10×, and when the system names someone a human corrects it almost 3×&nbsp;less often.</p>
     <div class="proof reveal">
-      <div class="proof-item"><div class="proof-v">82%</div><div class="proof-l">of appearances named by the system itself<br>44% in the first week</div></div>
-      <div class="proof-item"><div class="proof-v">4.6×</div><div class="proof-l">less manual labeling<br>129 hints a day vs 595</div></div>
-      <div class="proof-item"><div class="proof-v">64→13%</div><div class="proof-l">false alarms on the door camera<br>over one month</div></div>
-      <a class="proof-link" href="#month">Live data: 8 cameras, Sep&nbsp;3&nbsp;–&nbsp;Oct&nbsp;3,&nbsp;2026 &darr;</a>
+      <div class="proof-item"><div class="proof-v">×10</div><div class="proof-l">fewer evening false alarms<br>45 vs 476 in month one</div></div>
+      <div class="proof-item"><div class="proof-v">8%</div><div class="proof-l">name corrections by a human<br>22% at the end of month one</div></div>
+      <div class="proof-item"><div class="proof-v">10</div><div class="proof-l">cameras on one Mac Mini<br>was 8, load is lower</div></div>
+      <a class="proof-link" href="#month">Live data: 2 months, Sep&nbsp;3&nbsp;–&nbsp;Nov&nbsp;3,&nbsp;2026 &darr;</a>
     </div>
       </div>
       <div class="stage-scene">
@@ -762,9 +771,9 @@
         <p>Remembers false alarms in specific places — a swing, tree shadows — and gradually stops reacting to them. The longer the system runs, the quieter it gets.</p>
       </div>
       <div>
-        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Door camera · false alarm rate</div>
-        <div class="how-stat"><span class="was">64%</span><span class="arr">→</span><span class="now">13%</span></div>
-        <div style="font-size:13.5px; color:var(--muted); line-height:1.55; margin-top:10px;">Among reviewed findings: 396 of 621 in the first week, 18 of 138 over the last ten days. The per-camera confidence threshold and the false-place memory do their job. <a href="#month" style="font-weight:700;">All cameras below &darr;</a></div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Evening false alarms · month to month</div>
+        <div class="how-stat"><span class="was">476</span><span class="arr">→</span><span class="now">45</span></div>
+        <div style="font-size:13.5px; color:var(--muted); line-height:1.55; margin-top:10px;">Twilight stopped flooding the feed: ten times fewer evening false alarms in month two. False-place memory and the night-ghost filter do their job. <a href="#month" style="font-weight:700;">Full statistic below &darr;</a></div>
       </div>
     </div>
 
@@ -807,78 +816,106 @@
   </div>
 </div>
 
-<!-- FIRST MONTH (live report) -->
+<!-- STATISTICS (live report, 2 months) -->
 <div class="section" id="month">
   <div class="wrap">
-    <div class="kicker"><span class="bar"></span><div class="eyebrow">First month · live data</div></div>
-    <h2 class="h reveal">A month at a real home: the system now recognizes its own twice as often</h2>
-    <p class="lead" style="margin-bottom:44px;">For thirty days, eight cameras around the house ran nonstop on a single Mac Mini. This is not a forecast or a mockup: a snapshot of the live database as of October 3, 2026.</p>
+    <div class="kicker"><span class="bar"></span><div class="eyebrow">Statistic · two months of live data</div></div>
+    <h2 class="h reveal">Two months at a real home: quieter nights, more careful names</h2>
+    <p class="lead" style="margin-bottom:44px;">From Sep&nbsp;3 to Nov&nbsp;3, 2026 the system ran without days off. Below — month two and the totals for both. Not a forecast: a snapshot of the live Mac Mini database.</p>
 
     <div class="m-hero reveal">
-      <div class="m-finder" aria-label="The headline number of the month">
+      <div class="m-finder" aria-label="Headline number for month two">
         <span class="c1"></span><span class="c2"></span>
-        <div class="m-tag">Recognizes on its own · last 10 days</div>
-        <div class="m-big">82<small>%</small></div>
-        <p class="m-cap">of appearances the system names without any hint from a human.</p>
-        <div class="m-was">in the first week <b>44%</b></div>
+        <div class="m-tag">Corrections · end of month two</div>
+        <div class="m-big">8<small>%</small></div>
+        <p class="m-cap">of appearances the system named that a human later corrected.</p>
+        <div class="m-was">at the end of month one <b>22%</b></div>
       </div>
       <div class="m-kpis">
-        <div class="m-kpi"><div class="v">3,117</div><div class="l">events recorded</div></div>
-        <div class="m-kpi"><div class="v">31</div><div class="l">known entities: 13 people, 13 cars and machines, 5 animals</div></div>
-        <div class="m-kpi"><div class="v">9,439</div><div class="l">hints from a human, which the system learns from</div></div>
-        <div class="m-kpi"><div class="v">1 Mac Mini</div><div class="l">everything is computed at home, no cloud needed</div></div>
+        <div class="m-kpi"><div class="v">6,101</div><div class="l">events over two months<br>3,117 + 2,984</div></div>
+        <div class="m-kpi"><div class="v">37</div><div class="l">known now: 17 people, 14 vehicles and gear, 6 animals</div></div>
+        <div class="m-kpi"><div class="v">17,796</div><div class="l">human hints over two months<br>the system learns from them</div></div>
+        <div class="m-kpi"><div class="v">10 cameras</div><div class="l">on one Mac Mini · was 8, load is lower</div></div>
       </div>
     </div>
 
+    <div class="m-subhead reveal" style="margin-top:8px;">Month two · Oct 3 – Nov 3</div>
     <div class="m-weeks">
       <div class="m-panel reveal">
-        <div class="m-ph"><h3>Names on its own</h3><span class="m-hv" style="color:var(--signal)">82%</span></div>
-        <div class="sub">Share of real appearances where the system assigned the name itself</div>
-        <div class="m-bars"><div class="m-col" title="Sep 3–9: 44% (720 of 1,629)"><span class="m-val">44%</span><div class="m-fill" style="height:52px"></div></div><div class="m-col" title="Sep 10–16: 42% (716 of 1,687)"><span class="m-val">42%</span><div class="m-fill" style="height:50px"></div></div><div class="m-col" title="Sep 17–23: 37% (715 of 1,914)"><span class="m-val">37%</span><div class="m-fill" style="height:44px"></div></div><div class="m-col" title="Sep 24 – Oct 3: 82% (928 of 1,130)"><span class="m-val">82%</span><div class="m-fill hot" style="height:97px"></div></div></div><div class="m-xs"><span>Wk 1</span><span>Wk 2</span><span>Wk 3</span><span>Wk 4</span></div>
+        <div class="m-ph"><h3>Names on its own</h3><span class="m-hv" style="color:var(--signal)">70%</span></div>
+        <div class="sub">Month average. More cautious after self-training mistakes</div>
+        <div class="m-bars">
+          <div class="m-col" title="Oct 3–9: 80% (1,949 of 2,428)"><span class="m-val">80%</span><div class="m-fill hot" style="height:94px"></div></div>
+          <div class="m-col" title="Oct 10–16: 61% (1,118 of 1,836)"><span class="m-val">61%</span><div class="m-fill" style="height:72px"></div></div>
+          <div class="m-col" title="Oct 17–23: 74% (1,096 of 1,492)"><span class="m-val">74%</span><div class="m-fill" style="height:87px"></div></div>
+          <div class="m-col" title="Oct 24 – Nov 3: 65% (1,505 of 2,309)"><span class="m-val">65%</span><div class="m-fill" style="height:77px"></div></div>
+        </div>
+        <div class="m-xs"><span>Wk 1</span><span>Wk 2</span><span>Wk 3</span><span>Wk 4</span></div>
       </div>
       <div class="m-panel reveal">
-        <div class="m-ph"><h3>Human corrected</h3><span class="m-hv">22%</span></div>
+        <div class="m-ph"><h3>Human corrected</h3><span class="m-hv">8%</span></div>
         <div class="sub">Of what the system named and a human reviewed</div>
-        <div class="m-bars"><div class="m-col" title="Sep 3–9: no data yet"><span class="m-val" style="color:var(--muted)">n/a</span><div class="m-fill" style="height:2px"></div></div><div class="m-col" title="Sep 10–16: 32% (130 of 407)"><span class="m-val">32%</span><div class="m-fill" style="height:38px"></div></div><div class="m-col" title="Sep 17–23: 32% (229 of 715)"><span class="m-val">32%</span><div class="m-fill" style="height:38px"></div></div><div class="m-col" title="Sep 24 – Oct 3: 22% (205 of 928)"><span class="m-val">22%</span><div class="m-fill ink" style="height:26px"></div></div></div><div class="m-xs"><span>Wk 1</span><span>Wk 2</span><span>Wk 3</span><span>Wk 4</span></div>
+        <div class="m-bars">
+          <div class="m-col" title="Oct 3–9: 20%"><span class="m-val">20%</span><div class="m-fill" style="height:72px"></div></div>
+          <div class="m-col" title="Oct 10–16: 14%"><span class="m-val">14%</span><div class="m-fill" style="height:50px"></div></div>
+          <div class="m-col" title="Oct 17–23: 10%"><span class="m-val">10%</span><div class="m-fill ink" style="height:36px"></div></div>
+          <div class="m-col" title="Oct 24 – Nov 3: 8%"><span class="m-val">8%</span><div class="m-fill ink" style="height:29px"></div></div>
+        </div>
+        <div class="m-xs"><span>Wk 1</span><span>Wk 2</span><span>Wk 3</span><span>Wk 4</span></div>
       </div>
       <div class="m-panel reveal">
-        <div class="m-ph"><h3>Manual labeling</h3><span class="m-hv">129</span></div>
-        <div class="sub">Human hints per day, weekly average</div>
-        <div class="m-bars"><div class="m-col" title="Sep 3–9: 253 per day, total 1,771"><span class="m-val">253</span><div class="m-fill" style="height:46px"></div></div><div class="m-col" title="Sep 10–16: 317 per day, total 2,216"><span class="m-val">317</span><div class="m-fill" style="height:58px"></div></div><div class="m-col" title="Sep 17–23: 595 per day, total 4,167"><span class="m-val">595</span><div class="m-fill" style="height:108px"></div></div><div class="m-col" title="Sep 24 – Oct 3: 129 per day, total 1,285"><span class="m-val">129</span><div class="m-fill ink" style="height:23px"></div></div></div><div class="m-xs"><span>Wk 1</span><span>Wk 2</span><span>Wk 3</span><span>Wk 4</span></div>
+        <div class="m-ph"><h3>Manual labeling</h3><span class="m-hv">213</span></div>
+        <div class="sub">Hints per day · last week</div>
+        <div class="m-bars">
+          <div class="m-col" title="Oct 3–9: 361/day"><span class="m-val">361</span><div class="m-fill" style="height:97px"></div></div>
+          <div class="m-col" title="Oct 10–16: 276/day"><span class="m-val">276</span><div class="m-fill" style="height:75px"></div></div>
+          <div class="m-col" title="Oct 17–23: 221/day"><span class="m-val">221</span><div class="m-fill" style="height:60px"></div></div>
+          <div class="m-col" title="Oct 24 – Nov 3: 213/day"><span class="m-val">213</span><div class="m-fill ink" style="height:58px"></div></div>
+        </div>
+        <div class="m-xs"><span>Wk 1</span><span>Wk 2</span><span>Wk 3</span><span>Wk 4</span></div>
       </div>
     </div>
-    <p class="m-note">Week three went into labeling: a human labeled almost 600 findings a day and rebuilt the reference set across the entire history. The dip in recognition that week (37%) is the price of that rebuild; week four showed the payoff.</p>
+    <p class="m-note">The labeling spike early in October lined up with a guest who looked like a household member. The system now asks more often — and when it does name someone, corrections fell from 20% to 8%.</p>
+
+    <div class="m-cmp reveal">
+      <div class="m-cmp-card"><div class="k">Evening false alarms</div><div class="pair"><span>mo. 1</span><b>476</b></div><div class="pair"><span>mo. 2</span><b>45</b></div></div>
+      <div class="m-cmp-card"><div class="k">Name corrections</div><div class="pair"><span>end of mo. 1</span><b>22%</b></div><div class="pair"><span>end of mo. 2</span><b>8%</b></div></div>
+      <div class="m-cmp-card"><div class="k">Vehicles by silhouette</div><div class="pair"><span>mo. 1</span><b>75%</b></div><div class="pair"><span>mo. 2</span><b>91%</b></div></div>
+      <div class="m-cmp-card"><div class="k">Automated tests</div><div class="pair"><span>mo. 1</span><b>908</b></div><div class="pair"><span>mo. 2</span><b>1,133</b></div></div>
+    </div>
 
     <div class="m-duo">
       <div class="m-panel reveal">
         <h3>False alarms by camera</h3>
-        <div class="sub">Share among reviewed findings. Gray dot — Sep 3–9, black — Sep 24 – Oct 3</div>
-        <div class="m-db"><div class="m-row"><div class="m-name">Door<small>house entrance</small></div><div class="m-lane" title="Door: was 64% (396 of 621), now 13% (18 of 138)"><span class="m-seg" style="left:16.30%; width:63.41%"></span><span class="m-pt a" style="left:79.71%"></span><span class="m-pt b" style="left:16.30%"></span></div><div class="m-delta">64% → <b>13%</b></div></div><div class="m-row"><div class="m-name">Parking</div><div class="m-lane" title="Parking: was 62% (47 of 76), now 22% (11 of 49)"><span class="m-seg" style="left:28.06%; width:49.24%"></span><span class="m-pt a" style="left:77.30%"></span><span class="m-pt b" style="left:28.06%"></span></div><div class="m-delta">62% → <b>22%</b></div></div><div class="m-row"><div class="m-name">Kitchen</div><div class="m-lane" title="Kitchen: was 54% (193 of 356), now 0% (0 of 83)"><span class="m-seg" style="left:0.00%; width:67.77%"></span><span class="m-pt a" style="left:67.77%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">54% → <b>0%</b></div></div><div class="m-row"><div class="m-name">Overview<small>house</small></div><div class="m-lane" title="Overview: was 48% (39 of 82), now 0% (0 of 21)"><span class="m-seg" style="left:0.00%; width:59.45%"></span><span class="m-pt a" style="left:59.45%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">48% → <b>0%</b></div></div><div class="m-row"><div class="m-name">Room</div><div class="m-lane" title="Room: was 17% (127 of 765), now 0% (0 of 161)"><span class="m-seg" style="left:0.00%; width:20.75%"></span><span class="m-pt a" style="left:20.75%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">17% → <b>0%</b></div></div><div class="m-row"><div class="m-name">Beyond the gate<small>street</small></div><div class="m-lane" title="Beyond the gate: was 10% (57 of 553), now 4% (29 of 655)"><span class="m-seg" style="left:5.53%; width:7.35%"></span><span class="m-pt a" style="left:12.88%"></span><span class="m-pt b" style="left:5.53%"></span></div><div class="m-delta">10% → <b>4%</b></div></div>
+        <div class="sub">Share of reviewed findings. Gray — Oct 3–9, black — Oct 24 – Nov 3</div>
+        <div class="m-db"><div class="m-row"><div class="m-name">Door<small>home entrance</small></div><div class="m-lane" title="Door: было 5% (25 из 515), стало 7% (24 из 364)"><span class="m-seg" style="left:6.07%; width:calc(2.17%)"></span><span class="m-pt a" style="left:6.07%"></span><span class="m-pt b" style="left:8.24%"></span></div><div class="m-delta">5% → <b>7%</b></div></div><div class="m-row"><div class="m-name">Parking</div><div class="m-lane" title="Parking: было 19% (34 из 183), стало 1% (4 из 362)"><span class="m-seg" style="left:1.38%; width:calc(21.84%)"></span><span class="m-pt a" style="left:23.22%"></span><span class="m-pt b" style="left:1.38%"></span></div><div class="m-delta">19% → <b>1%</b></div></div><div class="m-row"><div class="m-name">Panorama<small>noisy scene</small></div><div class="m-lane" title="Panorama: было 17% (8 из 46), стало 16% (8 из 51)"><span class="m-seg" style="left:19.61%; width:calc(2.13%)"></span><span class="m-pt a" style="left:21.74%"></span><span class="m-pt b" style="left:19.61%"></span></div><div class="m-delta">17% → <b>16%</b></div></div><div class="m-row"><div class="m-name">Vestibule</div><div class="m-lane" title="Vestibule: было 3% (9 из 318), стало 3% (2 из 63)"><span class="m-seg" style="left:3.54%; width:calc(0.43%)"></span><span class="m-pt a" style="left:3.54%"></span><span class="m-pt b" style="left:3.97%"></span></div><div class="m-delta">3% → <b>3%</b></div></div><div class="m-row"><div class="m-name">Beyond the gate<small>street</small></div><div class="m-lane" title="Beyond the gate: было 4% (24 из 599), стало 1% (12 из 956)"><span class="m-seg" style="left:1.57%; width:calc(3.44%)"></span><span class="m-pt a" style="left:5.01%"></span><span class="m-pt b" style="left:1.57%"></span></div><div class="m-delta">4% → <b>1%</b></div></div><div class="m-row"><div class="m-name">Kitchen</div><div class="m-lane" title="Kitchen: было 0% (0 из 223), стало 0% (0 из 134)"><span class="m-seg" style="left:0.00%; width:calc(0.00%)"></span><span class="m-pt a" style="left:0.00%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">0% → <b>0%</b></div></div><div class="m-row"><div class="m-name">Room</div><div class="m-lane" title="Room: было 0% (0 из 474), стало 0% (0 из 187)"><span class="m-seg" style="left:0.00%; width:calc(0.00%)"></span><span class="m-pt a" style="left:0.00%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">0% → <b>0%</b></div></div><div class="m-row"><div class="m-name">Workshop</div><div class="m-lane" title="Workshop: было 0% (0 из 21), стало 0% (0 из 57)"><span class="m-seg" style="left:0.00%; width:calc(0.00%)"></span><span class="m-pt a" style="left:0.00%"></span><span class="m-pt b" style="left:0.00%"></span></div><div class="m-delta">0% → <b>0%</b></div></div>
           <div class="m-axis"><span></span><div class="t"><span style="left:0.0%">0%</span><span style="left:25.0%">20%</span><span style="left:50.0%">40%</span><span style="left:75.0%">60%</span><span style="left:100.0%">80%</span></div><span></span></div>
         </div>
       </div>
       <div class="m-panel reveal">
         <h3>How often the system is right</h3>
-        <div class="sub">By recognition method, only what a human reviewed, Sep 22 – Oct 3</div>
-        <div class="m-meth"><div class="m-mrow"><div class="m-name">Face<small>people · 42 checked</small></div><div class="m-track" title="Face, people: 41 of 42 correct"><div class="m-tfill good" style="width:98%"></div></div><div class="m-chip good">98%</div></div><div class="m-mrow"><div class="m-name">Silhouette<small>animals &amp; machines · 76 checked</small></div><div class="m-track" title="Silhouette, animals & machines: 72 of 76 correct"><div class="m-tfill good" style="width:95%"></div></div><div class="m-chip good">95%</div></div><div class="m-mrow"><div class="m-name">Silhouette<small>people, incl. the “Neighbors” family · 749 checked</small></div><div class="m-track" title="Silhouette, people, incl. the “Neighbors” family: 645 of 749 correct"><div class="m-tfill warn" style="width:86%"></div></div><div class="m-chip warn">86%</div></div><div class="m-mrow"><div class="m-name">Silhouette<small>cars · 57 checked</small></div><div class="m-track" title="Silhouette, cars: 43 of 57 correct"><div class="m-tfill warn" style="width:75%"></div></div><div class="m-chip warn">75%</div></div><div class="m-mrow"><div class="m-name">Position in frame<small>cars · 168 checked</small></div><div class="m-track" title="Position in frame, cars: 63 of 168 correct"><div class="m-tfill bad" style="width:38%"></div></div><div class="m-chip bad">38%</div></div></div>
-        <div class="m-legend"><span><i class="good"></i>90%+ can be trusted</span><span><i class="warn"></i>70–90% needs supervision</span><span><i class="bad"></i>below 70% not good enough yet</span></div>
+        <div class="sub">By recognition method, month two, human-reviewed only</div>
+        <div class="m-meth"><div class="m-mrow"><div class="m-name">Face<small>people · проверено 350</small></div><div class="m-track" title="Face, people: верно 332 из 350"><div class="m-tfill good" style="width:95%"></div></div><div class="m-chip good">95%</div></div><div class="m-mrow"><div class="m-name">Silhouette<small>vehicles · проверено 576</small></div><div class="m-track" title="Silhouette, vehicles: верно 522 из 576"><div class="m-tfill good" style="width:91%"></div></div><div class="m-chip good">91%</div></div><div class="m-mrow"><div class="m-name">Silhouette<small>people  counting the Neighbors family · проверено 4 131</small></div><div class="m-track" title="Silhouette, people, counting the Neighbors family: верно 3552 из 4131"><div class="m-tfill warn" style="width:86%"></div></div><div class="m-chip warn">86%</div></div><div class="m-mrow"><div class="m-name">Silhouette<small>animals and gear · проверено 67</small></div><div class="m-track" title="Silhouette, animals and gear: верно 57 из 67"><div class="m-tfill warn" style="width:85%"></div></div><div class="m-chip warn">85%</div></div><div class="m-mrow"><div class="m-name">Place in frame<small>vehicles · проверено 184</small></div><div class="m-track" title="Place in frame, vehicles: верно 58 из 184"><div class="m-tfill bad" style="width:32%"></div></div><div class="m-chip bad">32%</div></div></div>
+        <div class="m-legend"><span><i class="good"></i>90%+ trustworthy</span><span><i class="warn"></i>70–90% needs oversight</span><span><i class="bad"></i>below 70% not ready</span></div>
       </div>
     </div>
 
     <div class="m-subhead reveal">Weak spots — we show them ourselves</div>
     <div class="m-weak">
-      <div class="m-wk reveal"><div class="m-wtag">Night &amp; dusk</div><h3>At night the system nearly rests</h3><p>Around 2% of findings happen at night. The hardest time is dusk: cameras switch to night mode and false alarms peak. A second-camera night check is already on for outdoor cameras; a dedicated dusk setting is in progress.</p></div>
-      <div class="m-wk reveal"><div class="m-wtag">Cars</div><h3>By position in frame — 38%</h3><p>If the system names a car only by where it usually parks, it is right 63 times out of 168. By silhouette, accuracy is 75%. Postponed until more data builds up; we tested car make recognition with CLIP and shelved it: 52% against 72% for the silhouette.</p></div>
-      <div class="m-wk reveal"><div class="m-wtag">Hardware</div><h3>One box — 8 cameras</h3><p>By October 3 the Mac Mini M1 was running at its limit. We took the load off: the engine gets 10 frames per second instead of every camera frame, decoding is hardware-accelerated, and the neural network runs only on motion. Latency on the gate camera dropped from 13–22 seconds to almost zero.</p></div>
+      <div class="m-wk reveal"><div class="m-wtag">Twilight</div><h3>Evening false alarms: 476 → 45</h3><p>In month one, twilight was the main junk source. In month two night “ghosts” are filtered: night still holds ~2% of findings, and evening no longer floods the feed.</p></div>
+      <div class="m-wk reveal"><div class="m-wtag">Vehicles</div><h3>By place in frame — 32%</h3><p>By silhouette vehicles are already at 91%. Guessing “this car usually stands here” is still below the bar. Third month in a row — fix it or turn it off.</p></div>
+      <div class="m-wk reveal"><div class="m-wtag">Hardware</div><h3>One box — 10 cameras</h3><p>After the early-October unload the Mini runs more cameras at lower load. Memory is still tight — the next lever, not the product ceiling.</p></div>
     </div>
 
     <div class="m-foot reveal">
-      <a class="btn btn-primary" href="https://lugarvazio.github.io/yolky-sense-report/" target="_blank" rel="noopener">Open the full monthly report →</a>
-      <span>11 sections: the yard’s rhythm by hour, “who with whom” pairs, incidents, development pace, what’s next.</span>
+      <a class="btn btn-primary" href="https://lugarvazio.github.io/yolky-sense-report/month2.html" target="_blank" rel="noopener">Open the month-two report →</a>
+      <a class="btn" href="https://lugarvazio.github.io/yolky-sense-report/" target="_blank" rel="noopener" style="background:transparent;border:1px solid var(--line);color:var(--ink);">Month one</a>
+      <span>Full charts: yard rhythm, pairs, incidents, month-to-month comparison.</span>
     </div>
-    <p class="m-src">Where the numbers come from: the live database on the Mac Mini, a snapshot of October 3, 2026, the last day is incomplete. Accuracy is measured on findings a human reviewed, so it is a lower bound on the error. The full report is published without people’s names or animals’ nicknames.</p>
+    <p class="m-src">Numbers come from the live Mac Mini database, snapshot Nov 3, 2026. Periods: Sep 3–Oct 3 and Oct 3–Nov 3. Accuracy is measured on findings a human reviewed — a lower bound on error. Public reports omit people’s names and pet nicknames.</p>
   </div>
 </div>
+
 
 <!-- TRUST (dark) -->
 <div class="section dark" id="trust" style="color:var(--dark-text); background:radial-gradient(900px circle at 85% -10%, rgba(30,92,62,.28), transparent 60%), radial-gradient(rgba(255,255,255,.055) 1px, transparent 1.5px) 0 0/24px 24px, var(--dark-bg);">
@@ -992,7 +1029,7 @@
       <div style="display:flex; flex-direction:column; gap:14px;">
         <div class="vs-card reveal" style="background:var(--dark-surface); border:1px solid var(--dark-line); display:flex; gap:16px; align-items:flex-start;">
           <div class="icon-circle" style="margin-bottom:0; width:44px; height:44px; flex:none; background:rgba(30,92,62,.35); color:#8fd6ac;"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div>
-          <div><h3 style="margin:0 0 5px; font-size:15.5px; color:#fff;">Processing on-site</h3><p style="margin:0; font-size:14px; color:var(--dark-muted); line-height:1.6;">Video and recognition are computed on your own hardware. By default nothing leaves the home. In our home, 8 cameras work this way on a single Mac Mini.</p></div>
+          <div><h3 style="margin:0 0 5px; font-size:15.5px; color:#fff;">Processing on-site</h3><p style="margin:0; font-size:14px; color:var(--dark-muted); line-height:1.6;">Video and recognition are computed on your own hardware. By default nothing leaves the home. In our home, 10 cameras work this way on a single Mac Mini.</p></div>
         </div>
         <div class="vs-card reveal" style="background:var(--dark-surface); border:1px solid var(--dark-line); display:flex; gap:16px; align-items:flex-start;">
           <div class="icon-circle" style="margin-bottom:0; width:44px; height:44px; flex:none; background:rgba(30,92,62,.35); color:#8fd6ac;"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><circle cx="12" cy="15" r="1.6" fill="currentColor" stroke="none"/></svg></div>
