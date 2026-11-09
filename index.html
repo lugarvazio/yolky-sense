@@ -381,6 +381,37 @@
   }
   @media (max-width:640px){ .wrap-wide{padding:0 12px;} .stage-text .h1-hero{font-size:36px !important;} .stage-text{padding:24px 18px 4px;} .w-btn{padding:7px 10px; font-size:12px;} }
   @media (prefers-reduced-motion:reduce){ .w-ev{animation:none;} .stage-mist span{animation:none;} }
+
+  /* ---- demo access request ---- */
+  .access-cta{display:flex; flex-direction:column; align-items:center; gap:14px; margin-top:28px;}
+  .access-note{max-width:560px; margin:0; font-size:13.5px; line-height:1.55; color:var(--muted); text-align:center;}
+  .modal-root{position:fixed; inset:0; z-index:200; display:none; align-items:center; justify-content:center; padding:24px;}
+  .modal-root.open{display:flex;}
+  .modal-backdrop{position:absolute; inset:0; background:rgba(14,24,17,.55); backdrop-filter:blur(6px);}
+  .modal-panel{position:relative; z-index:1; width:min(480px,100%); background:var(--surface); border:1px solid var(--line); border-radius:22px; padding:28px 26px 24px; box-shadow:0 30px 70px -28px rgba(20,25,15,.55); max-height:min(92vh,720px); overflow:auto;}
+  .modal-close{position:absolute; top:14px; right:14px; width:36px; height:36px; border:0; border-radius:10px; background:transparent; color:var(--muted); cursor:pointer; font-size:22px; line-height:1;}
+  .modal-close:hover{background:rgba(20,25,15,.05); color:var(--ink);}
+  .modal-title{font-family:Unbounded,sans-serif; font-size:22px; font-weight:700; letter-spacing:-.4px; margin:0 28px 8px 0;}
+  .modal-lead{font-size:14.5px; line-height:1.55; color:var(--muted); margin:0 0 22px;}
+  .modal-form{display:flex; flex-direction:column; gap:14px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field label{font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--muted);}
+  .field label .req{color:var(--signal); margin-left:2px;}
+  .field input,.field textarea{width:100%; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font:500 15px/1.4 Manrope,sans-serif; color:var(--ink); background:#fff; outline:none; transition:border-color .2s ease, box-shadow .2s ease;}
+  .field input:focus,.field textarea:focus{border-color:rgba(30,92,62,.45); box-shadow:0 0 0 3px rgba(30,92,62,.12);}
+  .field textarea{min-height:110px; resize:vertical;}
+  .modal-legal{margin:2px 0 0; font-size:12.5px; line-height:1.5; color:var(--muted);}
+  .modal-actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:4px;}
+  .modal-actions .btn{min-width:140px;}
+  .modal-error{display:none; margin:0; padding:10px 12px; border-radius:10px; background:#F8E8E4; color:#8A3A2A; font-size:13.5px; line-height:1.45;}
+  .modal-error.show{display:block;}
+  .modal-thanks{display:none; text-align:center; padding:18px 8px 8px;}
+  .modal-thanks.show{display:block;}
+  .modal-thanks h3{font-family:Unbounded,sans-serif; font-size:22px; font-weight:700; letter-spacing:-.4px; margin:0 0 12px;}
+  .modal-thanks p{font-size:15.5px; line-height:1.6; color:var(--muted); margin:0 0 22px;}
+  .modal-form.is-hidden{display:none;}
+  body.modal-open{overflow:hidden;}
+  .hp-field{position:absolute; left:-9999px; opacity:0; height:0; width:0; overflow:hidden;}
   /* ---- demo video ---- */
   .demo-frame{position:relative; max-width:1040px; margin:0 auto; aspect-ratio:16/9; border-radius:22px; overflow:hidden; background:#0d100b; box-shadow:0 34px 70px -40px rgba(20,25,15,.5), 0 0 0 1px rgba(20,25,15,.08);}
   .demo-frame video{display:block; width:100%; height:100%; background:#0d100b;}
@@ -608,6 +639,7 @@
       <a href="#month">Statistic</a>
       <a href="#trust">Trust</a>
       <a href="#demo">In action</a>
+      <a href="#access">Demo</a>
       <a href="#playground">Playground</a>
       <a href="#cta">Contacts</a>
       <span class="nav-indicator" id="navIndicator"></span>
@@ -1049,6 +1081,24 @@
       <video controls playsinline preload="none" poster="poster-en.jpg" aria-label="Product walkthrough video"><source src="intro-en.mp4" type="video/mp4"></video>
     </div>
     <div class="demo-cap">60 seconds · with sound</div>
+  </div>
+</div>
+
+
+<!-- ACCESS -->
+<div class="section" id="access" style="background:var(--bg);">
+  <div class="wrap">
+    <div class="kicker"><span class="bar"></span><div class="eyebrow">Demo access</div></div>
+    <h2 class="h reveal">Demo access without risking the home</h2>
+    <p class="lead" style="margin-bottom:36px;">Issue a temporary link. Guests open the same interface — names replaced, frames stylized — then the link expires on its own. Revoke it, and access stops at once.</p>
+    <div class="demo-frame reveal">
+      <video controls playsinline preload="none" poster="demo-access-poster-en.jpg" aria-label="Demo access walkthrough"><source src="demo-access-en.mp4" type="video/mp4"></video>
+    </div>
+    <div class="demo-cap">33 seconds · with sound</div>
+    <div class="access-cta reveal">
+      <button type="button" class="btn btn-primary" data-demo-open>Request demo access</button>
+      <p class="access-note">We’ll review each request individually. Access is temporary and can be revoked at any time.</p>
+    </div>
   </div>
 </div>
 
@@ -1550,5 +1600,48 @@ else{frame();if('IntersectionObserver' in window){new IntersectionObserver(es=>r
 <script src="crowd.js" defer></script>
 <script src="split.js" defer></script>
 <script src="trust-story.js" defer></script>
+<script src="demo-request.js" defer></script>
+
+<div class="modal-root" id="demoModal" aria-hidden="true">
+  <div class="modal-backdrop" data-demo-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle">
+    <button type="button" class="modal-close" data-demo-close aria-label="Close">×</button>
+    <div class="modal-form-wrap">
+      <h3 class="modal-title" id="demoModalTitle">Request demo access</h3>
+      <p class="modal-lead">Tell us who you are and why you need a temporary link. We’ll reply if the request looks convincing.</p>
+      <form class="modal-form" id="demoRequestForm" novalidate>
+        <div class="hp-field" aria-hidden="true"><label>Company<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+        <div class="field">
+          <label for="demoName">Name <span class="req">*</span></label>
+          <input id="demoName" name="name" type="text" required autocomplete="name" maxlength="120">
+        </div>
+        <div class="field">
+          <label for="demoEmail">Email <span class="req">*</span></label>
+          <input id="demoEmail" name="email" type="email" required autocomplete="email" maxlength="160">
+        </div>
+        <div class="field">
+          <label for="demoTelegram">Telegram</label>
+          <input id="demoTelegram" name="telegram" type="text" autocomplete="off" placeholder="@username" maxlength="80">
+        </div>
+        <div class="field">
+          <label for="demoPurpose">Purpose of request <span class="req">*</span></label>
+          <textarea id="demoPurpose" name="purpose" required maxlength="2000" placeholder="Who you are and why you need demo access"></textarea>
+        </div>
+        <p class="modal-legal">The administrator may decline a request without explanation. Please state a clear and respectful reason for access.</p>
+        <p class="modal-error" id="demoFormError" role="alert"></p>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" id="demoSubmitBtn">Send request</button>
+          <button type="button" class="btn btn-ghost" data-demo-close>Cancel</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal-thanks" id="demoThanks">
+      <h3>Thank you</h3>
+      <p>We’ll review your request, and if it looks convincing, we’ll get in touch.</p>
+      <button type="button" class="btn btn-primary" data-demo-close>Close</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
