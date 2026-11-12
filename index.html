@@ -445,6 +445,14 @@
 
   .field select{width:100%; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font:500 15px/1.4 Manrope,sans-serif; color:var(--ink); background:#fff; outline:none; transition:border-color .2s ease, box-shadow .2s ease; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235B6154' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center;}
   .field select:focus{border-color:rgba(30,92,62,.45); box-shadow:0 0 0 3px rgba(30,92,62,.12);}
+
+  /* ---- merged demo section ---- */
+  .demo-part{max-width:1040px; margin:0 auto;}
+  .demo-part .h{max-width:680px;}
+  .demo-part .lead{margin-bottom:28px;}
+  .demo-part-k{font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--signal); margin:0 0 14px;}
+  .demo-bridge{max-width:1040px; margin:56px auto; height:1px; background:linear-gradient(90deg, transparent, var(--line) 12%, var(--line) 88%, transparent); border:0;}
+  @media (max-width:640px){ .demo-bridge{margin:40px auto;} }
   /* ---- demo video ---- */
   .demo-frame{position:relative; max-width:1040px; margin:0 auto; aspect-ratio:16/9; border-radius:22px; overflow:hidden; background:#0d100b; box-shadow:0 34px 70px -40px rgba(20,25,15,.5), 0 0 0 1px rgba(20,25,15,.08);}
   .demo-frame video{display:block; width:100%; height:100%; background:#0d100b;}
@@ -671,8 +679,7 @@
       <a href="#how">How it works</a>
       <a href="#month">Statistic</a>
       <a href="#trust">Trust</a>
-      <a href="#demo">In action</a>
-      <a href="#access">Demo</a>
+      <a href="#demo">Demo</a>
       <a href="#playground">Playground</a>
       <a href="#cta">Contacts</a>
       <span class="nav-indicator" id="navIndicator"></span>
@@ -1107,30 +1114,34 @@
 <!-- DEMO -->
 <div class="section" id="demo" style="background:var(--surface);">
   <div class="wrap">
-    <div class="kicker"><span class="bar"></span><div class="eyebrow">In action</div></div>
-    <h2 class="h reveal">One minute to see the whole system</h2>
-    <p class="lead" style="margin-bottom:36px;">The live interface on our own home: events, entities, zones and rules, analytics and the 3D property map — in 60 seconds.</p>
-    <div class="demo-frame reveal">
-      <video controls playsinline preload="none" poster="poster-en.jpg" aria-label="Product walkthrough video"><source src="intro-en.mp4" type="video/mp4"></video>
-    </div>
-    <div class="demo-cap">60 seconds · with sound</div>
-  </div>
-</div>
+    <div class="kicker"><span class="bar"></span><div class="eyebrow">Demo</div></div>
+    <h2 class="h reveal">See the system — then try it safely</h2>
+    <p class="lead" style="margin-bottom:44px;">Two short videos: the live interface at our home, and how temporary demo access works without opening the house.</p>
 
-
-<!-- ACCESS -->
-<div class="section" id="access" style="background:var(--bg);">
-  <div class="wrap">
-    <div class="kicker"><span class="bar"></span><div class="eyebrow">Demo access</div></div>
-    <h2 class="h reveal">Demo access without risking the home</h2>
-    <p class="lead" style="margin-bottom:36px;">Issue a temporary link. Guests open the same interface — names replaced, frames stylized — then the link expires on its own. Revoke it, and access stops at once.</p>
-    <div class="demo-frame reveal">
-      <video controls playsinline preload="none" poster="demo-access-poster-en.jpg" aria-label="Demo access walkthrough"><source src="demo-access-en.mp4" type="video/mp4"></video>
+    <div class="demo-part reveal">
+      <div class="demo-part-k">Product walkthrough</div>
+      <h3 class="h" style="font-size:30px;">One minute to see the whole system</h3>
+      <p class="lead">The live interface on our own home: events, entities, zones and rules, analytics and the 3D property map — in 60 seconds.</p>
+      <div class="demo-frame">
+        <video controls playsinline preload="none" poster="poster-en.jpg" aria-label="Product walkthrough video"><source src="intro-en.mp4" type="video/mp4"></video>
+      </div>
+      <div class="demo-cap">60 seconds · with sound</div>
     </div>
-    <div class="demo-cap">33 seconds · with sound</div>
-    <div class="access-cta reveal">
-      <button type="button" class="btn btn-primary" data-demo-open>Request demo access</button>
-      <p class="access-note">We’ll review each request individually. Access is temporary and can be revoked at any time.</p>
+
+    <hr class="demo-bridge" aria-hidden="true">
+
+    <div class="demo-part reveal" id="access">
+      <div class="demo-part-k">Temporary access</div>
+      <h3 class="h" style="font-size:30px;">Demo access without risking the home</h3>
+      <p class="lead">Issue a temporary link. Guests open the same interface — names replaced, frames stylized — then the link expires on its own. Revoke it, and access stops at once.</p>
+      <div class="demo-frame">
+        <video controls playsinline preload="none" poster="demo-access-poster-en.jpg" aria-label="Demo access walkthrough"><source src="demo-access-en.mp4" type="video/mp4"></video>
+      </div>
+      <div class="demo-cap">33 seconds · with sound</div>
+      <div class="access-cta">
+        <button type="button" class="btn btn-primary" data-demo-open>Request demo access</button>
+        <p class="access-note">We’ll review each request individually. Access is temporary and can be revoked at any time.</p>
+      </div>
     </div>
   </div>
 </div>
