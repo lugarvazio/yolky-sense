@@ -446,13 +446,6 @@
   .field select{width:100%; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font:500 15px/1.4 Manrope,sans-serif; color:var(--ink); background:#fff; outline:none; transition:border-color .2s ease, box-shadow .2s ease; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235B6154' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center;}
   .field select:focus{border-color:rgba(30,92,62,.45); box-shadow:0 0 0 3px rgba(30,92,62,.12);}
 
-  /* ---- merged demo section ---- */
-  .demo-part{max-width:1040px; margin:0 auto;}
-  .demo-part .h{max-width:680px;}
-  .demo-part .lead{margin-bottom:28px;}
-  .demo-part-k{font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--signal); margin:0 0 14px;}
-  .demo-bridge{max-width:1040px; margin:56px auto; height:1px; background:linear-gradient(90deg, transparent, var(--line) 12%, var(--line) 88%, transparent); border:0;}
-  @media (max-width:640px){ .demo-bridge{margin:40px auto;} }
   /* ---- demo video ---- */
   .demo-frame{position:relative; max-width:1040px; margin:0 auto; aspect-ratio:16/9; border-radius:22px; overflow:hidden; background:#0d100b; box-shadow:0 34px 70px -40px rgba(20,25,15,.5), 0 0 0 1px rgba(20,25,15,.08);}
   .demo-frame video{display:block; width:100%; height:100%; background:#0d100b;}
@@ -1115,33 +1108,15 @@
 <div class="section" id="demo" style="background:var(--surface);">
   <div class="wrap">
     <div class="kicker"><span class="bar"></span><div class="eyebrow">Демо</div></div>
-    <h2 class="h reveal">Посмотрите систему — и попробуйте без риска</h2>
-    <p class="lead" style="margin-bottom:44px;">Два коротких ролика: живой интерфейс на нашем доме и временный демо-доступ без открытия дома.</p>
-
-    <div class="demo-part reveal">
-      <div class="demo-part-k">Обзор продукта</div>
-      <h3 class="h" style="font-size:30px;">Минута, чтобы увидеть систему целиком</h3>
-      <p class="lead">Живой интерфейс на нашем доме: события, сущности, зоны и правила, аналитика и 3D-карта участка — за 60 секунд.</p>
-      <div class="demo-frame">
-        <video controls playsinline preload="none" poster="poster-ru.jpg" aria-label="Видео-обзор продукта"><source src="intro-ru.mp4" type="video/mp4"></video>
-      </div>
-      <div class="demo-cap">60 секунд · со звуком</div>
+    <h2 class="h reveal">Минута, чтобы увидеть систему целиком</h2>
+    <p class="lead" style="margin-bottom:36px;">Живой интерфейс на нашем доме: события, сущности, зоны и правила, аналитика и 3D-карта участка. Если хотите попробовать сами — запросите временную демо-ссылку: имена заменены, кадры стилизованы, доступ можно отозвать в любой момент.</p>
+    <div class="demo-frame reveal">
+      <video controls playsinline preload="none" poster="poster-ru.jpg" aria-label="Видео-обзор продукта"><source src="intro-ru.mp4" type="video/mp4"></video>
     </div>
-
-    <hr class="demo-bridge" aria-hidden="true">
-
-    <div class="demo-part reveal" id="access">
-      <div class="demo-part-k">Временный доступ</div>
-      <h3 class="h" style="font-size:30px;">Демо без риска для дома</h3>
-      <p class="lead">Выпускаете временную ссылку. Гость видит тот же интерфейс — имена заменены, кадры стилизованы — срок истекает сам. Отозвали ссылку — доступ гаснет сразу.</p>
-      <div class="demo-frame">
-        <video controls playsinline preload="none" poster="demo-access-poster-ru.jpg" aria-label="Обзор демо-доступа"><source src="demo-access-ru.mp4" type="video/mp4"></video>
-      </div>
-      <div class="demo-cap">35 секунд · со звуком</div>
-      <div class="access-cta">
-        <button type="button" class="btn btn-primary" data-demo-open>Запросить демо-доступ</button>
-        <p class="access-note">Каждый запрос рассматриваем отдельно. Доступ временный и может быть отозван в любой момент.</p>
-      </div>
+    <div class="demo-cap">60 секунд · со звуком</div>
+    <div class="access-cta reveal" id="access">
+      <button type="button" class="btn btn-primary" data-demo-open>Запросить демо-доступ</button>
+      <p class="access-note">Каждый запрос рассматриваем отдельно. Доступ временный и может быть отозван в любой момент.</p>
     </div>
   </div>
 </div>
