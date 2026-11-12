@@ -42,7 +42,9 @@
   function closeModal() {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('modal-open');
+    if (!document.querySelector('.modal-root.open')) {
+      document.body.classList.remove('modal-open');
+    }
     if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
   }
 

@@ -412,6 +412,38 @@
   .modal-form.is-hidden{display:none;}
   body.modal-open{overflow:hidden;}
   .hp-field{position:absolute; left:-9999px; opacity:0; height:0; width:0; overflow:hidden;}
+
+  /* ---- FAQ ---- */
+  .faq{margin:0 0 56px;}
+  .faq-topics{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 22px;}
+  .faq-topic{appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--muted); border-radius:999px; padding:8px 14px; font:700 12.5px/1 'JetBrains Mono',monospace; letter-spacing:.4px; text-transform:uppercase; cursor:pointer; transition:background .2s ease, color .2s ease, border-color .2s ease;}
+  .faq-topic:hover{color:var(--signal); border-color:rgba(30,92,62,.35);}
+  .faq-topic.is-on{background:var(--signal); border-color:var(--signal); color:#fff;}
+  .faq-list{display:flex; flex-direction:column; gap:10px;}
+  .faq-item{border:1px solid var(--line); border-radius:16px; background:var(--surface); overflow:hidden; box-shadow:0 1px 2px rgba(20,25,15,.03);}
+  .faq-item[hidden]{display:none !important;}
+  .faq-item summary{list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 20px; font-family:Unbounded,sans-serif; font-size:16px; font-weight:600; letter-spacing:-.2px; line-height:1.35; color:var(--ink);}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary span{flex:1; text-wrap:balance;}
+  .faq-item summary i{flex:none; width:28px; height:28px; border-radius:9px; background:var(--signal-soft); color:var(--signal); position:relative;}
+  .faq-item summary i::before,.faq-item summary i::after{content:""; position:absolute; left:50%; top:50%; background:currentColor; border-radius:1px; transition:transform .25s ease, opacity .25s ease;}
+  .faq-item summary i::before{width:12px; height:2px; margin:-1px 0 0 -6px;}
+  .faq-item summary i::after{width:2px; height:12px; margin:-6px 0 0 -1px;}
+  .faq-item[open] summary i::after{transform:scaleY(0); opacity:0;}
+  .faq-item[open]{border-color:rgba(30,92,62,.28); box-shadow:0 10px 28px -18px rgba(30,92,62,.35);}
+  .faq-a{padding:0 20px 18px; color:var(--muted); font-size:15.5px; line-height:1.65;}
+  .faq-a p{margin:0; max-width:720px;}
+  .faq-more{margin-top:28px; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 24px; border-radius:18px; background:var(--surface-2); border:1px solid var(--line);}
+  .faq-more b{display:block; font-family:Unbounded,sans-serif; font-size:17px; font-weight:700; letter-spacing:-.2px; margin-bottom:6px; color:var(--ink);}
+  .faq-more p{margin:0; font-size:14.5px; line-height:1.55; color:var(--muted); max-width:560px;}
+  @media (max-width:720px){
+    .faq-more{flex-direction:column; align-items:stretch;}
+    .faq-item summary{font-size:15px; padding:16px 16px;}
+    .faq-a{padding:0 16px 16px; font-size:14.5px;}
+  }
+
+  .field select{width:100%; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font:500 15px/1.4 Manrope,sans-serif; color:var(--ink); background:#fff; outline:none; transition:border-color .2s ease, box-shadow .2s ease; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235B6154' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center;}
+  .field select:focus{border-color:rgba(30,92,62,.45); box-shadow:0 0 0 3px rgba(30,92,62,.12);}
   /* ---- demo video ---- */
   .demo-frame{position:relative; max-width:1040px; margin:0 auto; aspect-ratio:16/9; border-radius:22px; overflow:hidden; background:#0d100b; box-shadow:0 34px 70px -40px rgba(20,25,15,.5), 0 0 0 1px rgba(20,25,15,.08);}
   .demo-frame video{display:block; width:100%; height:100%; background:#0d100b;}
@@ -1150,6 +1182,52 @@
 <!-- CONTACTS -->
 <div class="section" id="cta" style="padding-bottom:110px;">
   <div class="wrap">
+    <div class="faq reveal">
+      <div class="kicker"><span class="bar"></span><div class="eyebrow">FAQ</div></div>
+      <h2 class="h">Check the FAQ before writing</h2>
+      <p class="lead" style="margin-bottom:28px;">Common technical questions live here. If yours isn’t covered — write to us and we’ll look into it.</p>
+      <div class="faq-topics" role="toolbar" aria-label="FAQ topics">
+        <button type="button" class="faq-topic is-on" data-faq-topic="all" aria-pressed="true">All</button>
+        <button type="button" class="faq-topic" data-faq-topic="general" aria-pressed="false">General</button>
+        <button type="button" class="faq-topic" data-faq-topic="hardware" aria-pressed="false">Hardware</button>
+        <button type="button" class="faq-topic" data-faq-topic="features" aria-pressed="false">Features</button>
+        <button type="button" class="faq-topic" data-faq-topic="privacy" aria-pressed="false">Privacy</button>
+        <button type="button" class="faq-topic" data-faq-topic="collab" aria-pressed="false">Collaboration</button>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" data-topic="general"><summary><span>What is Yolky Sense?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Yolky Sense is a local AI filter for home cameras. It recognizes familiar people and objects, remembers false alarms, and helps tell important events from everyday noise.</p></div></details>
+        <details class="faq-item" data-topic="general"><summary><span>How is it different from regular cameras?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Ordinary cameras mostly react to motion and record video. Yolky Sense also analyzes events, matches observations over time, and uses what it has learned to stay quieter.</p></div></details>
+        <details class="faq-item" data-topic="general"><summary><span>Is this a commercial product?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Right now Yolky Sense is an independent experimental project. It already runs in a real home and keeps evolving. A commercial release has not been announced.</p></div></details>
+        <details class="faq-item" data-topic="general"><summary><span>Can I download or buy it?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>There is no public download yet. Demo access is issued individually after a request. Broader availability will be announced as the project matures.</p></div></details>
+        <details class="faq-item" data-topic="general"><summary><span>Is it only for private homes?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>The main scenario is watching a private property. Other settings need a separate check.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>What are the minimum requirements?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>There is no official minimum yet. The live setup runs on a Mac mini M1 with 8 GB of RAM — a working example, not a guaranteed floor.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>Which operating systems are supported?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>The current installation runs on macOS. Windows, Linux and other platforms are not announced.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>Which cameras are supported?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>It is developed and tested with IP cameras, including TP-Link Tapo devices over RTSP. Compatibility of a specific model needs a separate check.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>Can I connect several cameras?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Yes. Yolky Sense uses multiple video streams and can relate observations across cameras. How many you can run depends on hardware and processing settings. Our home currently runs 10 cameras on one Mac mini.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>Do I need constant internet?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Cameras and the server can talk over the local network. Some features and integrations may still need internet. A fully offline mode is not promised as a guaranteed option.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>Where is the data stored?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>In the current setup everything lives on your own local server. You decide what to keep and what to delete.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>Does Yolky Sense recognize faces?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>It analyzes faces and matches observations to tell familiar people from strangers. Accuracy depends on image quality, lighting, angle and other conditions.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>Can the system make mistakes?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Yes. Like any computer-vision system, it can be wrong. That is why there are ways to review, confirm and correct results.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>Does it learn from my corrections?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Confirmed observations help improve later recognition. That does not mean every model is fully retrained after each event.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>Does recognition work at night?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Night scenes are part of the testing. Quality still depends on the camera, lighting and how visible the object is.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>Can it tell people, animals and cars apart?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Yes — people, animals and vehicles are part of the analysis. Accuracy for each category depends on the models and the scene.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>Can I set detection zones?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Yes. There are detection and exclusion zones so the system can respect the layout of the property.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>How do notifications arrive?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>In the current setup, alerts go to Telegram. Other channels are not announced yet.</p></div></details>
+        <details class="faq-item" data-topic="privacy"><summary><span>Do videos go to third-party services?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>By default, video and recognition stay on your own hardware and nothing leaves the home. Some optional integrations may need a network connection — that is separate from sending your archive to a vendor cloud.</p></div></details>
+        <details class="faq-item" data-topic="privacy"><summary><span>Can it run without cloud services?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>The architecture is built around your own server and local camera streams. Remote access connects straight to your box over encrypted HTTPS, without a vendor relay in the middle.</p></div></details>
+        <details class="faq-item" data-topic="collab"><summary><span>Who is building Yolky Sense?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>It is an independent project by Alexander Sheviakov, built with modern tools for computer vision and AI.</p></div></details>
+        <details class="faq-item" data-topic="collab"><summary><span>Can I suggest a feature?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Yes — use Write to us. Suggestions are welcome; inclusion in the roadmap is not guaranteed.</p></div></details>
+        <details class="faq-item" data-topic="collab"><summary><span>Can I invest or partner?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Partnership and investment ideas are reviewed individually. Terms are discussed directly with the author.</p></div></details>
+      </div>
+      <div class="faq-more">
+        <div>
+          <b>Didn’t find an answer?</b>
+          <p>Please check the FAQ first for technical questions. Feature ideas, partnership and special cases — through the form.</p>
+        </div>
+        <button type="button" class="btn btn-primary" data-contact-open>Write to us</button>
+      </div>
+    </div>
+
     <div class="reveal contact-panel">
       <div class="eyebrow" style="color:#8fd6ac; margin-bottom:14px;">Contacts</div>
       <h2 class="contact-h">I’ll show you the system live and answer your questions</h2>
@@ -1601,6 +1679,7 @@ else{frame();if('IntersectionObserver' in window){new IntersectionObserver(es=>r
 <script src="split.js" defer></script>
 <script src="trust-story.js" defer></script>
 <script src="demo-request.js" defer></script>
+<script src="faq.js" defer></script>
 
 <div class="modal-root" id="demoModal" aria-hidden="true">
   <div class="modal-backdrop" data-demo-close></div>
@@ -1639,6 +1718,58 @@ else{frame();if('IntersectionObserver' in window){new IntersectionObserver(es=>r
       <h3>Thank you</h3>
       <p>We’ll review your request, and if it looks convincing, we’ll get in touch.</p>
       <button type="button" class="btn btn-primary" data-demo-close>Close</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-root" id="contactModal" aria-hidden="true">
+  <div class="modal-backdrop" data-contact-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+    <button type="button" class="modal-close" data-contact-close aria-label="Close">×</button>
+    <div class="modal-form-wrap">
+      <h3 class="modal-title" id="contactModalTitle">Write to us</h3>
+      <p class="modal-lead">For technical questions, please check the FAQ first. Use this form for feature ideas, partnership or cases the FAQ doesn’t cover.</p>
+      <form class="modal-form" id="contactForm" novalidate>
+        <div class="hp-field" aria-hidden="true"><label>Company<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+        <div class="field">
+          <label for="contactName">Name <span class="req">*</span></label>
+          <input id="contactName" name="name" type="text" required autocomplete="name" maxlength="120">
+        </div>
+        <div class="field">
+          <label for="contactEmail">Email <span class="req">*</span></label>
+          <input id="contactEmail" name="email" type="email" required autocomplete="email" maxlength="160">
+        </div>
+        <div class="field">
+          <label for="contactTelegram">Telegram</label>
+          <input id="contactTelegram" name="telegram" type="text" autocomplete="off" placeholder="@username" maxlength="80">
+        </div>
+        <div class="field">
+          <label for="contactTopic">Topic <span class="req">*</span></label>
+          <select id="contactTopic" name="topic" required>
+            <option value="">Choose a topic</option>
+            <option value="Technical question">Technical question</option>
+            <option value="Feature idea">Feature idea</option>
+            <option value="Partnership / investment">Partnership / investment</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="contactMessage">Message <span class="req">*</span></label>
+          <textarea id="contactMessage" name="message" required maxlength="3000" placeholder="What would you like to ask or propose?"></textarea>
+        </div>
+        <p class="modal-legal">We reply selectively. Technical questions that are already covered in the FAQ may go unanswered.</p>
+        <p class="modal-error" id="contactFormError" role="alert"></p>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" id="contactSubmitBtn">Send</button>
+          <button type="button" class="btn btn-ghost" data-contact-close>Cancel</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal-thanks" id="contactThanks">
+      <h3>Thank you</h3>
+      <p>We’ve received your message. If it needs a reply, we’ll get back to you.</p>
+      <button type="button" class="btn btn-primary" data-contact-close>Close</button>
     </div>
   </div>
 </div>
