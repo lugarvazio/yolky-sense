@@ -79,6 +79,22 @@
   .navlinks a:hover, .navlinks a.active{color:var(--signal);}
   .nav-indicator{position:absolute; left:0; bottom:-6px; width:0; height:2px; background:var(--signal); border-radius:2px; opacity:0; transition:left .4s cubic-bezier(.4,0,.2,1), width .4s cubic-bezier(.4,0,.2,1), opacity .3s ease-in-out;}
   .nav-indicator.show{opacity:1;}
+
+  /* ---- mobile burger ---- */
+  .nav-end{justify-self:end; display:flex; align-items:center; gap:10px;}
+  .nav-burger{display:none; width:42px; height:42px; border:1px solid var(--line); border-radius:12px; background:var(--surface); align-items:center; justify-content:center; flex-direction:column; gap:5px; cursor:pointer; padding:0; color:var(--ink); transition:background .25s ease-in-out, border-color .25s ease-in-out;}
+  .nav-burger:hover{background:rgba(20,25,15,.04); border-color:#c9cec0;}
+  .nav-burger span{display:block; width:18px; height:2px; background:currentColor; border-radius:1px; transition:transform .28s cubic-bezier(.4,0,.2,1), opacity .2s ease;}
+  .nav.is-open .nav-burger span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav.is-open .nav-burger span:nth-child(2){opacity:0;}
+  .nav.is-open .nav-burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .nav-drawer{display:none; border-top:1px solid var(--line); background:var(--bg); padding:10px 20px 18px; max-height:min(70vh, 480px); overflow:auto; -webkit-overflow-scrolling:touch;}
+  .nav-drawer a{display:block; padding:14px 6px; font-size:16px; font-weight:700; color:var(--ink); border-bottom:1px solid var(--line); letter-spacing:-0.2px;}
+  .nav-drawer a:last-child{border-bottom:0;}
+  .nav-drawer a:hover, .nav-drawer a.active{color:var(--signal);}
+  .nav-scrim{position:fixed; inset:0; z-index:40; background:rgba(20,25,15,.32); opacity:0; pointer-events:none; transition:opacity .28s ease; border:0; padding:0; cursor:pointer;}
+  body.nav-open .nav-scrim{opacity:1; pointer-events:auto;}
+  body.nav-open{overflow:hidden;}
   .btn{display:inline-flex; align-items:center; justify-content:center; padding:13px 22px; border-radius:12px; font-size:14.5px; font-weight:700; cursor:pointer; border:1px solid transparent; transition:transform .3s ease-in-out, box-shadow .3s ease-in-out, filter .3s ease-in-out, background .3s ease-in-out;}
   .btn-primary{background:var(--signal); color:#fff; box-shadow:0 10px 22px -10px rgba(30,92,62,.55);}
   .btn-primary:hover{transform:translateY(-2px); filter:brightness(1.08);}
@@ -125,7 +141,7 @@
   /* ---- grids ---- */
   .grid-3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px;}
   .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
-  @media (max-width:960px){ .grid-3{grid-template-columns:repeat(2,minmax(0,1fr));} .grid-2{grid-template-columns:1fr;} .navlinks{display:none;} .nav-top{display:none;} .logo-sm{opacity:1 !important; transform:none !important; pointer-events:auto !important;} .h1-hero{font-size:52px !important;} h2.h{font-size:30px;} .section{padding:72px 0;} .wrap{padding:0 24px;} }
+  @media (max-width:960px){ .grid-3{grid-template-columns:repeat(2,minmax(0,1fr));} .grid-2{grid-template-columns:1fr;} .navlinks{display:none;} .nav-top{display:none;} .logo-sm{opacity:1 !important; transform:none !important; pointer-events:auto !important;} .nav-burger{display:inline-flex;} .nav.is-open .nav-drawer{display:block;} .nav-main{padding:0 20px; height:60px;} .h1-hero{font-size:52px !important;} h2.h{font-size:30px;} .section{padding:72px 0;} .wrap{padding:0 24px;} }
   @media (max-width:640px){ .grid-3{grid-template-columns:1fr;} .wrap{padding:0 20px;} .h1-hero{font-size:36px !important;} .card{padding:22px;} .section{padding:56px 0;} }
 
   /* ---- reveal on scroll ---- */
@@ -677,9 +693,22 @@
       <a href="#cta">Contacts</a>
       <span class="nav-indicator" id="navIndicator"></span>
     </div>
-    <div class="lang" role="group" aria-label="Language"><a href="ru.html" hreflang="ru" lang="ru">RU</a><span aria-current="true">EN</span></div>
+    <div class="nav-end">
+      <div class="lang" role="group" aria-label="Language"><a href="ru.html" hreflang="ru" lang="ru">RU</a><span aria-current="true">EN</span></div>
+      <button type="button" class="nav-burger" id="navBurger" aria-expanded="false" aria-controls="navDrawer" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="nav-drawer" id="navDrawer" hidden>
+    <a href="#noise">Noise</a>
+    <a href="#how">How it works</a>
+    <a href="#month">Statistic</a>
+    <a href="#trust">Trust</a>
+    <a href="#demo">Demo</a>
+    <a href="#playground">Playground</a>
+    <a href="#cta">Contacts</a>
   </div>
 </div>
+<button type="button" class="nav-scrim" id="navScrim" hidden aria-hidden="true" tabindex="-1"></button>
 
 <!-- HERO -->
 <div class="section" id="hero" style="padding-top:20px; padding-bottom:96px; background:radial-gradient(640px circle at 92% -10%, rgba(30,92,62,.07), transparent 60%), radial-gradient(rgba(20,25,15,.035) 1px, transparent 1.5px) 0 0/26px 26px, var(--bg);">
@@ -1491,6 +1520,49 @@ else{frame();if('IntersectionObserver' in window){new IntersectionObserver(es=>r
     }
   } catch (e) {}
 
+
+  // mobile burger menu
+  try {
+    var burger = document.getElementById('navBurger');
+    var drawer = document.getElementById('navDrawer');
+    var scrim = document.getElementById('navScrim');
+    var navEl = document.getElementById('nav');
+    function setNavOpen(open) {
+      if (!navEl) return;
+      navEl.classList.toggle('is-open', open);
+      document.body.classList.toggle('nav-open', open);
+      if (burger) burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (drawer) {
+        if (open) drawer.removeAttribute('hidden');
+        else drawer.setAttribute('hidden', '');
+      }
+      if (scrim) {
+        if (open) scrim.removeAttribute('hidden');
+        else scrim.setAttribute('hidden', '');
+        scrim.setAttribute('aria-hidden', open ? 'false' : 'true');
+      }
+    }
+    function closeNavMenu() { setNavOpen(false); }
+    window.closeNavMenu = closeNavMenu;
+    if (burger) {
+      burger.addEventListener('click', function(){
+        setNavOpen(!navEl.classList.contains('is-open'));
+      });
+    }
+    if (scrim) scrim.addEventListener('click', closeNavMenu);
+    if (drawer) {
+      drawer.querySelectorAll('a[href^="#"]').forEach(function(a){
+        a.addEventListener('click', function(){ closeNavMenu(); });
+      });
+    }
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeNavMenu();
+    });
+    window.addEventListener('resize', function(){
+      if (window.innerWidth > 960) closeNavMenu();
+    });
+  } catch (e) {}
+
   // nav indicator + scrollspy + smooth anchor scroll
   try {
     var navLinksEl = document.getElementById('navLinks');
@@ -1542,6 +1614,7 @@ else{frame();if('IntersectionObserver' in window){new IntersectionObserver(es=>r
         }
         var headerH = nav ? nav.offsetHeight : 0;
         var top = target.getBoundingClientRect().top + window.pageYOffset - headerH - 16;
+        if (typeof window.closeNavMenu === 'function') window.closeNavMenu();
         window.scrollTo({ top: top, behavior: 'smooth' });
       });
     });
