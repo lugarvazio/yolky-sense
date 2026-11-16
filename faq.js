@@ -34,21 +34,34 @@
   var submitBtn = document.getElementById('contactSubmitBtn');
   if (!modal || !form) return;
 
-  var ru = document.documentElement.lang === 'ru';
+  var lang = (document.documentElement.lang || 'en').toLowerCase();
+  if (lang.indexOf('es') === 0) lang = 'es';
+  else if (lang === 'ru') lang = 'ru';
+  else lang = 'en';
   var ENDPOINT = 'https://formsubmit.co/ajax/lugarvazio@gmail.com';
-  var MSG = ru ? {
-    required: 'Заполните обязательные поля.',
-    email: 'Укажите корректный email.',
-    fail: 'Не удалось отправить сообщение. Попробуйте ещё раз или напишите на lugarvazio@gmail.com.',
-    sending: 'Отправляем…',
-    send: 'Отправить'
-  } : {
-    required: 'Please fill in the required fields.',
-    email: 'Please enter a valid email.',
-    fail: 'Could not send the message. Try again or email lugarvazio@gmail.com.',
-    sending: 'Sending…',
-    send: 'Send'
-  };
+  var MSG = ({
+    ru: {
+      required: 'Заполните обязательные поля.',
+      email: 'Укажите корректный email.',
+      fail: 'Не удалось отправить сообщение. Попробуйте ещё раз или напишите на lugarvazio@gmail.com.',
+      sending: 'Отправляем…',
+      send: 'Отправить'
+    },
+    es: {
+      required: 'Completá los campos obligatorios.',
+      email: 'Ingresá un email válido.',
+      fail: 'No se pudo enviar el mensaje. Probá de nuevo o escribinos a lugarvazio@gmail.com.',
+      sending: 'Enviando…',
+      send: 'Enviar'
+    },
+    en: {
+      required: 'Please fill in the required fields.',
+      email: 'Please enter a valid email.',
+      fail: 'Could not send the message. Try again or email lugarvazio@gmail.com.',
+      sending: 'Sending…',
+      send: 'Send'
+    }
+  })[lang];
 
   var lastFocus = null;
 
@@ -118,7 +131,7 @@
       topic: topic,
       message: message,
       page: location.href,
-      language: ru ? 'ru' : 'en',
+      language: lang,
       _subject: 'Yolky Sense — contact: ' + topic,
       _template: 'table',
       _captcha: 'false',

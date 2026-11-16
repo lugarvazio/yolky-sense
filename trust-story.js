@@ -22,6 +22,25 @@ var TX={
   ev:[['Gate','Unfamiliar person','Notify'],['Door','Resident','Silent'],['Beyond the gate','Car passing by','Filtered'],['Parking','Own car','Silent'],['Yard','Animal','Filtered']],
   tabs:['Events','Entities','Zones','More'], moscow:'Moscow region', ba:'Argentina'
  },
+ es:{
+  preK:'Confianza',preH:'Dónde vive tu video',preP:'Scrolleá: toda la historia pasa en una sola pantalla.',
+  postK:'Después',postH:'Y el video sigue siendo tuyo',postP:'La página sigue acá.',
+  items:[
+   ['01 · Cámaras','Once cámaras. Once mundos aparte.','Cada cámara ve solo su rincón de la propiedad y no sabe nada de las demás. Solas, apenas producen video.'],
+   ['02 · Red','Juntas se vuelven una sola red','Las cámaras se conectan por tu red de casa, no por la nube del fabricante. Ahora un evento en una cámara tiene sentido al lado de las otras.'],
+   ['03 · Servidor','Un Mac mini es todo el servidor','El video, el reconocimiento y el archivo viven en una caja chica en casa. Sin nube del fabricante, sin suscripción por tu propia historia. Es tu hardware y tu archivo, y vos decidís qué se queda.'],
+   ['04 · El cerebro','El Mac mini no es una caja. Es un filtro.','Cada cuadro de once cámaras pasa por la IA en casa: qué es, quién es, ya vimos esta falsa alarma. La mayoría de los eventos termina acá, en silencio. Solo sigue lo que importa.'],
+   ['05 · En la mano','Todo eso, detrás de una pantalla de celular','Lo que deja pasar el filtro llega a una pantalla calmada: quién vino, qué cámara lo vio. Cuando algo merece tu atención, un solo aviso con un cuadro llega a tu Telegram. El archivo se queda en casa.'],
+   ['06 · Alejamos','La casa está cerca de Moscú','El servidor se queda donde está la casa. Todo lo demás es solo una forma de mirarlo.'],
+   ['07 · Lejos','Podés estar del otro lado del planeta','Desde Argentina el celular se conecta directo a la caja en casa por HTTPS cifrado. No hay servidor del fabricante en el medio.'],
+   ['08 · Lo mismo','Y la imagen es la misma','La misma interfaz, los mismos eventos, el mismo silencio, estés donde estés. El archivo se queda en casa; el celular solo lo mira.']
+  ],
+  cams:['Portón','Puerta','Patio','Estacionamiento','Cocina','Habitación','Vista general','Panorama'],
+  home:'EN CASA · SOLO LOCAL', mini:'Mac mini', cloud:'SIN NUBE DEL FABRICANTE', sysH:'SISTEMA · ONLINE', sysF:'11 cámaras · 1 Mac mini', brain:{g:['DETECTAR','RECONOCER','RECORDAR'], s:['qué es','quién es','¿ya lo vimos?'], i:'EVENTOS IN  ≈100/día', o:'AVISOS OUT  ≈3/día'}, own:'TUYO', push:['Telegram · ahora','Portón · persona desconocida','1 cuadro · el archivo se queda en casa'],
+  sum:'<b>3</b> notificaciones · <b>96</b> filtrados hoy',
+  ev:[['Portón','Persona desconocida','Avisar'],['Puerta','Residente','Silencio'],['Más allá del portón','Auto de paso','Filtrado'],['Estacionamiento','Tu auto','Silencio'],['Patio','Animal','Filtrado']],
+  tabs:['Eventos','Entidades','Zonas','Más'], moscow:'Región de Moscú', ba:'Argentina'
+ },
  ru:{
   preK:'Доверие',preH:'Где живёт ваше видео',preP:'Листайте: весь сюжет идёт на одном экране.',
   postK:'Дальше',postH:'И видео остаётся вашим',postP:'Дальше продолжается страница.',
@@ -46,12 +65,16 @@ var UI={
  en:{sub:'Your home',ttl:'Today',live:'LIVE',k1:'notified',k2:'filtered',k3:'known',f:['All','People','Cars','Animals'],tabs:['Today','Events','Entities','Zones','More'],ok:'✓ Correct',no:'✕ Wrong',op:'Open',
   big:{c:'Gate',a:'2 min ago',n:'Unfamiliar person',s:'Gate · person',b:'Notify'},
   rows:[['Door','Resident','Door · person','14 min ago','Silent'],['Beyond the gate','Car passing by','Beyond the gate · car','21 min ago','Filtered'],['Parking','Own car','Parking · car','36 min ago','Silent'],['Yard','Animal','Yard · animal','52 min ago','Filtered']]},
+ es:{sub:'Tu casa',ttl:'Hoy',live:'EN VIVO',k1:'avisos',k2:'filtrados',k3:'conocidos',f:['Todos','Personas','Autos','Animales'],tabs:['Hoy','Eventos','Entidades','Zonas','Más'],ok:'✓ Correcto',no:'✕ Incorrecto',op:'Abrir',
+  big:{c:'Portón',a:'hace 2 min',n:'Persona desconocida',s:'Portón · persona',b:'Avisar'},
+  rows:[['Puerta','Residente','Puerta · persona','hace 14 min','Silencio'],['Más allá del portón','Auto de paso','Más allá del portón · auto','hace 21 min','Filtrado'],['Estacionamiento','Tu auto','Estacionamiento · auto','hace 36 min','Silencio'],['Patio','Animal','Patio · animal','hace 52 min','Filtrado']]},
  ru:{sub:'Ваш дом',ttl:'Сегодня',live:'ЖИВОЕ',k1:'тревог',k2:'отфильтр.',k3:'своих',f:['Все','Люди','Машины','Животные'],tabs:['Сегодня','События','Сущности','Зоны','Ещё'],ok:'✓ Верно',no:'✕ Неверно',op:'Открыть',
   big:{c:'Ворота',a:'2 мин назад',n:'Незнакомый человек',s:'Ворота · человек',b:'Тревога'},
   rows:[['Дверь','Житель','Дверь · человек','14 мин назад','Тихо'],['За воротами','Проезжает машина','За воротами · машина','21 мин назад','Фильтр'],['Парковка','Своя машина','Парковка · машина','36 мин назад','Тихо'],['Двор','Животное','Двор · животное','52 мин назад','Фильтр']]}
 };
 var CHIPS={
  en:[['11 cameras','Separate feeds'],['Home network','No vendor cloud'],['1 Mac mini','Local archive','Yours'],['Detect · Recognize · Remember','Neighbors ≠ strangers','100 in → 3 out'],['Calm interface','1 alert · 1 frame'],['Home near Moscow','Server stays put'],['HTTPS','No middleman'],['Same interface','Archive stays home']],
+ es:[['11 cámaras','Streams separados'],['Red de casa','Sin nube del fabricante'],['1 Mac mini','Archivo local','Tuyo'],['Detectar · Reconocer · Recordar','Vecinos ≠ desconocidos','100 in → 3 out'],['Interfaz calmada','1 aviso · 1 cuadro'],['Casa cerca de Moscú','El servidor se queda'],['HTTPS','Sin intermediario'],['La misma interfaz','El archivo se queda en casa']],
  ru:[['11 камер','Отдельные потоки'],['Домашняя сеть','Без облака'],['1 Mac mini','Локальный архив','Ваше'],['Увидеть · Узнать · Вспомнить','Сосед ≠ чужой','100 на входе → 3 на выходе'],['Спокойный интерфейс','1 тревога · 1 кадр'],['Дом в районе Москвы','Сервер на месте'],['HTTPS','Без посредника'],['Тот же интерфейс','Архив дома']]
 };
 var AUR=[['#1e5c3e','#14304a'],['#1b6a5a','#1d3a5e'],['#2a7a4f','#3a3a6a'],['#1f7a63','#3a3270'],['#1e5c3e','#0e3a46'],['#17466b','#1e5c3e'],['#14546b','#2b3a67'],['#1e5c3e','#2a6a5a']];
@@ -62,7 +85,7 @@ var E=function(t){t=clamp(t,0,1);return t*t*(3-2*t)};
 var seg=function(p,a,b){return clamp((p-a)/(b-a),0,1)};
 var NS='http://www.w3.org/2000/svg';
 var root=$('#tstory'), txt=$('#tsTxt'), rail=$('#rail'), stage=$('#tsStage'), phone=$('#phone'), ui=$('#ui'), cv=$('#tsGlobe'), ctx=cv.getContext('2d');
-lang=root.getAttribute('data-lang')==='ru'?'ru':'en';
+lang=root.getAttribute('data-lang');if(lang!=='ru'&&lang!=='es')lang='en';
 var sysSvg=$('#sys'), gSys=$('#gSys'), cams=$('#cams'), links=$('#links'), pulses=$('#pulses'), hub=$('#hub'), mini=$('#mini'), home=$('#home'), homeLbl=$('#homeLbl');
 var items=[], camEls=[], ringL=[], spokeL=[], pulseC=[];
 

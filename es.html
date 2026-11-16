@@ -1,0 +1,1855 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="logo-front.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Yolky Sense — mirá lo que importa">
+<meta property="og:description" content="Un filtro de IA local para las cámaras de tu casa: reconoce a tu gente, recuerda falsas alarmas y te avisa solo de lo que importa.">
+<meta property="og:image" content="https://yolkysense.com/logo-front.png">
+<meta property="og:url" content="https://yolkysense.com/es.html">
+<link rel="canonical" href="https://yolkysense.com/es.html">
+<link rel="alternate" hreflang="en" href="https://yolkysense.com/">
+<link rel="alternate" hreflang="es-AR" href="https://yolkysense.com/es.html">
+<link rel="alternate" hreflang="es" href="https://yolkysense.com/es.html">
+<link rel="alternate" hreflang="ru" href="https://yolkysense.com/ru.html">
+<link rel="alternate" hreflang="x-default" href="https://yolkysense.com/">
+
+<title>Yolky Sense</title>
+<meta name="description" content="Un filtro de IA local para las cámaras de tu casa: menos ruido, más señal.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Playfair+Display:ital,wght@1,700&family=Caveat:wght@700&family=Comfortaa:wght@700&family=Bebas+Neue&family=Pacifico&display=swap">
+<link rel="preload" as="image" href="hero-poster.webp" media="(min-width:961px)" fetchpriority="high">
+<link rel="preload" as="image" href="hero-poster-m.webp" media="(max-width:960px)" fetchpriority="high">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/renderers/CSS2DRenderer.js">
+<link rel="modulepreload" href="site.js">
+<link rel="modulepreload" href="world.js">
+<style>
+  :root{
+    --bg:#F6F7F2; --surface:#FFFFFF; --surface-2:#FBFCF8;
+    --ink:#14170F; --muted:#5B6154; --line:#E1E4D8;
+    --signal:#1E5C3E; --signal-soft:#DCEBE1; --signal-deep:#123425;
+    --accent2:#2B3A67; --accent2-soft:#E7E9F2;
+    --warn:#A6821C;
+    --dark-bg:#0E1811; --dark-surface:rgba(255,255,255,.05); --dark-line:rgba(255,255,255,.12);
+    --dark-text:rgba(246,247,242,.94); --dark-muted:rgba(246,247,242,.62);
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:Manrope,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+  img{max-width:100%;}
+  a{color:var(--signal); text-decoration:none;}
+  h1,h2,h3{font-family:Unbounded, Manrope, sans-serif; margin:0; text-wrap:balance;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  .section{padding:120px 0; position:relative;}
+  .section.tight{padding:96px 0;}
+  .icon{width:24px; height:24px; stroke:currentColor; stroke-width:1.7; fill:none; stroke-linecap:round; stroke-linejoin:round; display:block;}
+
+  /* ---- kicker / headings ---- */
+  .kicker{display:flex; align-items:center; gap:12px; margin-bottom:18px;}
+  .kicker .bar{width:26px; height:2px; background:var(--signal); border-radius:2px;}
+  .eyebrow{font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:var(--signal);}
+  .section.dark .eyebrow{color:#8fd6ac;}
+  h2.h{font-size:40px; font-weight:700; letter-spacing:-0.8px; line-height:1.16; margin:0 0 16px; max-width:680px;}
+  .section.dark h2.h{color:#fff;}
+  p.lead{font-size:17.5px; line-height:1.65; color:var(--muted); max-width:600px; margin:0;}
+  .section.dark p.lead{color:var(--dark-muted);}
+
+  /* ---- nav ---- */
+  .nav{position:sticky; top:0; z-index:50; background:#ffffff; border-bottom:1px solid transparent; transition:box-shadow .35s ease-in-out, border-color .35s ease-in-out;}
+  .nav.scrolled{box-shadow:0 2px 14px rgba(20,25,15,.07); border-color:var(--line);}
+  .nav-top{max-height:190px; opacity:1; overflow:hidden; text-align:center; padding:22px 0 12px; transition:max-height .4s ease-in-out, opacity .3s ease-in-out, padding .4s ease-in-out;}
+  .nav.scrolled .nav-top{max-height:0; opacity:0; padding-top:0; padding-bottom:0;}
+  .logo-stack{display:inline-flex; flex-direction:column; align-items:center; gap:6px;}
+  .logo-canvas-wrap{width:90px; height:109px;}
+  .logo-canvas-wrap canvas{width:100%; height:100%; display:block;}
+  .logo-caption{font-family:Unbounded, sans-serif; font-size:14px; font-weight:700; letter-spacing:-0.1px; color:var(--ink);}
+  .nav-main{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; height:68px; max-width:1180px; margin:0 auto; padding:0 32px;}
+  .logo-sm{display:flex; align-items:center; gap:9px; font-family:Unbounded, sans-serif; font-size:16px; font-weight:700; opacity:0; transform:translateY(-6px); pointer-events:none; transition:opacity .3s ease-in-out, transform .3s ease-in-out;}
+  .logo-sm img{width:32px; height:39px; display:block;}
+  .nav.scrolled .logo-sm{opacity:1; transform:none; pointer-events:auto;}
+  .lang{justify-self:end; display:inline-flex; align-items:center; gap:2px; padding:3px; border:1px solid var(--line); border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:11.5px; font-weight:700; letter-spacing:.4px;}
+  .lang a,.lang span{display:block; padding:4px 7px; border-radius:999px; line-height:1; color:var(--muted); transition:color .25s ease-in-out, background .25s ease-in-out;}
+  .lang a:hover{color:var(--signal);}
+  .lang span{background:var(--signal); color:#fff;}
+  .navlinks{position:relative; display:flex; align-items:center; gap:30px; font-size:14px; font-weight:600; color:var(--muted);}
+  .navlinks a{color:var(--muted); padding-bottom:3px; transition:color .25s ease-in-out;}
+  .navlinks a:hover, .navlinks a.active{color:var(--signal);}
+  .nav-indicator{position:absolute; left:0; bottom:-6px; width:0; height:2px; background:var(--signal); border-radius:2px; opacity:0; transition:left .4s cubic-bezier(.4,0,.2,1), width .4s cubic-bezier(.4,0,.2,1), opacity .3s ease-in-out;}
+  .nav-indicator.show{opacity:1;}
+
+  /* ---- mobile burger ---- */
+  .nav-end{justify-self:end; display:flex; align-items:center; gap:10px;}
+  .nav-burger{display:none; width:42px; height:42px; border:1px solid var(--line); border-radius:12px; background:var(--surface); align-items:center; justify-content:center; flex-direction:column; gap:5px; cursor:pointer; padding:0; color:var(--ink); transition:background .25s ease-in-out, border-color .25s ease-in-out;}
+  .nav-burger:hover{background:rgba(20,25,15,.04); border-color:#c9cec0;}
+  .nav-burger span{display:block; width:18px; height:2px; background:currentColor; border-radius:1px; transition:transform .28s cubic-bezier(.4,0,.2,1), opacity .2s ease;}
+  .nav.is-open .nav-burger span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav.is-open .nav-burger span:nth-child(2){opacity:0;}
+  .nav.is-open .nav-burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .nav-drawer{display:none; border-top:1px solid var(--line); background:var(--bg); padding:10px 20px 18px; max-height:min(70vh, 480px); overflow:auto; -webkit-overflow-scrolling:touch;}
+  .nav-drawer a{display:block; padding:14px 6px; font-size:16px; font-weight:700; color:var(--ink); border-bottom:1px solid var(--line); letter-spacing:-0.2px;}
+  .nav-drawer a:last-child{border-bottom:0;}
+  .nav-drawer a:hover, .nav-drawer a.active{color:var(--signal);}
+  .nav-scrim{position:fixed; inset:0; z-index:40; background:rgba(20,25,15,.32); opacity:0; pointer-events:none; transition:opacity .28s ease; border:0; padding:0; cursor:pointer;}
+  body.nav-open .nav-scrim{opacity:1; pointer-events:auto;}
+  body.nav-open{overflow:hidden;}
+  .btn{display:inline-flex; align-items:center; justify-content:center; padding:13px 22px; border-radius:12px; font-size:14.5px; font-weight:700; cursor:pointer; border:1px solid transparent; transition:transform .3s ease-in-out, box-shadow .3s ease-in-out, filter .3s ease-in-out, background .3s ease-in-out;}
+  .btn-primary{background:var(--signal); color:#fff; box-shadow:0 10px 22px -10px rgba(30,92,62,.55);}
+  .btn-primary:hover{transform:translateY(-2px); filter:brightness(1.08);}
+  .btn-ghost{background:transparent; color:var(--ink); border-color:var(--line);}
+  .btn-ghost:hover{background:rgba(20,25,15,.04); transform:translateY(-2px);}
+  .btn-white{background:#fff; color:var(--signal-deep);}
+  .btn-white:hover{transform:translateY(-2px); box-shadow:0 14px 26px -10px rgba(0,0,0,.35);}
+  .btn-outline-light{background:transparent; color:#fff; border-color:rgba(255,255,255,.35);}
+  .btn-outline-light:hover{background:rgba(255,255,255,.12); transform:translateY(-2px);}
+
+  /* ---- badges ---- */
+  .badge{display:inline-flex; align-items:center; gap:7px; padding:7px 13px; border-radius:100px; font-size:12.5px; font-weight:700; background:var(--surface); border:1px solid var(--line); color:var(--muted);}
+  .badge .icon{width:14px; height:14px; color:var(--signal);}
+  .badge.vision{background:var(--accent2-soft); border-color:#cfd4e8; color:var(--accent2);}
+
+  /* ---- hero word cycle ---- */
+  .word-wrap{position:relative; display:inline-grid; vertical-align:baseline;}
+  .word-layer{grid-area:1/1; justify-self:start; align-self:baseline; position:relative; white-space:nowrap; line-height:1.15; opacity:0; animation:word-cycle 24s ease-in-out infinite;}
+  .word-underline{position:absolute; left:0; bottom:-0.16em; width:100%; height:0.22em;}
+  .word-text{position:relative; z-index:1;}
+  .word-highlight{position:absolute; left:-6%; right:-6%; bottom:0.03em; height:0.5em; border-radius:3px; transform:rotate(-1.4deg); opacity:.5; mix-blend-mode:multiply; z-index:0;}
+  @keyframes word-cycle{
+    0%{opacity:0; filter:blur(5px); transform:translateY(.14em) scale(.96);}
+    2.5%{opacity:1; filter:blur(0); transform:translateY(0) scale(1);}
+    12.5%{opacity:1; filter:blur(0); transform:translateY(0) scale(1);}
+    15%{opacity:0; filter:blur(5px); transform:translateY(-.14em) scale(1.04);}
+    100%{opacity:0;}
+  }
+  @media (prefers-reduced-motion:reduce){.word-layer{animation:none; opacity:0;} .word-layer:first-child{opacity:1;}}
+
+  /* ---- cards ---- */
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:30px; position:relative; box-shadow:0 1px 2px rgba(20,25,15,.03), 0 16px 30px -18px rgba(20,25,15,.10); transition:transform .45s cubic-bezier(.4,0,.2,1), box-shadow .45s cubic-bezier(.4,0,.2,1);}
+  .card:hover{transform:translateY(-6px); box-shadow:0 4px 10px rgba(20,25,15,.06), 0 30px 48px -20px rgba(20,25,15,.16);}
+  .card:hover .icon-circle{transform:scale(1.08) rotate(-2deg);}
+  .icon-circle{width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:20px; transition:transform .45s cubic-bezier(.4,0,.2,1);}
+  .icon-circle.signal{background:var(--signal-soft); color:var(--signal);}
+  .icon-circle.accent2{background:var(--accent2-soft); color:var(--accent2);}
+  .icon-circle.warn{background:#F3EBD3; color:#7A5F14;}
+  .icon-circle.neutral{background:#EEF0E8; color:var(--muted);}
+  .card h3{font-size:18.5px; font-weight:700; margin:0 0 9px; letter-spacing:-0.2px; font-family:Unbounded, sans-serif;}
+  .card p{font-size:14.5px; line-height:1.62; color:var(--muted); margin:0;}
+  .num-tag{position:absolute; top:22px; right:22px; font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; color:#B9BEB0; letter-spacing:0.4px;}
+
+  /* ---- grids ---- */
+  .grid-3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px;}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media (max-width:960px){ .grid-3{grid-template-columns:repeat(2,minmax(0,1fr));} .grid-2{grid-template-columns:1fr;} .navlinks{display:none;} .nav-top{display:none;} .logo-sm{opacity:1 !important; transform:none !important; pointer-events:auto !important;} .nav-burger{display:inline-flex;} .nav.is-open .nav-drawer{display:block;} .nav-main{padding:0 20px; height:60px;} .h1-hero{font-size:52px !important;} h2.h{font-size:30px;} .section{padding:72px 0;} .wrap{padding:0 24px;} }
+  @media (max-width:640px){ .grid-3{grid-template-columns:1fr;} .wrap{padding:0 20px;} .h1-hero{font-size:36px !important;} .card{padding:22px;} .section{padding:56px 0;} }
+
+  /* ---- reveal on scroll ---- */
+  .js .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  .js .reveal.in{opacity:1; transform:none;}
+  .js .reveal:nth-child(2){transition-delay:.08s;}
+  .js .reveal:nth-child(3){transition-delay:.16s;}
+
+  /* ---- checklist rows ---- */
+  .check-row, .flag-row{display:flex; align-items:flex-start; gap:11px; padding:12px 14px; border-radius:11px; background:var(--surface); border:1px solid var(--line);}
+  .check-row .icon{color:var(--signal); flex:none; margin-top:1px; width:17px; height:17px;}
+  .flag-row .icon{color:var(--accent2); flex:none; margin-top:1px; width:17px; height:17px;}
+
+  /* ---- compare cards (trust section) ---- */
+  .vs-card{border-radius:16px; padding:26px; transition:transform .45s cubic-bezier(.4,0,.2,1);}
+  .vs-card:hover{transform:translateY(-4px);}
+  .vs-row{display:flex; align-items:flex-start; gap:11px; padding:12px 4px; border-bottom:1px solid rgba(255,255,255,.08); border-radius:8px; transition:background .3s ease-in-out;}
+  .vs-row:last-child{border-bottom:none;}
+  .vs-row:hover{background:rgba(255,255,255,.04);}
+  .vs-row .icon{flex:none; width:17px; height:17px; margin-top:1px;}
+
+  /* ---- ribbon ---- */
+  .ribbon{position:absolute; top:-13px; left:28px; background:var(--signal); color:#fff; font-size:11.5px; font-weight:700; padding:6px 14px; border-radius:100px; box-shadow:0 8px 16px -6px rgba(30,92,62,.55);}
+
+  .footer{padding:40px 0;}
+  .footer .row{display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line); padding-top:26px;}
+
+  /* ---- hero proof row ---- */
+  .proof{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; margin:0 0 36px; max-width:860px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .proof-item{padding:18px 22px 16px 0;}
+  .proof-item + .proof-item{padding-left:22px; border-left:1px solid var(--line);}
+  .proof-v{font-family:Unbounded, sans-serif; font-size:30px; font-weight:700; letter-spacing:-0.6px; color:var(--signal); font-variant-numeric:tabular-nums;}
+  .proof-l{font-size:12.5px; line-height:1.5; color:var(--muted); margin-top:4px;}
+  .proof-link{grid-column:1/-1; padding:0 0 14px; font-size:12.5px; font-weight:700; font-family:'JetBrains Mono', monospace;}
+  .how-stat{display:flex; align-items:baseline; gap:14px; font-family:Unbounded, sans-serif; font-variant-numeric:tabular-nums;}
+  .how-stat .was{font-size:30px; font-weight:500; color:#A6ACA0; text-decoration:line-through; text-decoration-thickness:2px;}
+  .how-stat .arr{font-size:24px; color:var(--muted);}
+  .how-card{grid-template-columns:1.05fr 1fr;}
+  .how-card > *{min-width:0;}
+  .how-stat .now{font-size:clamp(40px,11vw,58px); font-weight:800; color:var(--signal); letter-spacing:-1.5px; line-height:1;}
+
+  /* ---- statistics / months ---- */
+
+  .m-cmp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:28px 0 8px;}
+  .m-cmp-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 16px;}
+  .m-cmp-card .k{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .m-cmp-card .pair{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted);margin-top:4px;}
+  .m-cmp-card .pair b{font-family:Unbounded,sans-serif;font-size:20px;color:var(--ink);font-variant-numeric:tabular-nums;}
+
+  .m-cmp-note{margin-top:10px;font-size:12.5px;line-height:1.45;color:var(--muted);}
+  .m-stack{display:grid;gap:0;margin-top:16px;border-top:1px solid var(--line);}
+  .m-stack-row{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted);}
+  .m-stack-row b{font-family:Unbounded,sans-serif;font-size:22px;color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600;}
+
+  @media (max-width:960px){ .m-cmp{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  @media (max-width:640px){ .m-cmp{grid-template-columns:minmax(0,1fr);} }
+
+  #month{background:#EDF0E6;}
+  .m-hero{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.1fr); gap:22px; margin-bottom:22px;}
+  .m-finder{position:relative; padding:30px 34px 28px; background:var(--surface); border-radius:var(--radius);}
+  .m-finder::before,.m-finder::after,.m-finder .c1,.m-finder .c2{content:""; position:absolute; width:26px; height:26px; border:0 solid var(--ink);}
+  .m-finder::before{top:14px; left:14px; border-width:2px 0 0 2px;}
+  .m-finder::after{top:14px; right:14px; border-width:2px 2px 0 0;}
+  .m-finder .c1{bottom:14px; left:14px; border-width:0 0 2px 2px;}
+  .m-finder .c2{bottom:14px; right:14px; border-width:0 2px 2px 0;}
+  .m-tag{font-family:'JetBrains Mono', monospace; font-size:11.5px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--muted); margin:6px 0 0 6px;}
+  .m-big{font-family:Unbounded, sans-serif; font-weight:800; font-size:clamp(76px,9vw,124px); line-height:.95; letter-spacing:-0.04em; color:var(--signal); margin:10px 0 0 6px; font-variant-numeric:tabular-nums;}
+  .m-big small{font-size:.32em; letter-spacing:0; color:var(--ink); margin-left:4px; vertical-align:.9em;}
+  .m-cap{font-size:15px; line-height:1.5; max-width:30ch; margin:12px 0 0 6px; color:var(--ink);}
+  .m-was{margin:10px 0 6px 6px; font-size:13px; color:var(--muted);}
+  .m-was b{font-family:Unbounded, sans-serif; font-size:19px; color:var(--ink); margin-left:4px;}
+  .m-kpis{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
+  .m-kpi{background:var(--surface); padding:22px 22px 20px; display:flex; flex-direction:column; justify-content:center; gap:5px; min-width:0;}
+  .m-kpi .v{font-family:Unbounded, sans-serif; font-weight:500; font-size:clamp(22px,2.6vw,30px); line-height:1.1; font-variant-numeric:tabular-nums;}
+  .m-kpi .l{font-size:13px; line-height:1.45; color:var(--muted);}
+  .m-weeks{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; margin-bottom:14px;}
+  .m-duo{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; margin-top:22px;}
+  .m-panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:24px 26px; min-width:0;}
+  .m-panel h3{font-family:Unbounded, sans-serif; font-size:16px; font-weight:600; margin:0;}
+  .m-panel .sub{font-size:12.5px; line-height:1.5; color:var(--muted); margin-top:5px;}
+  .m-ph{display:flex; justify-content:space-between; align-items:baseline; gap:10px;}
+  .m-hv{font-family:Unbounded, sans-serif; font-size:26px; font-weight:700; font-variant-numeric:tabular-nums;}
+  .m-bars{display:flex; align-items:flex-end; gap:12px; height:150px; margin-top:14px; border-bottom:1px solid var(--line);}
+  .m-col{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; min-width:0;}
+  .m-val{font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:700; margin-bottom:6px;}
+  .m-fill{width:100%; max-width:46px; border-radius:6px 6px 0 0; background:#BEC4B3;}
+  .m-fill.hot{background:var(--signal);} .m-fill.ink{background:var(--ink);}
+  .m-xs{display:flex; gap:12px; margin-top:6px; font-size:11.5px; color:var(--muted); text-align:center;}
+  .m-xs span{flex:1; min-width:0;}
+  .m-note{font-size:13px; line-height:1.6; color:var(--muted); max-width:78ch; margin:0;}
+  .m-db{display:grid; gap:2px; margin-top:12px;}
+  .m-row{display:grid; grid-template-columns:132px minmax(0,1fr) 104px; gap:12px; align-items:center; min-height:38px;}
+  .m-name{font-size:13.5px; min-width:0;}
+  .m-name small{display:block; font-size:11.5px; color:var(--muted);}
+  .m-lane{position:relative; height:26px; cursor:help;}
+  .m-lane::before{content:""; position:absolute; left:0; right:0; top:50%; height:1px; background:var(--line);}
+  .m-seg{position:absolute; top:calc(50% - 1.5px); height:3px; background:var(--signal); border-radius:2px; opacity:.5;}
+  .m-pt{position:absolute; top:50%; width:12px; height:12px; border-radius:50%; transform:translate(-50%,-50%); box-shadow:0 0 0 2px var(--surface);}
+  .m-pt.a{background:#A6ACA0;} .m-pt.b{background:var(--ink);}
+  .m-delta{font-size:13px; text-align:right; font-variant-numeric:tabular-nums; color:var(--muted);}
+  .m-delta b{color:var(--ink);}
+  .m-axis{display:grid; grid-template-columns:132px minmax(0,1fr) 104px; gap:12px; font-size:11px; color:var(--muted);}
+  .m-axis .t{position:relative; height:14px;}
+  .m-axis .t span{position:absolute; transform:translateX(-50%);}
+  .m-meth{display:grid; gap:14px; margin-top:16px;}
+  .m-mrow{display:grid; grid-template-columns:13em minmax(0,1fr) 3.8em; gap:12px; align-items:center;}
+  .m-track{height:14px; background:#EEF0E8; border-radius:0 4px 4px 0; position:relative; cursor:help;}
+  .m-tfill{position:absolute; inset:0 auto 0 0; border-radius:0 4px 4px 0;}
+  .m-tfill.good{background:var(--signal);} .m-tfill.warn{background:var(--warn);} .m-tfill.bad{background:#A5402B;}
+  .m-chip{font-size:12px; font-weight:700; padding:2px 8px; border-radius:100px; text-align:center; font-variant-numeric:tabular-nums;}
+  .m-chip.good{background:var(--signal-soft); color:var(--signal);} .m-chip.warn{background:#F3EBD3; color:#7A5F14;} .m-chip.bad{background:#F7E6E0; color:#A5402B;}
+  .m-legend{display:flex; flex-wrap:wrap; gap:6px 16px; font-size:12px; color:var(--muted); margin-top:16px;}
+  .m-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .m-legend i{width:10px; height:10px; border-radius:3px; display:inline-block;}
+  .m-legend i.good{background:var(--signal);} .m-legend i.warn{background:var(--warn);} .m-legend i.bad{background:#A5402B;}
+  .m-subhead{font-family:Unbounded, sans-serif; font-size:19px; font-weight:600; margin:52px 0 16px;}
+  .m-weak{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px;}
+  .m-wk{background:#F6EFE0; border-radius:var(--radius); padding:24px 26px;}
+  .m-wtag{font-family:'JetBrains Mono', monospace; font-size:11.5px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:#7A5F14; margin-bottom:10px;}
+  .m-wk h3{font-family:Unbounded, sans-serif; font-size:17px; font-weight:600; margin:0 0 8px; line-height:1.3;}
+  .m-wk p{margin:0; font-size:13.5px; line-height:1.6; color:#5B5440;}
+  .m-foot{display:flex; align-items:center; gap:18px; flex-wrap:wrap; margin-top:44px; font-size:13.5px; color:var(--muted);}
+  .m-src{font-size:12px; line-height:1.6; color:var(--muted); max-width:84ch; margin:22px 0 0;}
+  @media (max-width:960px){ .how-card{grid-template-columns:minmax(0,1fr);} .m-hero,.m-weeks,.m-duo,.m-weak{grid-template-columns:minmax(0,1fr);} .proof{grid-template-columns:minmax(0,1fr);} .proof-item + .proof-item{padding-left:0; border-left:0; border-top:1px solid var(--line);} .nav-main{grid-template-columns:1fr auto;} }
+  @media (max-width:640px){ .m-row,.m-axis{grid-template-columns:92px minmax(0,1fr) 86px; gap:8px;} .m-mrow{grid-template-columns:minmax(0,1fr) 3.8em;} .m-mrow .m-name{grid-column:1/-1;} .m-panel{padding:20px 18px;} .m-kpis{grid-template-columns:minmax(0,1fr);} .m-finder{padding:26px 22px 24px;} }
+
+  /* ---- hero: text left, Ёлка screen right ---- */
+  .hero-grid{display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr); gap:56px; align-items:center; margin-bottom:56px;}
+  .hero-left .proof{margin-bottom:0; max-width:none;}
+  .hero-left .proof-v{font-size:26px;}
+  .hero-left .proof-item{padding-right:14px;}
+  .hero-left .proof-item + .proof-item{padding-left:16px;}
+  .yolka{display:flex; flex-direction:column; align-items:center; gap:14px;}
+  .yolka-bezel{position:relative; width:100%; max-width:344px; padding:13px; border-radius:26px; background:linear-gradient(160deg,#1d2219,#0d100b); box-shadow:0 30px 60px -28px rgba(20,25,15,.55), inset 0 0 0 1px rgba(255,255,255,.06);}
+  .yolka-bezel canvas{display:block; width:100%; height:auto; aspect-ratio:1/1; border-radius:14px; background:#0d0d0d;}
+  .y-toast{position:absolute; left:50%; top:30px; transform:translate(-50%,-8px); opacity:0; pointer-events:none; display:flex; align-items:center; gap:8px; padding:7px 13px; border-radius:100px; background:rgba(250,249,249,.96); color:var(--ink); font-size:12.5px; font-weight:700; box-shadow:0 8px 20px -8px rgba(0,0,0,.5); transition:opacity .35s ease-in-out, transform .35s ease-in-out; white-space:nowrap;}
+  .y-toast.on{opacity:1; transform:translate(-50%,0);}
+  .y-dot{width:8px; height:8px; border-radius:50%; background:var(--signal); box-shadow:0 0 0 3px rgba(30,92,62,.2);}
+  .y-hud{display:flex; flex-wrap:wrap; justify-content:center; gap:8px;}
+  .y-chip{font-family:'JetBrains Mono', monospace; font-size:11.5px; font-weight:700; letter-spacing:.3px; padding:6px 12px; border-radius:100px; background:var(--surface); border:1px solid var(--line); color:var(--muted); white-space:nowrap;}
+  .y-chip.season{background:var(--signal-soft); border-color:transparent; color:var(--signal);}
+  .y-chip.act{color:var(--ink);}
+  .y-note{font-size:12.5px; line-height:1.6; color:var(--muted); max-width:42ch; text-align:center; margin:0;}
+  @media (max-width:960px){ .hero-grid{grid-template-columns:minmax(0,1fr); gap:36px;} .hero-left .proof{grid-template-columns:minmax(0,1fr);} .hero-left .proof-item{padding-right:0;} .hero-left .proof-item + .proof-item{padding-left:0;} .yolka-bezel{max-width:304px;} }
+  @media (prefers-reduced-motion:reduce){ .y-toast{transition:none;} }
+
+  .contact-panel{border-radius:28px; padding:60px 52px; position:relative; overflow:hidden; background:radial-gradient(560px circle at 15% 0%, rgba(255,255,255,.14), transparent 60%), linear-gradient(135deg, var(--signal), var(--signal-deep)); color:#fff;}
+  .contact-h{font-family:Unbounded, sans-serif; font-size:34px; font-weight:700; letter-spacing:-0.7px; line-height:1.18; margin:0 0 34px; max-width:620px; color:#fff;}
+  .contact-person{display:flex; flex-direction:column; gap:4px; margin:-12px 0 32px;}
+  .contact-person b{font-family:Unbounded, sans-serif; font-size:20px; font-weight:600; letter-spacing:-0.2px; color:#fff;}
+  .contact-person span{font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:rgba(255,255,255,.7);}
+  .contact-links{display:flex; flex-wrap:wrap; gap:16px;}
+  .contact-link{display:flex; align-items:center; gap:16px; padding:16px 24px 16px 18px; border-radius:16px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.22); color:#fff; transition:background .3s ease-in-out, transform .3s ease-in-out;}
+  .contact-link:hover{background:rgba(255,255,255,.18); transform:translateY(-2px); color:#fff;}
+  .contact-ic{width:46px; height:46px; border-radius:13px; background:rgba(255,255,255,.16); display:flex; align-items:center; justify-content:center; flex:none;}
+  .contact-t{font-family:Unbounded, sans-serif; font-size:18px; font-weight:600; letter-spacing:-0.2px; line-height:1.25;}
+  .contact-t small{display:block; font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:rgba(255,255,255,.65); margin-bottom:3px;}
+  @media (max-width:640px){ .contact-panel{padding:36px 22px;} .contact-h{font-size:24px;} .contact-t{font-size:15.5px;} .contact-link{width:100%;} }
+
+  /* ---- header: page background instead of white ---- */
+  .nav{background:var(--bg);}
+  .nav.scrolled{background:var(--bg);}
+  #hero{padding-top:20px !important; background:var(--bg) !important;}
+  /* ---- 3D stage hero ---- */
+  @property --sky{syntax:'<color>'; inherits:true; initial-value:#f3f1ec;}
+  .wrap-wide{max-width:1400px; margin:0 auto; padding:0 20px;}
+  .stage{--sky:#f3f1ec; --tx:52px; color:var(--ink); position:relative; isolation:isolate; overflow:hidden; border-radius:28px; background:var(--sky); min-height:clamp(640px, 84vh, 800px); transition:--sky .5s linear; box-shadow:0 34px 70px -40px rgba(20,25,15,.4), inset 0 0 0 1px rgba(20,25,15,.06);}
+  .stage::before{content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(90deg, var(--sky) 0, var(--sky) calc(var(--tx) + 430px), transparent calc(var(--tx) + 780px));}
+  .stage-scene{position:absolute; inset:0;}
+  .stage-mount{position:absolute; inset:0;}
+  .stage-mount canvas{display:block;}
+  .stage-mount .labels{position:absolute; inset:0;}
+  .stage-mount .label{display:none;}
+  .stage-text{position:relative; z-index:2; box-sizing:border-box; width:100%; padding:48px 0 44px var(--tx); pointer-events:none;}
+  .stage-text > *, .stage-text .proof{max-width:600px;}
+  .stage-text > *{pointer-events:auto;}
+  .stage-text .h1-hero{font-size:60px !important;}
+  .w-feed{position:absolute; z-index:3; top:20px; right:20px; width:min(340px,42%); display:flex; flex-direction:column; gap:8px; pointer-events:none;}
+  .w-sum{align-self:flex-end; padding:6px 12px; border-radius:100px; background:rgba(255,255,255,.9); box-shadow:0 2px 10px rgba(20,25,15,.1); font-size:12px; color:var(--muted); font-weight:600;}
+  .w-sum b{color:var(--ink); font-variant-numeric:tabular-nums;}
+  .w-sum b + b, .w-sum b:last-of-type{color:var(--signal);}
+  .w-list{display:flex; flex-direction:column; gap:8px;}
+  .w-ev{display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:14px; background:rgba(255,255,255,.93); box-shadow:0 4px 16px -6px rgba(20,25,15,.28); font-size:13px; color:var(--ink); animation:w-in .45s ease-out both; transition:opacity .6s ease-in-out;}
+  .w-ev.old{opacity:.55;}
+  .w-ev.gone{opacity:0;}
+  .w-ev i{flex:none; width:8px; height:8px; border-radius:50%; background:#aab0a4;}
+  .w-ev.alert i{background:#e2342b; box-shadow:0 0 0 4px rgba(226,52,43,.16);}
+  .w-ev span{flex:1; min-width:0; line-height:1.3;}
+  .w-ev span small{display:block; font-size:11.5px; color:var(--muted); font-weight:500;}
+  .w-ev em{flex:none; font-style:normal; font-size:11px; font-weight:700; padding:3px 8px; border-radius:100px; background:#eef0ea; color:var(--muted); letter-spacing:.2px;}
+  .w-ev.alert em{background:var(--signal); color:#fff;}
+  @keyframes w-in{from{opacity:0; transform:translateY(-8px);}to{opacity:1; transform:none;}}
+  .stage-ui{position:absolute; z-index:3; right:20px; bottom:18px; display:flex; flex-direction:column; align-items:flex-end; gap:8px;}
+  .w-btns{display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px;}
+  .w-btn{display:inline-flex; align-items:center; gap:7px; font:inherit; font-size:13px; font-weight:600; color:var(--ink); padding:8px 13px; border-radius:100px; border:1px solid rgba(20,25,15,.12); background:rgba(255,255,255,.92); box-shadow:0 2px 10px rgba(20,25,15,.1); cursor:pointer; transition:color .25s ease-in-out, border-color .25s ease-in-out, background .25s ease-in-out;}
+  .w-btn:hover{color:var(--signal); border-color:var(--signal);}
+  .w-btn .icon{width:16px; height:16px;}
+  .w-hint{font-size:11.5px; color:var(--muted); background:rgba(255,255,255,.7); padding:3px 10px; border-radius:100px;}
+  @media (min-width:961px){
+  .stage.night{--ink:#eef1f6; --muted:#aab2bf; --line:rgba(255,255,255,.14);}
+  .stage.night .badge{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.16); color:#eef1f6;}
+  .stage.night .word-layer{color:#b9ecce !important; filter:none;}
+  .stage.night .word-layer .word-text{color:#fff !important;}
+  .stage.night .word-underline path{stroke:#8fd6ac !important;}
+  .stage.night .proof-link{color:#8fd6ac;}
+  }
+  .stage-text, .stage-text *{transition:color .9s ease-in-out, background-color .9s ease-in-out, border-color .9s ease-in-out;}
+  .stage-text .word-layer{transition:none;}
+  /* туман по краям — как на карте неоткрытых областей */
+  .stage::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:
+    radial-gradient(ellipse 58% 66% at 68% 52%, transparent 52%, color-mix(in srgb, var(--sky) 78%, transparent) 78%, var(--sky) 100%),
+    linear-gradient(0deg, var(--sky) 0, transparent 14%),
+    linear-gradient(180deg, var(--sky) 0, transparent 14%);}
+  .stage-mist{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
+  .stage-mist span{position:absolute; width:62%; height:46%; border-radius:50%; filter:blur(46px); opacity:.55; background:radial-gradient(closest-side, color-mix(in srgb, var(--sky) 55%, #fff), transparent);}
+  .stage-mist span:nth-child(1){left:28%; top:6%; animation:mist 38s ease-in-out infinite alternate;}
+  .stage-mist span:nth-child(2){left:50%; top:52%; animation:mist 52s ease-in-out -20s infinite alternate-reverse;}
+  @keyframes mist{from{transform:translateX(-9%);}to{transform:translateX(11%);}}
+  .w-hud{display:flex; gap:6px;}
+  .stage.night .w-ev{background:rgba(24,30,42,.9); color:#eef1f6; box-shadow:0 4px 16px -6px rgba(0,0,0,.6);}
+  .stage.night .w-ev span small{color:#aab2bf;}
+  .stage.night .w-ev em{background:rgba(255,255,255,.1); color:#c4ccd8;}
+  .stage.night .w-ev.alert em{background:var(--signal); color:#fff;}
+  .stage.night .w-btn{background:rgba(24,30,42,.85); color:#eef1f6; border-color:rgba(255,255,255,.14);}
+  .stage.night .w-sum b{color:#eef1f6;}
+  .stage.night .w-hud .y-chip, .stage.night .w-sum, .stage.night .w-hint{background:rgba(24,30,42,.75); color:#dfe6ee; border-color:rgba(255,255,255,.12);}
+  /* ---- pet screen inside Confianza ---- */
+  .pet-row{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.9fr); gap:56px; align-items:center; margin-top:56px; padding-top:56px; border-top:1px solid rgba(255,255,255,.1);}
+  .pet-k{font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:#8fd6ac; margin-bottom:12px;}
+  .pet-copy h3{font-size:30px; line-height:1.15; color:#fff; margin:0 0 14px; font-family:Unbounded, sans-serif; font-weight:700; letter-spacing:-.4px;}
+  .pet-copy p{font-size:16px; line-height:1.7; color:var(--dark-muted); max-width:52ch; margin:0;}
+  .pet-copy p.pet-note{font-size:12.5px; line-height:1.6; margin-top:16px; color:rgba(246,247,242,.45);}
+  .pet-row .yolka{justify-self:center;}
+  .pet-row .yolka-bezel{box-shadow:0 30px 60px -28px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.14);}
+  .pet-row .y-note{color:var(--dark-muted);}
+  .pet-row .y-chip{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.14); color:#dfe6dc;}
+  @media (max-width:960px){
+    #hero{padding-top:12px !important;}
+    .stage{min-height:0; display:flex; flex-direction:column; border-radius:22px;}
+    .stage::before{display:none;}
+    .stage::after{background:linear-gradient(0deg, var(--sky) 0, transparent 10%), linear-gradient(180deg, var(--sky) 0, transparent 10%);}
+    .stage-text{width:auto; padding:30px 22px 6px; pointer-events:auto;}
+    .stage-text > *{max-width:none;}
+    .stage-text .h1-hero{font-size:44px !important;}
+    .stage-scene{position:relative; inset:auto; height:360px; order:-1;}
+    .w-ev:nth-child(n+3), .w-hint, .w-hud{display:none;}
+    .w-ev{padding:7px 10px; font-size:12px;}
+    .w-feed{top:12px; right:12px; width:min(300px,70%);}
+    .stage-ui{right:12px; left:12px; bottom:12px; align-items:stretch;}
+    .w-btns{justify-content:center;}
+    .w-hint{align-self:center;}
+    .pet-row{grid-template-columns:minmax(0,1fr); gap:36px;}
+  }
+  @media (max-width:640px){ .wrap-wide{padding:0 12px;} .stage-text .h1-hero{font-size:36px !important;} .stage-text{padding:24px 18px 4px;} .w-btn{padding:7px 10px; font-size:12px;} }
+  @media (prefers-reduced-motion:reduce){ .w-ev{animation:none;} .stage-mist span{animation:none;} }
+
+  /* ---- demo access request ---- */
+  .access-cta{display:flex; flex-direction:column; align-items:center; gap:14px; margin-top:28px;}
+  .access-note{max-width:560px; margin:0; font-size:13.5px; line-height:1.55; color:var(--muted); text-align:center;}
+  .modal-root{position:fixed; inset:0; z-index:200; display:none; align-items:center; justify-content:center; padding:24px;}
+  .modal-root.open{display:flex;}
+  .modal-backdrop{position:absolute; inset:0; background:rgba(14,24,17,.55); backdrop-filter:blur(6px);}
+  .modal-panel{position:relative; z-index:1; width:min(480px,100%); background:var(--surface); border:1px solid var(--line); border-radius:22px; padding:28px 26px 24px; box-shadow:0 30px 70px -28px rgba(20,25,15,.55); max-height:min(92vh,720px); overflow:auto;}
+  .modal-close{position:absolute; top:14px; right:14px; width:36px; height:36px; border:0; border-radius:10px; background:transparent; color:var(--muted); cursor:pointer; font-size:22px; line-height:1;}
+  .modal-close:hover{background:rgba(20,25,15,.05); color:var(--ink);}
+  .modal-title{font-family:Unbounded,sans-serif; font-size:22px; font-weight:700; letter-spacing:-.4px; margin:0 28px 8px 0;}
+  .modal-lead{font-size:14.5px; line-height:1.55; color:var(--muted); margin:0 0 22px;}
+  .modal-form{display:flex; flex-direction:column; gap:14px;}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field label{font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--muted);}
+  .field label .req{color:var(--signal); margin-left:2px;}
+  .field input,.field textarea{width:100%; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font:500 15px/1.4 Manrope,sans-serif; color:var(--ink); background:#fff; outline:none; transition:border-color .2s ease, box-shadow .2s ease;}
+  .field input:focus,.field textarea:focus{border-color:rgba(30,92,62,.45); box-shadow:0 0 0 3px rgba(30,92,62,.12);}
+  .field textarea{min-height:110px; resize:vertical;}
+  .modal-legal{margin:2px 0 0; font-size:12.5px; line-height:1.5; color:var(--muted);}
+  .modal-actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:4px;}
+  .modal-actions .btn{min-width:140px;}
+  .modal-error{display:none; margin:0; padding:10px 12px; border-radius:10px; background:#F8E8E4; color:#8A3A2A; font-size:13.5px; line-height:1.45;}
+  .modal-error.show{display:block;}
+  .modal-thanks{display:none; text-align:center; padding:18px 8px 8px;}
+  .modal-thanks.show{display:block;}
+  .modal-thanks h3{font-family:Unbounded,sans-serif; font-size:22px; font-weight:700; letter-spacing:-.4px; margin:0 0 12px;}
+  .modal-thanks p{font-size:15.5px; line-height:1.6; color:var(--muted); margin:0 0 22px;}
+  .modal-form.is-hidden{display:none;}
+  body.modal-open{overflow:hidden;}
+  .hp-field{position:absolute; left:-9999px; opacity:0; height:0; width:0; overflow:hidden;}
+
+  /* ---- FAQ ---- */
+  .faq{margin:0 0 56px;}
+  .faq-topics{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 22px;}
+  .faq-topic{appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--muted); border-radius:999px; padding:8px 14px; font:700 12.5px/1 'JetBrains Mono',monospace; letter-spacing:.4px; text-transform:uppercase; cursor:pointer; transition:background .2s ease, color .2s ease, border-color .2s ease;}
+  .faq-topic:hover{color:var(--signal); border-color:rgba(30,92,62,.35);}
+  .faq-topic.is-on{background:var(--signal); border-color:var(--signal); color:#fff;}
+  .faq-list{display:flex; flex-direction:column; gap:10px;}
+  .faq-item{border:1px solid var(--line); border-radius:16px; background:var(--surface); overflow:hidden; box-shadow:0 1px 2px rgba(20,25,15,.03);}
+  .faq-item[hidden]{display:none !important;}
+  .faq-item summary{list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 20px; font-family:Unbounded,sans-serif; font-size:16px; font-weight:600; letter-spacing:-.2px; line-height:1.35; color:var(--ink);}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary span{flex:1; text-wrap:balance;}
+  .faq-item summary i{flex:none; width:28px; height:28px; border-radius:9px; background:var(--signal-soft); color:var(--signal); position:relative;}
+  .faq-item summary i::before,.faq-item summary i::after{content:""; position:absolute; left:50%; top:50%; background:currentColor; border-radius:1px; transition:transform .25s ease, opacity .25s ease;}
+  .faq-item summary i::before{width:12px; height:2px; margin:-1px 0 0 -6px;}
+  .faq-item summary i::after{width:2px; height:12px; margin:-6px 0 0 -1px;}
+  .faq-item[open] summary i::after{transform:scaleY(0); opacity:0;}
+  .faq-item[open]{border-color:rgba(30,92,62,.28); box-shadow:0 10px 28px -18px rgba(30,92,62,.35);}
+  .faq-a{padding:0 20px 18px; color:var(--muted); font-size:15.5px; line-height:1.65;}
+  .faq-a p{margin:0; max-width:720px;}
+  .faq-a p + p{margin-top:10px;}
+  .faq-more{margin-top:28px; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 24px; border-radius:18px; background:var(--surface-2); border:1px solid var(--line);}
+  .faq-more b{display:block; font-family:Unbounded,sans-serif; font-size:17px; font-weight:700; letter-spacing:-.2px; margin-bottom:6px; color:var(--ink);}
+  .faq-more p{margin:0; font-size:14.5px; line-height:1.55; color:var(--muted); max-width:560px;}
+  @media (max-width:720px){
+    .faq-more{flex-direction:column; align-items:stretch;}
+    .faq-item summary{font-size:15px; padding:16px 16px;}
+    .faq-a{padding:0 16px 16px; font-size:14.5px;}
+  }
+
+  .field select{width:100%; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font:500 15px/1.4 Manrope,sans-serif; color:var(--ink); background:#fff; outline:none; transition:border-color .2s ease, box-shadow .2s ease; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235B6154' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center;}
+  .field select:focus{border-color:rgba(30,92,62,.45); box-shadow:0 0 0 3px rgba(30,92,62,.12);}
+
+  /* ---- demo video ---- */
+  .demo-frame{position:relative; max-width:1040px; margin:0 auto; aspect-ratio:16/9; border-radius:22px; overflow:hidden; background:#0d100b; box-shadow:0 34px 70px -40px rgba(20,25,15,.5), 0 0 0 1px rgba(20,25,15,.08);}
+  .demo-frame video{display:block; width:100%; height:100%; background:#0d100b;}
+  .demo-cap{max-width:1040px; margin:14px auto 0; font-size:13px; color:var(--muted); text-align:center;}
+  @media (max-width:640px){ .demo-frame{border-radius:14px;} }
+  /* ---- noise split slider ---- */
+  .split{--v:38; margin-top:72px;}
+  .split-h{font-family:Unbounded, sans-serif; font-weight:700; font-size:26px; line-height:1.2; letter-spacing:-.4px; margin:0 0 8px; text-align:center; text-wrap:balance;}
+  .split-sub{font-size:15.5px; line-height:1.6; color:var(--muted); text-align:center; margin:0 auto 26px; max-width:560px;}
+  .split-card{position:relative; background:var(--surface-2); border:1px solid var(--line); border-radius:var(--radius); padding:22px 22px 14px; box-shadow:0 1px 2px rgba(20,25,15,.03), 0 16px 30px -18px rgba(20,25,15,.10);}
+  .sp-top{display:flex; justify-content:space-between; gap:16px; margin-bottom:12px;}
+  .sp-top > div{font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase;}
+  .sp-top .a{color:#A5402B;} .sp-top .b{color:var(--signal); text-align:right;}
+  .sp-top b{display:block; font-family:Unbounded, sans-serif; font-size:30px; letter-spacing:-.6px; line-height:1.1; text-transform:none; margin-top:4px;}
+  .sp-top b small{font-family:Manrope,sans-serif; font-size:13px; font-weight:600; letter-spacing:0; color:var(--muted); margin-left:6px;}
+  .sp-field{position:relative; height:210px; border-radius:12px; overflow:hidden; touch-action:pan-y; user-select:none;}
+  .sp-layer{position:absolute; inset:0;}
+  .sp-layer.a{background:rgba(165,64,43,.07); clip-path:inset(0 calc(100% - var(--v) * 1%) 0 0);}
+  .sp-layer.b{background:rgba(30,92,62,.07); clip-path:inset(0 0 0 calc(var(--v) * 1%));}
+  .sp-layer::before{content:""; position:absolute; inset:0; background:linear-gradient(90deg, transparent calc(25% - 1px), rgba(20,25,15,.12) calc(25% - 1px) 25%, transparent 25%, transparent calc(50% - 1px), rgba(20,25,15,.12) calc(50% - 1px) 50%, transparent 50%, transparent calc(75% - 1px), rgba(20,25,15,.12) calc(75% - 1px) 75%, transparent 75%); opacity:.7;}
+  .sp-layer i{position:absolute; width:9px; height:9px; margin:-4.5px 0 0 -4.5px; border-radius:50%;}
+  .sp-layer.a i{background:#A5402B; box-shadow:0 0 0 3px rgba(165,64,43,.18);}
+  .sp-layer.b i{width:6px; height:6px; margin:-3px 0 0 -3px; background:#B9BEB0;}
+  .sp-layer.b i.n{width:16px; height:16px; margin:-8px 0 0 -8px; background:var(--signal); box-shadow:0 0 0 6px rgba(30,92,62,.2);}
+  .sp-handle{position:absolute; top:0; bottom:0; left:calc(var(--v) * 1%); width:2px; margin-left:-1px; background:var(--ink); pointer-events:none;}
+  .sp-handle::after{content:""; position:absolute; top:50%; left:50%; width:36px; height:36px; margin:-18px 0 0 -18px; border-radius:50%; background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 7l-5 5 5 5M16 7l5 5-5 5'/%3E%3C/svg%3E") center/20px no-repeat; box-shadow:0 6px 16px -4px rgba(20,25,15,.5);}
+  .sp-range{position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:ew-resize; touch-action:pan-y;}
+  .sp-field:focus-within .sp-handle::after{outline:3px solid var(--signal); outline-offset:3px;}
+  .sp-axis{display:grid; grid-template-columns:repeat(4,1fr); margin-top:8px; font-size:12px; color:var(--muted); text-align:center;}
+  .split-note{font-size:12px; line-height:1.6; color:var(--muted); max-width:78ch; margin:14px auto 0; text-align:center;}
+  @media (max-width:640px){ .split{margin-top:52px;} .split-h{font-size:21px;} .split-card{padding:16px 14px 10px;} .sp-top b{font-size:22px;} .sp-top b small{display:block; margin:2px 0 0;} .sp-top > div{font-size:10px;} .sp-field{height:230px;} .sp-layer i{width:7px; height:7px; margin:-3.5px 0 0 -3.5px;} .sp-layer.b i.n{width:14px; height:14px; margin:-7px 0 0 -7px;} .sp-axis{font-size:11px;} }
+  /* ---- neighbors deck (noise) ---- */
+  .crowd{--p:1; margin-top:88px; text-align:center;}
+  .crowd-h{display:grid; justify-items:center; margin:0 auto 10px; max-width:720px;}
+  .crowd-h span{grid-area:1/1; font-family:Unbounded, sans-serif; font-weight:700; font-size:28px; line-height:1.2; letter-spacing:-.5px; text-wrap:balance;}
+  .crowd-h .a{opacity:clamp(0, calc(1.4 - var(--p) * 2.2), 1);}
+  .crowd-h .b{color:var(--signal); opacity:clamp(0, calc((var(--p) - .6) * 3), 1);}
+  .crowd-stage{container-type:inline-size; max-width:1100px; margin:34px auto 0;}
+  .crowd-row{--W:calc(100cqw / (9 * var(--g) + 1.25)); --g:.72; position:relative; height:calc(var(--W) * 1.42); transform:translateY(calc((1 - var(--p)) * 20px));}
+  .cf{--k:-.04; position:absolute; left:50%; bottom:0; width:var(--W); margin-left:calc(var(--W) / -2); height:auto; display:block; transform-origin:50% 100%; transform:translateX(calc(var(--W) * (var(--c) + (var(--s) - var(--c)) * var(--p)))) scale(calc(1 + var(--k) * var(--p))); filter:brightness(calc(1 - .03 * (9 - var(--d)) * (1 - var(--p)))) drop-shadow(0 4px 6px rgba(20,25,15,.10)); user-select:none; -webkit-user-drag:none;}
+  .cf.me{--k:.1; z-index:20; filter:drop-shadow(0 6px 8px rgba(20,25,15,.18));}
+  .crowd.live .cf.me{z-index:5;} .crowd.live.open .cf.me{z-index:20;}
+  .crowd-row::after{content:""; position:absolute; left:4%; right:4%; bottom:-10px; height:22px; border-radius:50%; background:radial-gradient(closest-side, rgba(20,25,15,.14), transparent); pointer-events:none;}
+  .crowd-tag{position:absolute; left:calc(50% - var(--W) * var(--g) * .5); top:-4px; z-index:21; transform:translateX(-50%); white-space:nowrap; font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.4px; padding:6px 12px; border-radius:99px; background:var(--signal); color:#fff; box-shadow:0 8px 16px -6px rgba(30,92,62,.55); opacity:clamp(0, calc((var(--p) - .85) * 7), 1);}
+  .crowd-sub{font-size:15.5px; line-height:1.65; color:var(--muted); max-width:560px; margin:36px auto 0;}
+  @media (max-width:640px){ .crowd{margin-top:60px;} .crowd-h span{font-size:21px;} .crowd-row{--g:.62; --W:calc(100cqw / 3.5);} .crowd-stage{margin-top:14px; padding:30px 0 16px; overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%); mask-image:linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%);} .crowd-tag{font-size:10.5px; padding:5px 10px;} }
+  /* ---- playground ---- */
+  .pg-head{margin-bottom:8px;}
+  .pg-row{display:grid; grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:56px; align-items:center; margin-top:56px;}
+  .pg-row + .pet-row{margin-top:56px;}
+  .pg-video{position:relative; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#0d100b; box-shadow:0 30px 60px -28px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.14);}
+  .pg-video video{display:block; width:100%; height:100%; background:#0d100b;}
+  .pg-chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px;}
+  .pg-chips span{font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:.3px; padding:6px 11px; border-radius:99px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); color:#dfe6dc;}
+  .pg-cap{font-size:12.5px; color:rgba(246,247,242,.45); margin-top:10px;}
+  @media (max-width:960px){ .pg-row{grid-template-columns:minmax(0,1fr); gap:28px;} .pg-row .pg-copy{order:-1;} }
+  @media (max-width:640px){ .pg-video{border-radius:12px;} }
+  /* ---- chart micro-animations ---- */
+  .how-stat{min-height:64px;}
+  .how-stat.anim .was{transition:font-size .8s cubic-bezier(.3,.7,.2,1) .8s, color .5s ease .8s, text-decoration-color .4s ease 1.25s;}
+  .how-stat.anim:not(.go) .was{font-size:58px; color:var(--ink); text-decoration-color:transparent;}
+  .how-stat.anim .arr{transition:opacity .4s ease 1.7s, transform .4s ease 1.7s;}
+  .how-stat.anim:not(.go) .arr{opacity:0; transform:translateX(-8px);}
+  .how-stat.anim .now{transform-origin:left bottom; transition:opacity .5s ease 1.9s, transform .7s cubic-bezier(.2,1.4,.4,1) 1.9s, filter .5s ease 1.9s;}
+  .how-stat.anim:not(.go) .now{opacity:0; transform:scale(.7); filter:blur(6px);}
+  .m-pt{will-change:left;}
+  /* ---- 3D scene: poster while it loads ---- */
+  .stage-poster{position:absolute; inset:0; z-index:0; background:var(--sky) url("hero-poster.webp") center/cover no-repeat; transition:opacity .9s ease;}
+  .stage-mount{opacity:0; transition:opacity .9s ease;}
+  .stage.world-ready .stage-mount{opacity:1;}
+  .stage.world-ready .stage-poster{opacity:0; pointer-events:none;}
+  @media (max-width:960px){ .stage-poster{background-image:url("hero-poster-m.webp");} }
+  /* ---- hero on phones: scene in its own rounded card, text on the page background ---- */
+  @media (max-width:960px){
+    .stage{background:transparent; box-shadow:none; border-radius:0; overflow:visible; isolation:auto;}
+    .stage::before,.stage::after{display:none;}
+    .stage-scene{height:400px; border-radius:24px; overflow:hidden; background:var(--sky); box-shadow:0 24px 50px -30px rgba(20,25,15,.45), inset 0 0 0 1px rgba(20,25,15,.06);}
+    .stage-scene::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:radial-gradient(ellipse 74% 80% at 50% 52%, transparent 58%, color-mix(in srgb, var(--sky) 80%, transparent) 82%, var(--sky) 100%);}
+    .stage-text{padding:26px 4px 0;}
+    .w-feed{top:12px; left:12px; right:auto; width:min(250px,64%);}
+    .w-sum{align-self:flex-start;}
+    .w-ev:nth-child(n+2){display:none;}
+    .w-btns{gap:6px;}
+    .w-btn{font-size:11.5px; padding:6px 9px;}
+  }
+  /* ---- trust story: scroll-driven (cameras, Mac mini, phone, globe) ---- */
+  .ts-story{--ts-bg:#0E1811; --ts-ink:rgba(246,247,242,.94); --ts-muted:rgba(246,247,242,.62); --ts-mint:#8fd6ac; --ts-signal:#1E5C3E; --ts-line:rgba(255,255,255,.12); overflow-x:clip; position:relative; height:1150vh; color:var(--ts-ink);}
+  .ts-pin{position:sticky; top:68px; height:calc(100vh - 68px); max-width:1180px; margin:0 auto; padding:0 32px; display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr); gap:40px; align-items:center;}
+  .ts-txt{position:relative; z-index:3; height:340px;}
+  .it{position:absolute; left:0; right:0; top:50%; transform:translateY(calc(-50% + 18px)); opacity:0; transition:opacity .5s ease, transform .6s cubic-bezier(.2,.8,.2,1); pointer-events:none;}
+  .it.on{opacity:1; transform:translateY(-50%);}
+  .it.past{transform:translateY(calc(-50% - 18px));}
+  .it .k{font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--ts-mint); margin-bottom:14px;}
+  .it h3{font-family:Unbounded,sans-serif; font-weight:700; font-size:32px; line-height:1.15; letter-spacing:-.6px; margin:0 0 16px; text-wrap:balance;}
+  .it p{font-size:16.5px; line-height:1.7; color:var(--ts-muted); margin:0; max-width:46ch;}
+  .rail{position:absolute; left:0; bottom:-8px; display:flex; gap:6px;}
+  .rail i{display:block; width:34px; height:3px; border-radius:3px; background:rgba(255,255,255,.14); overflow:hidden; position:relative;}
+  .rail i::after{content:""; position:absolute; inset:0; background:var(--ts-mint); transform-origin:left; transform:scaleX(var(--f,0));}
+  .ts-stage{position:relative; z-index:2; width:min(100%, 80vh); aspect-ratio:1/1; justify-self:center;}
+  .ts-stage svg{position:absolute; inset:0; width:100%; height:100%; display:block;}
+  #tsGlobe{position:absolute; z-index:0; top:0; bottom:0; right:calc((100% - 100vw) / 2); width:calc(68% + (100vw - 100%) / 2); height:100%; display:block; pointer-events:none; -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 24%); mask-image:linear-gradient(90deg, transparent 0, #000 24%);}
+  .ts-stage svg{z-index:3; pointer-events:none;}
+  /* ---- phone ---- */
+  .phone{position:absolute; z-index:2; left:50%; top:50%; width:37%; aspect-ratio:9/19; margin:0; transform:translate(-50%,-50%); border-radius:15% / 7.1%; padding:2.5%; background:linear-gradient(145deg,#59605c 0%,#1b1f1d 30%,#0a0c0b 58%,#454b47 100%); box-shadow:inset 0 0 0 1px rgba(255,255,255,.2), 0 0 0 1.5px #070908, 0 60px 90px -40px rgba(0,0,0,.95), 0 0 80px -20px rgba(143,214,172,.22); opacity:0;}
+  .phone::before,.phone::after{content:""; position:absolute; width:1.3%; background:linear-gradient(90deg,#2e3330,#4b524e); border-radius:2px;}
+  .phone::before{left:-1%; top:19%; height:6%; box-shadow:0 9cqw 0 #3a403c;}
+  .phone::after{right:-1%; top:27%; height:11%;}
+  .glare{position:absolute; inset:2.5%; border-radius:12.6% / 5.8%; z-index:9; pointer-events:none; background:linear-gradient(115deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,0) 26%, rgba(255,255,255,0) 72%, rgba(255,255,255,.06) 100%);}
+  .scr{position:relative; width:100%; height:100%; border-radius:12.6% / 5.8%; overflow:hidden; background:#0b130e; container-type:inline-size;}
+  .island{position:absolute; z-index:8; left:50%; top:2.6cqw; width:27cqw; height:7.6cqw; transform:translateX(-50%); background:#020403; border-radius:99px;}
+  .island::after{content:""; position:absolute; right:12%; top:50%; width:22%; aspect-ratio:1; transform:translateY(-50%); border-radius:50%; background:radial-gradient(circle at 35% 35%,#2a3a52,#0a1019 70%);}
+  .ui{position:absolute; inset:0; background:#F6F7F2; color:#14170F; display:flex; flex-direction:column; opacity:0; font-family:Manrope,-apple-system,sans-serif;}
+  .sb{display:flex; justify-content:space-between; align-items:center; padding:3.4cqw 8cqw 0; height:12cqw; font-weight:800; font-size:3.6cqw; letter-spacing:.2px; flex:none;}
+  .sb .ic{display:flex; align-items:center; gap:1.5cqw;}
+  .sb .ic svg{position:static; width:4.2cqw; height:auto;}
+  .hd{display:flex; justify-content:space-between; align-items:flex-end; padding:3cqw 5.5cqw 2.4cqw; flex:none;}
+  .hd small{display:block; color:#7a8274; font-size:3cqw; font-weight:700; letter-spacing:.3px; text-transform:uppercase;}
+  .hd h4{margin:.8cqw 0 0; font-family:Unbounded,sans-serif; font-weight:700; font-size:7.6cqw; letter-spacing:-.4px; line-height:1;}
+  .ts-live{display:flex; align-items:center; gap:1.5cqw; font:700 2.7cqw 'JetBrains Mono',monospace; letter-spacing:.5px; color:#1E5C3E; background:#DCEBE1; border-radius:99px; padding:1.4cqw 2.8cqw;}
+  .ts-live i{width:1.9cqw; height:1.9cqw; border-radius:50%; background:#1E5C3E; animation:blink 1.6s ease-in-out infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  .kp{display:grid; grid-template-columns:repeat(3,1fr); gap:2cqw; padding:0 5.5cqw; flex:none;}
+  .kp div{background:#fff; border:1px solid #E1E4D8; border-radius:3.4cqw; padding:2.4cqw 3cqw 2.2cqw;}
+  .kp b{display:block; font:700 5.6cqw Unbounded,sans-serif; letter-spacing:-.4px; line-height:1.1; font-variant-numeric:tabular-nums;}
+  .kp small{display:block; margin-top:.6cqw; font-size:2.5cqw; color:#7a8274; font-weight:700;}
+  .kp .g b{color:#1E5C3E;}
+  .fl{display:flex; gap:1.8cqw; padding:3cqw 5.5cqw 2.4cqw; font-size:3cqw; font-weight:700; flex:none;}
+  .fl span{padding:1.5cqw 3.4cqw; border-radius:99px; background:#EBEEE4; color:#5B6154;}
+  .fl .on{background:#14170F; color:#fff;}
+  .feed{flex:1; min-height:0; overflow:hidden; padding:0 5.5cqw;}
+  .cdw{--arr:1; max-height:calc(var(--arr) * 70cqw); opacity:var(--arr); overflow:hidden; margin-bottom:calc(var(--arr) * 2.4cqw); transform:translateY(calc((1 - var(--arr)) * -6cqw));}
+  .cd{background:#fff; border-radius:4cqw; overflow:hidden; border:1px solid #E1E4D8; box-shadow:0 1px 2px rgba(20,25,15,.06), 0 10px 20px -12px rgba(20,25,15,.3);}
+  .cd.alert{border-color:rgba(165,64,43,.4); box-shadow:0 0 0 .6cqw rgba(165,64,43,.1), 0 12px 24px -12px rgba(165,64,43,.55);}
+  .fr{position:relative; aspect-ratio:16/8.4; background:#14241b;}
+  .fr svg{position:static; display:block; width:100%; height:100%;}
+  .fr .cm,.fr .ag{position:absolute; top:2.4cqw; font:700 2.6cqw 'JetBrains Mono',monospace; letter-spacing:.3px; padding:1cqw 2.2cqw; border-radius:99px; background:rgba(8,14,10,.62); color:#e8f3ec; backdrop-filter:blur(3px);}
+  .fr .cm{left:2.4cqw;} .fr .ag{right:2.4cqw;}
+  .rw{display:flex; align-items:center; gap:2.6cqw; padding:2.6cqw 3cqw;}
+  .av{flex:none; width:8cqw; height:8cqw; border-radius:50%; display:grid; place-items:center; background:#DCEBE1; color:#1E5C3E;}
+  .alert .av{background:#F7E6E0; color:#A5402B;}
+  .av svg{position:static; width:4.6cqw; height:auto;}
+  .tx{flex:1; min-width:0; line-height:1.2;}
+  .tx b{display:block; font-size:3.7cqw;}
+  .tx small{display:block; margin-top:.5cqw; font-size:2.8cqw; color:#7a8274; font-weight:600;}
+  .pill{flex:none; font-style:normal; font-size:2.7cqw; font-weight:800; padding:1.2cqw 2.6cqw; border-radius:99px; background:#EBEEE4; color:#5B6154;}
+  .alert .pill{background:#A5402B; color:#fff;}
+  .acts{display:flex; gap:2cqw; padding:0 3cqw 3cqw;}
+  .acts span{flex:1; text-align:center; font-size:3cqw; font-weight:800; padding:2cqw 0; border-radius:2.6cqw; background:#EBEEE4; color:#14170F;}
+  .acts span:first-child{background:#1E5C3E; color:#fff;}
+  .rw2{display:flex; flex-wrap:wrap; align-items:center; gap:2.8cqw; padding:2.2cqw 2.6cqw; margin-bottom:2.2cqw; cursor:pointer;}
+  .rw2 .th{flex:none; width:19cqw; aspect-ratio:16/9; border-radius:2.2cqw; overflow:hidden; background:#14241b;}
+  .rw2 .th svg{position:static; display:block; width:100%; height:100%;}
+  .rw2 .tx b{font-size:3.5cqw;}
+  .rw2 .tx small{font-size:2.7cqw;}
+  .rw2 .acts{display:none; flex:0 0 100%; padding:0;}
+  .rw2.open .acts{display:flex;}
+  .tb{flex:none; display:grid; grid-template-columns:repeat(5,1fr); border-top:1px solid #E1E4D8; background:rgba(255,255,255,.94); padding:2.4cqw 1cqw 5.2cqw; font-size:2.5cqw; color:#919988; font-weight:700; text-align:center;}
+  .tb div{display:flex; flex-direction:column; align-items:center; gap:.8cqw;}
+  .tb svg{position:static; width:5cqw; height:auto;}
+  .tb .a{color:#1E5C3E;}
+  .push{position:absolute; z-index:7; left:3.5cqw; right:3.5cqw; top:12cqw; display:flex; align-items:center; gap:3cqw; padding:3cqw 3.4cqw; border-radius:5cqw; background:rgba(26,32,28,.94); backdrop-filter:blur(10px); color:#fff; box-shadow:0 14px 30px -10px rgba(0,0,0,.7), inset 0 0 0 1px rgba(255,255,255,.1); transform:translateY(-170%); opacity:0; line-height:1.3;}
+  .push .bell{flex:none; width:9.4cqw; aspect-ratio:1; border-radius:50%; background:#1E5C3E; display:grid; place-items:center;}
+  .push .bell svg{position:static; width:5.4cqw; height:auto; transform-origin:50% 10%;}
+  .push.ring .bell svg{animation:ring .9s ease-in-out 2;}
+  .push small{display:block; opacity:.62; font:700 2.4cqw 'JetBrains Mono',monospace; letter-spacing:.5px; text-transform:uppercase;}
+  .push b{display:block; font-size:3.5cqw;} .push span{opacity:.78; font-size:2.9cqw;}
+  @keyframes ring{0%,100%{transform:rotate(0)}15%{transform:rotate(20deg)}30%{transform:rotate(-17deg)}45%{transform:rotate(11deg)}60%{transform:rotate(-7deg)}75%{transform:rotate(3deg)}}
+  @property --ts-a1{syntax:'<color>'; inherits:true; initial-value:#1e5c3e;}
+  @property --ts-a2{syntax:'<color>'; inherits:true; initial-value:#14304a;}
+  .ts-story{--ts-a1:#1e5c3e; --ts-a2:#14304a; transition:--ts-a1 1.4s ease, --ts-a2 1.4s ease;}
+  .aur{position:sticky; top:68px; height:calc(100vh - 68px); margin-bottom:calc(68px - 100vh); overflow:hidden; pointer-events:none; -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%); mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%); background:radial-gradient(1000px circle at 82% 12%, color-mix(in srgb,var(--ts-a1) 34%, transparent), transparent 62%), radial-gradient(900px circle at 8% 92%, color-mix(in srgb,var(--ts-a2) 36%, transparent), transparent 62%);}
+  .aur::after{content:""; position:absolute; inset:0; opacity:.07; mix-blend-mode:overlay; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalRuido' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  .it .gn{position:absolute; left:-8px; top:-96px; z-index:-1; font-family:Unbounded,sans-serif; font-weight:800; font-size:168px; line-height:1; letter-spacing:-8px; color:transparent; -webkit-text-stroke:1px rgba(143,214,172,.2); user-select:none;}
+  .it h3{filter:blur(0);}
+  .it:not(.on) h3{filter:blur(6px);}
+  .it{transition:opacity .6s ease, transform .7s cubic-bezier(.2,.8,.2,1);}
+  .it h3{transition:filter .7s ease;}
+  .chs{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px;}
+  .chs span{font:700 11px 'JetBrains Mono',monospace; letter-spacing:.5px; text-transform:uppercase; color:#cfe7d7; padding:6px 12px; border-radius:99px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); backdrop-filter:blur(4px);}
+  @media (max-width:900px){ .it .gn{display:none;} .chs{margin-top:14px;} }
+  @media (max-width:900px){
+    .ts-pin{grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto; align-content:center; gap:14px; padding:0 20px;}
+    .ts-stage{width:min(100%, 50vh);}
+    #tsGlobe{right:0; width:100%; -webkit-mask-image:none; mask-image:none;}
+    .ts-txt{height:230px;}
+    .it h3{font-size:22px; margin-bottom:10px;}
+    .it p{font-size:14.5px; line-height:1.55;}
+    .rail{bottom:-14px;}
+  }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div style="position:absolute; top:0; left:0; width:1px; height:1px;" id="topSentinel"></div>
+
+<!-- NAV -->
+<div class="nav" id="nav">
+  <div style="position:absolute; width:1px; height:1px; overflow:hidden; opacity:0; pointer-events:none;">
+    <img id="lf_front" src="logo-front.png" alt="">
+    <img id="lf_left" src="logo-left.png" alt="">
+    <img id="lf_right" src="logo-right.png" alt="">
+    <img id="lf_up" src="logo-up.png" alt="">
+    <img id="lf_down" src="logo-down.png" alt="">
+    <img id="lf_upLeft" src="logo-upleft.png" alt="">
+    <img id="lf_upRight" src="logo-upright.png" alt="">
+    <img id="lf_downLeft" src="logo-downleft.png" alt="">
+    <img id="lf_downRight" src="logo-downright.png" alt="">
+  </div>
+  <div class="nav-top">
+    <div class="logo-stack">
+      <div class="logo-canvas-wrap"><canvas id="logoCanvas" width="200" height="241"></canvas></div>
+      <div class="logo-caption">Yolky Sense</div>
+    </div>
+  </div>
+  <div class="nav-main">
+    <div class="logo-sm"><img src="logo-front.png" alt="">Yolky Sense</div>
+    <div class="navlinks" id="navLinks">
+      <a href="#noise">Ruido</a>
+      <a href="#how">Cómo funciona</a>
+      <a href="#month">Estadística</a>
+      <a href="#trust">Confianza</a>
+      <a href="#demo">Demo</a>
+      <a href="#playground">Laboratorio</a>
+      <a href="#cta">Contactos</a>
+      <span class="nav-indicator" id="navIndicator"></span>
+    </div>
+    <div class="nav-end">
+      <div class="lang" role="group" aria-label="Idioma"><a href="index.html" hreflang="en" lang="en">EN</a><span aria-current="true">ES</span><a href="ru.html" hreflang="ru" lang="ru">RU</a></div>
+      <button type="button" class="nav-burger" id="navBurger" aria-expanded="false" aria-controls="navDrawer" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="nav-drawer" id="navDrawer" hidden>
+    <a href="#noise">Ruido</a>
+    <a href="#how">Cómo funciona</a>
+    <a href="#month">Estadística</a>
+    <a href="#trust">Confianza</a>
+    <a href="#demo">Demo</a>
+    <a href="#playground">Laboratorio</a>
+    <a href="#cta">Contactos</a>
+  </div>
+</div>
+<button type="button" class="nav-scrim" id="navScrim" hidden aria-hidden="true" tabindex="-1"></button>
+
+<!-- HERO -->
+<div class="section" id="hero" style="padding-top:20px; padding-bottom:96px; background:radial-gradient(640px circle at 92% -10%, rgba(30,92,62,.07), transparent 60%), radial-gradient(rgba(20,25,15,.035) 1px, transparent 1.5px) 0 0/26px 26px, var(--bg);">
+  <div class="wrap-wide">
+    <div class="stage" id="worldStage">
+      <div class="stage-text hero-left">
+    <div style="display:flex; flex-wrap:wrap; gap:9px; margin-bottom:28px;">
+      <div class="badge"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Local</div>
+      <div class="badge"><svg class="icon" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg>Aprende a callarse</div>
+      <div class="badge"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 10-13h-8l1-7z"/></svg>Simple</div>
+    </div>
+    <h1 class="h1-hero" style="font-size:64px; font-weight:800; letter-spacing:-1.4px; line-height:1.06; margin:0 0 24px;">Mirá lo que <span class="word-wrap">
+      <span class="word-layer" style="animation-delay:0s; color:var(--signal); font-family:Unbounded, sans-serif; font-weight:800;">
+        importa
+        <svg class="word-underline" viewBox="0 0 100 16" preserveAspectRatio="none"><path d="M2 9 Q 25 2 50 7 T 98 5" fill="none" stroke="var(--signal)" stroke-width="4" stroke-linecap="round"/></svg>
+      </span>
+      <span class="word-layer" style="animation-delay:3s; color:var(--accent2); font-family:'Playfair Display', serif; font-style:italic; font-weight:700; font-size:0.92em;">
+        importa
+        <svg class="word-underline" viewBox="0 0 100 16" preserveAspectRatio="none"><path d="M2 8 L98 8" fill="none" stroke="var(--accent2)" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </span>
+      <span class="word-layer" style="animation-delay:6s; color:#7A5F14; font-family:Caveat, cursive; font-weight:700; font-size:1.05em;">
+        importa
+        <svg class="word-underline" viewBox="0 0 100 16" preserveAspectRatio="none"><path d="M2 8 L15 2 L28 12 L41 2 L54 12 L67 2 L80 12 L93 5 L98 7" fill="none" stroke="#7A5F14" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="word-layer" style="animation-delay:9s; color:var(--signal-deep); font-family:'JetBrains Mono', monospace; font-weight:700; font-size:0.8em;">
+        важно
+        <svg class="word-underline" viewBox="0 0 100 16" preserveAspectRatio="none"><path d="M2 8 L98 8" fill="none" stroke="var(--signal-deep)" stroke-width="4" stroke-linecap="round" stroke-dasharray="9 7"/></svg>
+      </span>
+      <span class="word-layer" style="animation-delay:12s; color:var(--signal); font-family:Comfortaa, sans-serif; font-weight:700; font-size:0.9em;">
+        importa
+        <svg class="word-underline" viewBox="0 0 100 16" preserveAspectRatio="none"><path d="M2 12 Q 50 2 98 12" fill="none" stroke="var(--signal)" stroke-width="4" stroke-linecap="round"/></svg>
+      </span>
+      <span class="word-layer" style="animation-delay:15s; color:var(--accent2); font-family:'Bebas Neue', sans-serif; font-weight:400; font-size:1em; letter-spacing:0.5px;">
+        importa
+        <svg class="word-underline" viewBox="0 0 100 16" preserveAspectRatio="none"><path d="M2 8 L98 8" fill="none" stroke="var(--accent2)" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </span>
+      <span class="word-layer" style="animation-delay:18s; color:#7A5F14; font-family:Pacifico, cursive; font-weight:400; font-size:0.8em;">
+        важно
+        <svg class="word-underline" viewBox="0 0 100 16" preserveAspectRatio="none"><path d="M2 8 L15 2 L28 12 L41 2 L54 12 L67 2 L80 12 L93 5 L98 7" fill="none" stroke="#7A5F14" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="word-layer" style="animation-delay:21s; color:var(--ink); font-family:Unbounded, sans-serif; font-weight:700;">
+        <span class="word-highlight" style="background:var(--signal);"></span>
+        <span class="word-text">importa</span>
+      </span>
+    </span></h1>
+    <p style="font-size:18.5px; line-height:1.65; color:var(--muted); max-width:580px; margin:0 0 30px;">Yolky Sense es un filtro de IA local para las cámaras de tu casa. Reconoce a tu gente, recuerda las falsas alarmas y te avisa solo de lo que realmente importa. En dos meses en una casa real las falsas alarmas de la tarde cayeron 10×, y cuando el sistema pone un nombre una persona lo corrige casi 3×&nbsp;menos seguido.</p>
+    <div class="proof reveal">
+      <div class="proof-item"><div class="proof-v">×10</div><div class="proof-l">menos falsas alarmas de la tarde<br>45 vs 476 en el mes uno</div></div>
+      <div class="proof-item"><div class="proof-v">8%</div><div class="proof-l">correcciones de nombre por una persona<br>22% al final del mes uno</div></div>
+      <div class="proof-item"><div class="proof-v">10</div><div class="proof-l">cámaras en un Mac Mini<br>eran 8, la carga es menor</div></div>
+      <a class="proof-link" href="#month">Datos en vivo: 2 meses, 3&nbsp;sep&nbsp;–&nbsp;3&nbsp;nov&nbsp;2026 &darr;</a>
+    </div>
+      </div>
+      <div class="stage-scene">
+        <div class="stage-poster" aria-hidden="true"></div>
+        <div class="stage-mist" aria-hidden="true"><span></span><span></span></div>
+        <div class="stage-mount" id="worldMount" role="img" aria-label="Modelo 3D interactivo de una propiedad: autos y personas entran en las zonas de las cámaras"></div>
+        <div class="w-feed" aria-live="polite">
+          <div class="w-sum"><b id="wSeen">0</b> eventos vistos · <b id="wAlert">0</b> notificaciones</div>
+          <div class="w-list" id="wList"></div>
+        </div>
+        <div class="stage-ui">
+          <div class="w-hud"><span class="y-chip season" id="wHudSeason">Осень</span><span class="y-chip" id="wHudTime">11:00</span><span class="y-chip" id="wHudWx">ясно</span></div>
+          <div class="w-btns">
+            <button class="w-btn" id="wGuest" type="button"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.2"/><path d="M5.5 20c.6-4 3-6 6.5-6s5.9 2 6.5 6"/></svg>Visita en el portón</button>
+            <button class="w-btn" id="wCar" type="button"><svg class="icon" viewBox="0 0 24 24"><path d="M4 16V12l2-5h12l2 5v4"/><path d="M3 16h18"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg>Auto</button>
+            <button class="w-btn" id="wOwner" type="button"><svg class="icon" viewBox="0 0 24 24"><path d="M14 4h5v16h-5"/><path d="M4 12h10M10 8l4 4-4 4"/></svg>Sale un residente</button>
+          </div>
+          <div class="w-hint">Escena simulada</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:56px;">
+    <!-- noise-to-signal hero graphic -->
+    <div class="card reveal" style="padding:36px 40px; background:var(--surface-2);">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:#919988;">Cámara común · ruido</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:var(--signal);">Yolky Sense · señal</div>
+      </div>
+      <svg viewBox="0 0 900 140" style="width:100%; height:140px; display:block;">
+        <line x1="0" y1="70" x2="900" y2="70" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 5"/>
+        <path d="M0,70 L14,40 L28,95 L42,50 L56,88 L70,35 L84,100 L98,55 L112,80 L126,42 L140,92 L154,48 L168,78 L182,60 L196,85 L210,45 L224,70 L238,58 L252,72 L266,62
+                 L290,68 L320,71 L350,69 L380,70 L410,70 L440,70 L460,70
+                 L470,70 L474,20 L478,70
+                 L520,70 L560,70 L600,70 L650,70 L700,70 L750,70 L800,70 L860,70 L900,70"
+              fill="none" stroke="var(--muted)" stroke-width="1.6" opacity=".55"/>
+        <path d="M290,70 L900,70" fill="none" stroke="var(--signal)" stroke-width="2.6" stroke-linecap="round"/>
+        <circle cx="474" cy="20" r="5" fill="var(--signal)"/>
+        <line x1="474" y1="20" x2="474" y2="4" stroke="var(--signal)" stroke-width="1.6"/>
+        <text x="484" y="14" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="var(--signal)">Desconocido en la puerta</text>
+        <line x1="290" y1="0" x2="290" y2="140" stroke="var(--line)" stroke-width="1"/>
+      </svg>
+      <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-top:4px;">
+        <span>Un gato, una rama, un delivery, luces — todo parece una alarma</span>
+        <span>Una notificación, solo cuando hace falta de verdad</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NOISE (problem) -->
+<div class="section" id="noise" style="background:var(--surface);">
+  <div class="wrap">
+    <div class="kicker"><span class="bar"></span><div class="eyebrow">Ruido</div></div>
+    <h2 class="h reveal">La atención es el recurso más escaso en una casa</h2>
+    <p class="lead" style="margin-bottom:52px;">Las cámaras comunes detectan movimiento igual para todo. Separar lo que importa es un trabajo que, de a poco, te dejan a vos.</p>
+    <div class="grid-3">
+      <div class="card reveal">
+        <div class="num-tag">01</div>
+        <div class="icon-circle warn"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="3" width="14" height="16" rx="2"/><rect x="8" y="9" width="14" height="16" rx="2" fill="var(--surface)"/></svg></div>
+        <h3>Una alarma para todo</h3>
+        <p>Un gato, una rama con el viento, un delivery, un desconocido — una cámara común reacciona al movimiento igual. Separar lo importante de lo que no, te queda a vos, cada vez.</p>
+      </div>
+      <div class="card reveal">
+        <div class="num-tag">02</div>
+        <div class="icon-circle warn"><svg class="icon" viewBox="0 0 24 24"><path d="M12 4a5 5 0 015 5v3l2 4H5l2-4V9a5 5 0 015-5z"/><path d="M10 19a2 2 0 004 0"/><line x1="3" y1="3" x2="21" y2="21"/></svg></div>
+        <h3>La confianza se va rápido</h3>
+        <p>Las primeras falsas alarmas molestan; las siguientes se ignoran. En una semana mucha gente apaga las notificaciones — y la cámara se calla justo cuando tendría que hablar.</p>
+      </div>
+      <div class="card reveal">
+        <div class="num-tag">03</div>
+        <div class="icon-circle warn"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>Mirar no es saber</h3>
+        <p>El feed muestra todo, pero no responde “qué pasó mientras no estuve”. Tenés que revolver el archivo para enterarte.</p>
+      </div>
+    </div>
+    <div class="split reveal" id="split">
+      <h3 class="split-h">El mismo día, dos formas de enterarte</h3>
+      <p class="split-sub">Cada punto es un evento de las cámaras en un día promedio de un mes real. Arrastrá el divisor.</p>
+      <div class="split-card">
+        <div class="sp-top">
+          <div class="a">Cada evento es una alerta<b>≈100<small>al día</small></b></div>
+          <div class="b">Solo lo que importa<b>≈3<small>al día</small></b></div>
+        </div>
+        <div class="sp-field" role="group" aria-label="Compará una cámara común y Yolky Sense">
+          <div class="sp-layer a" aria-hidden="true"><i style="left:11.6%;top:53.2%"></i><i style="left:20.6%;top:45.8%"></i><i style="left:6.5%;top:49.4%"></i><i style="left:15.0%;top:71.6%"></i><i style="left:4.8%;top:33.0%"></i><i style="left:4.7%;top:73.0%"></i><i style="left:16.2%;top:12.3%"></i><i style="left:21.7%;top:85.2%"></i><i style="left:15.4%;top:57.6%"></i><i style="left:6.0%;top:10.2%"></i><i style="left:13.0%;top:13.7%"></i><i style="left:6.6%;top:28.1%"></i><i style="left:3.6%;top:45.7%"></i><i style="left:11.4%;top:75.6%"></i><i style="left:11.7%;top:31.0%"></i><i style="left:19.0%;top:64.9%"></i><i style="left:9.0%;top:27.1%"></i><i style="left:8.5%;top:14.5%"></i><i style="left:17.6%;top:40.6%"></i><i style="left:3.0%;top:25.6%"></i><i style="left:4.4%;top:58.7%"></i><i style="left:17.8%;top:30.3%"></i><i style="left:21.3%;top:68.9%"></i><i style="left:13.6%;top:44.3%"></i><i style="left:6.6%;top:66.8%"></i><i style="left:8.8%;top:78.9%"></i><i style="left:32.0%;top:40.1%"></i><i style="left:44.2%;top:59.7%"></i><i style="left:29.9%;top:87.2%"></i><i style="left:32.1%;top:29.4%"></i><i style="left:42.7%;top:35.0%"></i><i style="left:33.6%;top:14.8%"></i><i style="left:29.7%;top:55.0%"></i><i style="left:32.6%;top:56.5%"></i><i style="left:35.1%;top:44.8%"></i><i style="left:46.2%;top:47.2%"></i><i style="left:38.9%;top:77.5%"></i><i style="left:45.3%;top:73.6%"></i><i style="left:42.0%;top:83.3%"></i><i style="left:31.7%;top:84.1%"></i><i style="left:36.0%;top:17.2%"></i><i style="left:32.9%;top:74.1%"></i><i style="left:39.3%;top:32.2%"></i><i style="left:31.3%;top:65.9%"></i><i style="left:29.3%;top:27.0%"></i><i style="left:45.4%;top:25.1%"></i><i style="left:38.9%;top:19.4%"></i><i style="left:34.9%;top:79.4%"></i><i style="left:46.6%;top:60.9%"></i><i style="left:41.1%;top:55.2%"></i><i style="left:30.7%;top:11.8%"></i><i style="left:28.3%;top:80.9%"></i><i style="left:37.2%;top:66.7%"></i><i style="left:42.0%;top:64.6%"></i><i style="left:34.7%;top:63.1%"></i><i style="left:39.1%;top:57.1%"></i><i style="left:46.9%;top:78.5%"></i><i style="left:37.1%;top:27.2%"></i><i style="left:44.7%;top:39.4%"></i><i style="left:44.6%;top:12.3%"></i><i style="left:40.0%;top:44.3%"></i><i style="left:41.0%;top:24.7%"></i><i style="left:28.2%;top:46.3%"></i><i style="left:40.2%;top:65.7%"></i><i style="left:43.2%;top:22.7%"></i><i style="left:41.1%;top:14.2%"></i><i style="left:63.2%;top:41.7%"></i><i style="left:71.2%;top:82.0%"></i><i style="left:58.1%;top:46.4%"></i><i style="left:55.4%;top:43.3%"></i><i style="left:68.5%;top:80.1%"></i><i style="left:62.1%;top:34.1%"></i><i style="left:56.6%;top:57.8%"></i><i style="left:70.6%;top:19.2%"></i><i style="left:67.8%;top:10.8%"></i><i style="left:56.7%;top:27.0%"></i><i style="left:66.1%;top:34.4%"></i><i style="left:59.8%;top:58.0%"></i><i style="left:55.0%;top:66.7%"></i><i style="left:60.1%;top:41.7%"></i><i style="left:63.1%;top:21.6%"></i><i style="left:65.1%;top:50.8%"></i><i style="left:69.2%;top:57.3%"></i><i style="left:69.3%;top:27.4%"></i><i style="left:67.1%;top:73.0%"></i><i style="left:59.0%;top:81.9%"></i><i style="left:57.1%;top:87.9%"></i><i style="left:57.9%;top:16.7%"></i><i style="left:68.8%;top:42.3%"></i><i style="left:53.3%;top:24.9%"></i><i style="left:66.0%;top:81.0%"></i><i style="left:96.4%;top:18.1%"></i><i style="left:87.6%;top:68.9%"></i><i style="left:81.6%;top:14.6%"></i><i style="left:88.5%;top:49.7%"></i><i style="left:88.8%;top:20.6%"></i><i style="left:81.5%;top:25.1%"></i><i style="left:94.0%;top:87.2%"></i><i style="left:79.2%;top:84.2%"></i><i style="left:84.2%;top:45.9%"></i></div>
+          <div class="sp-layer b" aria-hidden="true"><i style="left:11.6%;top:53.2%"></i><i style="left:20.6%;top:45.8%"></i><i class="n" style="left:6.5%;top:49.4%"></i><i style="left:15.0%;top:71.6%"></i><i style="left:4.8%;top:33.0%"></i><i style="left:4.7%;top:73.0%"></i><i style="left:16.2%;top:12.3%"></i><i style="left:21.7%;top:85.2%"></i><i style="left:15.4%;top:57.6%"></i><i style="left:6.0%;top:10.2%"></i><i style="left:13.0%;top:13.7%"></i><i style="left:6.6%;top:28.1%"></i><i style="left:3.6%;top:45.7%"></i><i style="left:11.4%;top:75.6%"></i><i style="left:11.7%;top:31.0%"></i><i style="left:19.0%;top:64.9%"></i><i style="left:9.0%;top:27.1%"></i><i style="left:8.5%;top:14.5%"></i><i style="left:17.6%;top:40.6%"></i><i style="left:3.0%;top:25.6%"></i><i style="left:4.4%;top:58.7%"></i><i style="left:17.8%;top:30.3%"></i><i style="left:21.3%;top:68.9%"></i><i style="left:13.6%;top:44.3%"></i><i style="left:6.6%;top:66.8%"></i><i style="left:8.8%;top:78.9%"></i><i style="left:32.0%;top:40.1%"></i><i style="left:44.2%;top:59.7%"></i><i style="left:29.9%;top:87.2%"></i><i style="left:32.1%;top:29.4%"></i><i style="left:42.7%;top:35.0%"></i><i style="left:33.6%;top:14.8%"></i><i style="left:29.7%;top:55.0%"></i><i style="left:32.6%;top:56.5%"></i><i style="left:35.1%;top:44.8%"></i><i class="n" style="left:46.2%;top:47.2%"></i><i style="left:38.9%;top:77.5%"></i><i style="left:45.3%;top:73.6%"></i><i style="left:42.0%;top:83.3%"></i><i style="left:31.7%;top:84.1%"></i><i style="left:36.0%;top:17.2%"></i><i style="left:32.9%;top:74.1%"></i><i style="left:39.3%;top:32.2%"></i><i style="left:31.3%;top:65.9%"></i><i style="left:29.3%;top:27.0%"></i><i style="left:45.4%;top:25.1%"></i><i style="left:38.9%;top:19.4%"></i><i style="left:34.9%;top:79.4%"></i><i style="left:46.6%;top:60.9%"></i><i style="left:41.1%;top:55.2%"></i><i style="left:30.7%;top:11.8%"></i><i style="left:28.3%;top:80.9%"></i><i style="left:37.2%;top:66.7%"></i><i style="left:42.0%;top:64.6%"></i><i style="left:34.7%;top:63.1%"></i><i style="left:39.1%;top:57.1%"></i><i style="left:46.9%;top:78.5%"></i><i style="left:37.1%;top:27.2%"></i><i style="left:44.7%;top:39.4%"></i><i style="left:44.6%;top:12.3%"></i><i style="left:40.0%;top:44.3%"></i><i style="left:41.0%;top:24.7%"></i><i style="left:28.2%;top:46.3%"></i><i style="left:40.2%;top:65.7%"></i><i style="left:43.2%;top:22.7%"></i><i style="left:41.1%;top:14.2%"></i><i style="left:63.2%;top:41.7%"></i><i style="left:71.2%;top:82.0%"></i><i style="left:58.1%;top:46.4%"></i><i style="left:55.4%;top:43.3%"></i><i style="left:68.5%;top:80.1%"></i><i style="left:62.1%;top:34.1%"></i><i style="left:56.6%;top:57.8%"></i><i style="left:70.6%;top:19.2%"></i><i style="left:67.8%;top:10.8%"></i><i style="left:56.7%;top:27.0%"></i><i style="left:66.1%;top:34.4%"></i><i style="left:59.8%;top:58.0%"></i><i style="left:55.0%;top:66.7%"></i><i style="left:60.1%;top:41.7%"></i><i style="left:63.1%;top:21.6%"></i><i class="n" style="left:65.1%;top:50.8%"></i><i style="left:69.2%;top:57.3%"></i><i style="left:69.3%;top:27.4%"></i><i style="left:67.1%;top:73.0%"></i><i style="left:59.0%;top:81.9%"></i><i style="left:57.1%;top:87.9%"></i><i style="left:57.9%;top:16.7%"></i><i style="left:68.8%;top:42.3%"></i><i style="left:53.3%;top:24.9%"></i><i style="left:66.0%;top:81.0%"></i><i style="left:96.4%;top:18.1%"></i><i style="left:87.6%;top:68.9%"></i><i style="left:81.6%;top:14.6%"></i><i style="left:88.5%;top:49.7%"></i><i style="left:88.8%;top:20.6%"></i><i style="left:81.5%;top:25.1%"></i><i style="left:94.0%;top:87.2%"></i><i style="left:79.2%;top:84.2%"></i><i style="left:84.2%;top:45.9%"></i></div>
+          <div class="sp-handle" aria-hidden="true"></div>
+          <input class="sp-range" type="range" min="0" max="100" step="1" value="38" aria-label="Compará una cámara común y Yolky Sense">
+        </div>
+        <div class="sp-axis"><span>Mañana</span><span>Día</span><span>Tarde</span><span>Noche</span></div>
+      </div>
+      <p class="split-note">Día promedio sobre 29 días, 4 sep – 2 oct 2026, de la base en vivo del Mac Mini. “Cámara común” son todos los eventos grabados; “Yolky Sense” son las notificaciones que realmente se enviaron. La noche es la parte más quieta del día.</p>
+    </div>
+  </div>
+</div>
+
+<!-- HOW (mechanism / filter) -->
+<div class="section" id="how">
+  <div class="wrap">
+    <div class="kicker"><span class="bar"></span><div class="eyebrow">Cómo funciona</div></div>
+    <h2 class="h reveal">No más datos — menos ruido</h2>
+    <p class="lead" style="margin-bottom:44px;">Cada parte del sistema existe para restar ruido, no para sumarlo.</p>
+
+    <div class="card reveal grid-2 how-card" style="margin-bottom:22px; align-items:center; padding:38px; gap:38px;">
+      <div>
+        <div class="icon-circle signal"><svg class="icon" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg></div>
+        <h3 style="font-size:21px;">Aprende a callarse</h3>
+        <p>Recuerda falsas alarmas en lugares concretos — un hamaca, sombras de árboles — y de a poco deja de reaccionar. Cuanto más corre el sistema, más silencioso se pone.</p>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Falsas alarmas de la tarde · de mes a mes</div>
+        <div class="how-stat"><span class="was">476</span><span class="arr">→</span><span class="now">45</span></div>
+        <div style="font-size:13.5px; color:var(--muted); line-height:1.55; margin-top:10px;">El atardecer dejó de inundar el feed: diez veces menos falsas alarmas de la tarde en el mes dos. La memoria de lugares falsos y el filtro de fantasmas nocturnos hacen su trabajo. <a href="#month" style="font-weight:700;">Estadística completa abajo &darr;</a></div>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card reveal">
+        <div class="icon-circle signal"><svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M15 12l3 3 5-6" stroke="var(--signal)"/></svg></div>
+        <h3>Conoce a los suyos</h3>
+        <p>Recuerda a la familia y a las mascotas — y te molesta solo cuando hay alguien desconocido en el cuadro.</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon-circle accent2"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="8" rx="2"/><rect x="4" y="13" width="16" height="8" rx="2"/><circle cx="8" cy="7" r="1" fill="currentColor" stroke="none"/><circle cx="8" cy="17" r="1" fill="currentColor" stroke="none"/></svg></div>
+        <h3>Corre en local</h3>
+        <p>El video y el reconocimiento se procesan en tu propio hardware. Por defecto no sale nada de casa.</p>
+      </div>
+      <div class="card reveal">
+        <div class="icon-circle neutral"><svg class="icon" viewBox="0 0 24 24"><path d="M21 3L2 10.5l7 3 2 7 3-4.5L21 3z"/></svg></div>
+        <h3>Sin app nueva</h3>
+        <p>Las notificaciones llegan a Telegram, que ya usás.</p>
+      </div>
+    </div>
+    <div class="crowd" id="crowd">
+      <h3 class="crowd-h reveal" aria-live="off"><span class="a">Para un sensor de movimiento, todos se parecen</span><span class="b">Yolky Sense conoce a los suyos</span></h3>
+      <div class="crowd-stage" role="img" aria-label="Los vecinos aparecen como una fila de figuras grises idénticas; entre ellas, a color, está un residente que el sistema reconoce como propio">
+        <div class="crowd-row">
+          <img class="cf" src="crowd-1.webp" alt="" draggable="false" style="--c:-0.9; --d:0; --s:calc(-4.5 * var(--g)); z-index:1;">
+          <img class="cf" src="crowd-2.webp" alt="" draggable="false" style="--c:-0.7; --d:1; --s:calc(-3.5 * var(--g)); z-index:2;">
+          <img class="cf" src="crowd-3.webp" alt="" draggable="false" style="--c:-0.5; --d:2; --s:calc(-2.5 * var(--g)); z-index:3;">
+          <img class="cf" src="crowd-4.webp" alt="" draggable="false" style="--c:-0.3; --d:3; --s:calc(-1.5 * var(--g)); z-index:4;">
+          <img class="cf me" src="crowd-me.webp" alt="" draggable="false" style="--c:-0.1; --d:4; --s:calc(-0.5 * var(--g)); z-index:5;">
+          <img class="cf" src="crowd-5.webp" alt="" draggable="false" style="--c:0.1; --d:5; --s:calc(0.5 * var(--g)); z-index:6;">
+          <img class="cf" src="crowd-6.webp" alt="" draggable="false" style="--c:0.3; --d:6; --s:calc(1.5 * var(--g)); z-index:7;">
+          <img class="cf" src="crowd-7.webp" alt="" draggable="false" style="--c:0.5; --d:7; --s:calc(2.5 * var(--g)); z-index:8;">
+          <img class="cf" src="crowd-8.webp" alt="" draggable="false" style="--c:0.7; --d:8; --s:calc(3.5 * var(--g)); z-index:9;">
+          <img class="cf" src="crowd-9.webp" alt="" draggable="false" style="--c:0.9; --d:9; --s:calc(4.5 * var(--g)); z-index:10;">
+          <div class="crowd-tag">Reconocido: propio</div>
+        </div>
+      </div>
+      <p class="crowd-sub">Vecinos, deliveries, gente de paso — una cámara común reacciona igual a todos. Yolky Sense recuerda quién es quién y habla solo cuando la persona es desconocida.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STATISTICS (live report, 2 months) -->
+<div class="section" id="month">
+  <div class="wrap">
+    <div class="kicker"><span class="bar"></span><div class="eyebrow">Estadística · dos meses de datos en vivo</div></div>
+    <h2 class="h reveal">Dos meses en una casa real, sin días libres</h2>
+    <p class="lead" style="margin-bottom:44px;">Del 3&nbsp;sep al 3&nbsp;nov 2026 el sistema miró el patio las 24 horas en un Mac Mini. Abajo — los totales combinados. El detalle del mes dos está en el informe completo.</p>
+
+    <div class="m-hero reveal">
+      <div class="m-finder" aria-label="Número principal de dos meses">
+        <span class="c1"></span><span class="c2"></span>
+        <div class="m-tag">Registrados en 62 días</div>
+        <div class="m-big">6,101</div>
+        <p class="m-cap">eventos de cámara. No es un demo ni un mock — la base en vivo de la casa.</p>
+        <div class="m-was">mes uno <b>3,117</b> · mes dos <b>2,984</b></div>
+      </div>
+      <div class="m-kpis">
+        <div class="m-kpi"><div class="v">17,796</div><div class="l">pistas humanas en dos meses<br>el sistema aprende de ellas</div></div>
+        <div class="m-kpi"><div class="v">37</div><div class="l">conocidos ahora: 17 personas, 14 vehículos y cosas, 6 animales</div></div>
+        <div class="m-kpi"><div class="v">10</div><div class="l">cámaras en un Mac Mini<br>arrancó con ocho</div></div>
+        <div class="m-kpi"><div class="v">1,133</div><div class="l">tests automáticos antes de cada release<br>908 al final del mes uno</div></div>
+      </div>
+    </div>
+
+    <div class="m-cmp reveal">
+      <div class="m-cmp-card"><div class="k">Falsas alarmas de la tarde</div><div class="pair"><span>mes 1</span><b>476</b></div><div class="pair"><span>mes 2</span><b>45</b></div><div class="m-cmp-note">10× más quieto</div></div>
+      <div class="m-cmp-card"><div class="k">Correcciones de nombre</div><div class="pair"><span>fin mes 1</span><b>22%</b></div><div class="pair"><span>fin mes 2</span><b>8%</b></div><div class="m-cmp-note">cuando hay nombre, aguanta mejor</div></div>
+      <div class="m-cmp-card"><div class="k">Vehículos por silueta</div><div class="pair"><span>mes 1</span><b>75%</b></div><div class="pair"><span>mes 2</span><b>91%</b></div><div class="m-cmp-note">cara se mantiene en 95%</div></div>
+      <div class="m-cmp-card"><div class="k">Nombres por su cuenta</div><div class="pair"><span>pico mes 1</span><b>82%</b></div><div class="pair"><span>prom. mes 2</span><b>70%</b></div><div class="m-cmp-note">más cauto — pregunta más seguido</div></div>
+    </div>
+
+    <div class="m-duo">
+      <div class="m-panel reveal">
+        <h3>Qué suman dos meses</h3>
+        <div class="sub">El mismo patio, la misma caja, las mismas métricas</div>
+        <div class="m-stack">
+          <div class="m-stack-row"><span>Eventos</span><b>6,101</b></div>
+          <div class="m-stack-row"><span>Pistas humanas</span><b>17,796</b></div>
+          <div class="m-stack-row"><span>Días con datos</span><b>62</b></div>
+          <div class="m-stack-row"><span>Cámaras en uso</span><b>8 → 10</b></div>
+          <div class="m-stack-row"><span>Commits del producto</span><b>420</b></div>
+        </div>
+      </div>
+      <div class="m-panel reveal">
+        <h3>Qué tan a menudo acierta ahora</h3>
+        <div class="sub">Mes dos, solo hallazgos revisados por una persona</div>
+        <div class="m-meth">
+          <div class="m-mrow"><div class="m-name">Cara<small>personas · revisados 350</small></div><div class="m-track" title="Cara: 332 de 350 correctos"><div class="m-tfill good" style="width:95%"></div></div><div class="m-chip good">95%</div></div>
+          <div class="m-mrow"><div class="m-name">Silueta<small>vehículos · revisados 576</small></div><div class="m-track" title="Silueta, vehículos: 522 de 576"><div class="m-tfill good" style="width:91%"></div></div><div class="m-chip good">91%</div></div>
+          <div class="m-mrow"><div class="m-name">Silueta<small>personas, contando la familia Neighbors · revisados 4.131</small></div><div class="m-track" title="Silueta, personas: 3.552 de 4.131"><div class="m-tfill warn" style="width:86%"></div></div><div class="m-chip warn">86%</div></div>
+          <div class="m-mrow"><div class="m-name">Silueta<small>animales y cosas · revisados 67</small></div><div class="m-track" title="Silueta, animales y cosas: 57 de 67"><div class="m-tfill warn" style="width:85%"></div></div><div class="m-chip warn">85%</div></div>
+          <div class="m-mrow"><div class="m-name">Lugar en el cuadro<small>vehículos · revisados 184</small></div><div class="m-track" title="Lugar en el cuadro: 58 de 184"><div class="m-tfill bad" style="width:32%"></div></div><div class="m-chip bad">32%</div></div>
+        </div>
+        <div class="m-legend"><span><i class="good"></i>90%+</span><span><i class="warn"></i>70–90%</span><span><i class="bad"></i>menos de 70%</span></div>
+      </div>
+    </div>
+
+    <div class="m-subhead reveal">Puntos flojos — los mostramos nosotros</div>
+    <div class="m-weak">
+      <div class="m-wk reveal"><div class="m-wtag">Atardecer</div><h3>Falsas alarmas de la tarde: 476 → 45</h3><p>La principal fuente de basura del mes uno casi desapareció. La noche todavía tiene alrededor del 2% de los hallazgos — el patio está casi quieto.</p></div>
+      <div class="m-wk reveal"><div class="m-wtag">Vehículos</div><h3>Por lugar en el cuadro — 32%</h3><p>Por silueta ya está en 91%. Adivinar “este auto suele estar acá” todavía está por debajo del listón — hay que arreglarlo o apagarlo.</p></div>
+      <div class="m-wk reveal"><div class="m-wtag">Hardware</div><h3>10 cámaras, memoria justa</h3><p>Después del alivio el Mini corre más cámaras con menos carga. La memoria libre sigue justa — la próxima palanca.</p></div>
+    </div>
+
+    <div class="m-foot reveal">
+      <a class="btn btn-primary" href="https://lugarvazio.github.io/yolky-sense-report/month2.html" target="_blank" rel="noopener">Informe del mes dos →</a>
+      <a class="btn" href="https://lugarvazio.github.io/yolky-sense-report/" target="_blank" rel="noopener" style="background:transparent;border:1px solid var(--line);color:var(--ink);">Mes uno</a>
+      <span>Semanas, cámaras, pares e incidentes — en los gráficos completos.</span>
+    </div>
+    <p class="m-src">Los números salen de la base en vivo del Mac Mini, snapshot 3 nov 2026. Períodos: 3 sep–3 oct y 3 oct–3 nov. La precisión se mide sobre hallazgos revisados por una persona. Los informes públicos omiten nombres de personas y apodos de mascotas.</p>
+  </div>
+</div>
+
+
+<!-- TRUST (dark) -->
+<div class="section dark" id="trust" style="color:var(--dark-text); background:radial-gradient(900px circle at 85% -10%, rgba(30,92,62,.28), transparent 60%), radial-gradient(rgba(255,255,255,.055) 1px, transparent 1.5px) 0 0/24px 24px, var(--dark-bg);">
+  <div class="wrap">
+    <div class="kicker"><span class="bar"></span><div class="eyebrow">Confianza</div></div>
+    <h2 class="h reveal">El silencio no tendría que costarte la confianza</h2>
+    <p class="lead" style="margin-bottom:28px;">Callarse cuando todo está bien no significa dejar de ser honestos con vos sobre dónde se guarda tu data.</p>
+  </div>
+  <noscript><style>.ts-story{display:none}</style></noscript>
+  <div class="ts-story" id="tstory" data-lang="es" role="group" aria-label="Historia al scrollear: once cámaras, un Mac mini en casa, una interfaz en el celular y todo el planeta">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="nv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#335843"/><stop offset="1" stop-color="#14241b"/></linearGradient>
+<linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d3528"/><stop offset="1" stop-color="#0e1b14"/></linearGradient>
+<radialGradient id="lamp"><stop offset="0" stop-color="#ffe9a8" stop-opacity=".85"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>
+<symbol id="f-gate" viewBox="0 0 160 90"><rect width="160" height="90" fill="url(#nv)"/><path d="M0 64H160V90H0Z" fill="url(#gr)"/><g stroke="rgba(207,231,215,.3)" stroke-width="2"><path d="M8 22V66M24 24V66M40 26V66M56 28V66M104 28V66M120 26V66M136 24V66M152 22V66"/></g><path d="M58 66V26H102V66" fill="none" stroke="rgba(207,231,215,.5)" stroke-width="2.6"/><circle cx="80" cy="40" r="6.4" fill="rgba(224,242,231,.94)"/><path d="M68 72Q68 49 80 49Q92 49 92 72Z" fill="rgba(224,242,231,.94)"/><rect x="63" y="30" width="34" height="44" fill="none" stroke="#8fd6ac" stroke-width="1.3"/><rect x="63" y="22.500" width="28" height="7.500" fill="#8fd6ac"/><text x="65.500" y="28.200" font-size="5" font-family="JetBrains Mono,monospace" font-weight="700" fill="#0E1811">PERSON</text></symbol>
+<symbol id="f-door" viewBox="0 0 160 90"><rect width="160" height="90" fill="url(#nv)"/><rect x="0" y="0" width="160" height="62" fill="rgba(207,231,215,.07)"/><path d="M0 62H160V90H0Z" fill="url(#gr)"/><circle cx="140" cy="16" r="26" fill="url(#lamp)"/><rect x="98" y="12" width="40" height="54" rx="2" fill="rgba(207,231,215,.2)" stroke="rgba(207,231,215,.5)" stroke-width="2"/><circle cx="106" cy="40" r="2" fill="rgba(255,233,168,.9)"/><circle cx="52" cy="40" r="6" fill="rgba(224,242,231,.94)"/><path d="M41 74Q41 50 52 50Q63 50 63 74Z" fill="rgba(224,242,231,.94)"/><rect x="36" y="31" width="32" height="46" fill="none" stroke="#8fd6ac" stroke-width="1.3"/><rect x="36" y="23.500" width="28" height="7.500" fill="#8fd6ac"/><text x="38.500" y="29.200" font-size="5" font-family="JetBrains Mono,monospace" font-weight="700" fill="#0E1811">PERSON</text></symbol>
+<symbol id="f-car" viewBox="0 0 160 90"><rect width="160" height="90" fill="url(#nv)"/><g fill="rgba(143,214,172,.18)"><circle cx="20" cy="38" r="15"/><circle cx="42" cy="34" r="12"/><circle cx="132" cy="36" r="16"/><circle cx="150" cy="42" r="12"/></g><path d="M0 56H160V90H0Z" fill="url(#gr)"/><path d="M0 72H160" stroke="rgba(207,231,215,.25)" stroke-width="1.5" stroke-dasharray="10 8"/><path d="M34 70L41 56Q43 52 49 52H88Q94 52 98 58L108 66Q112 68 112 72V76H34Z" fill="rgba(224,242,231,.92)"/><path d="M47 56H64V64H42ZM69 56H88Q91 56 93 59L97 64H69Z" fill="rgba(14,27,20,.7)"/><circle cx="52" cy="76" r="7" fill="#0e1b14" stroke="rgba(224,242,231,.9)" stroke-width="2"/><circle cx="96" cy="76" r="7" fill="#0e1b14" stroke="rgba(224,242,231,.9)" stroke-width="2"/><rect x="29" y="44" width="88" height="40" fill="none" stroke="#8fd6ac" stroke-width="1.3"/><rect x="29" y="36.500" width="20" height="7.500" fill="#8fd6ac"/><text x="31.500" y="42.200" font-size="5" font-family="JetBrains Mono,monospace" font-weight="700" fill="#0E1811">CAR</text></symbol>
+<symbol id="f-park" viewBox="0 0 160 90"><rect width="160" height="90" fill="url(#nv)"/><rect x="0" y="0" width="160" height="46" fill="rgba(207,231,215,.06)"/><path d="M0 52H160V90H0Z" fill="url(#gr)"/><path d="M20 90L34 52M80 90L84 52M140 90L134 52" stroke="rgba(207,231,215,.35)" stroke-width="2"/><path d="M40 74L47 60Q49 56 55 56H100Q106 56 110 62L120 70Q124 72 124 76V80H40Z" fill="rgba(224,242,231,.92)"/><path d="M53 60H72V68H48ZM77 60H100Q103 60 105 63L109 68H77Z" fill="rgba(14,27,20,.7)"/><circle cx="58" cy="80" r="7" fill="#0e1b14" stroke="rgba(224,242,231,.9)" stroke-width="2"/><circle cx="108" cy="80" r="7" fill="#0e1b14" stroke="rgba(224,242,231,.9)" stroke-width="2"/><rect x="35" y="48" width="94" height="40" fill="none" stroke="#8fd6ac" stroke-width="1.3"/><rect x="35" y="40.500" width="36" height="7.500" fill="#8fd6ac"/><text x="37.500" y="46.200" font-size="5" font-family="JetBrains Mono,monospace" font-weight="700" fill="#0E1811">CAR · OWN</text></symbol>
+<symbol id="f-yard" viewBox="0 0 160 90"><rect width="160" height="90" fill="url(#nv)"/><g fill="rgba(143,214,172,.2)"><circle cx="24" cy="30" r="16"/><circle cx="140" cy="28" r="18"/></g><path d="M0 58H160V90H0Z" fill="url(#gr)"/><g stroke="rgba(143,214,172,.35)" stroke-width="1.4" stroke-linecap="round"><path d="M10 90L12 80M26 90L28 82M44 90L45 80M120 90L122 80M138 90L139 82M152 90L153 80"/></g><ellipse cx="82" cy="68" rx="17" ry="9" fill="rgba(224,242,231,.94)"/><circle cx="101" cy="58" r="7.500" fill="rgba(224,242,231,.94)"/><path d="M96 53L98 46L102 52ZM102 52L106 46L108 54Z" fill="rgba(224,242,231,.94)"/><path d="M66 66Q54 62 56 52" fill="none" stroke="rgba(224,242,231,.94)" stroke-width="4" stroke-linecap="round"/><rect x="50" y="44" width="62" height="34" fill="none" stroke="#8fd6ac" stroke-width="1.3"/><rect x="50" y="36.500" width="34" height="7.500" fill="#8fd6ac"/><text x="52.500" y="42.200" font-size="5" font-family="JetBrains Mono,monospace" font-weight="700" fill="#0E1811">ANIMAL</text></symbol>
+</defs></svg>
+  <div class="aur" aria-hidden="true"></div>
+  <div class="ts-pin">
+    <canvas id="tsGlobe"></canvas>
+    <div class="ts-txt" id="tsTxt"><div class="rail" id="rail"></div></div>
+    <div class="ts-stage" id="tsStage">
+      <div class="phone" id="phone">
+        <div class="scr">
+          <div class="island"></div>
+          <div class="push" id="push"><div class="bell"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0112 0v6l1.500 2h-15z"/><path d="M10 21a2 2 0 004 0"/></svg></div><div class="pt"><small data-c="pk"></small><b data-c="pn"></b><span data-c="ps"></span></div></div>
+          <div class="ui" id="ui">
+            <div class="sb"><span>9:41</span><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="15" width="3.500" height="6" rx="1"/><rect x="8" y="11" width="3.500" height="10" rx="1"/><rect x="14" y="7" width="3.500" height="14" rx="1"/><rect x="20" y="3" width="3" height="18" rx="1" opacity=".3"/></svg><svg viewBox="0 0 28 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="21" height="12" rx="3.500"/><rect x="4.500" y="8.500" width="14" height="7" rx="1.500" fill="currentColor" stroke="none"/><path d="M25 10v4" stroke-linecap="round"/></svg></span></div>
+            <div class="hd"><div><small data-c="sub"></small><h4 data-c="ttl"></h4></div><div class="ts-live"><i></i><span data-c="live"></span></div></div>
+            <div class="kp"><div class="g"><b>3</b><small data-c="k1"></small></div><div><b>96</b><small data-c="k2"></small></div><div><b>31</b><small data-c="k3"></small></div></div>
+            <div class="fl"><span class="on" data-c="f0"></span><span data-c="f1"></span><span data-c="f2"></span><span data-c="f3"></span></div>
+            <div class="feed" id="feed">
+              <div class="cdw" id="cdw"><div class="cd alert"><div class="fr"><svg viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice"><use href="#f-gate"/></svg><span class="cm" data-c="bc"></span><span class="ag" data-c="ba"></span></div><div class="rw"><div class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7.5" r="3.4"/><path d="M5.5 20c.6-4 3-6 6.5-6s5.9 2 6.5 6"/></svg></div><div class="tx"><b data-c="bn"></b><small data-c="bs"></small></div><em class="pill" data-c="bb"></em></div><div class="acts"><span data-c="ok"></span><span data-c="op"></span></div></div></div>
+          <div class="cd rw2 stg"><div class="th"><svg viewBox="0 0 160 90"><use href="#f-door"/></svg></div><div class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7.5" r="3.4"/><path d="M5.5 20c.6-4 3-6 6.5-6s5.9 2 6.5 6"/></svg></div><div class="tx"><b data-c="r1n"></b><small data-c="r1s"></small></div><em class="pill" data-c="r1b"></em><div class="acts"><span data-c="ok"></span><span data-c="no"></span></div></div>
+          <div class="cd rw2 stg"><div class="th"><svg viewBox="0 0 160 90"><use href="#f-car"/></svg></div><div class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V12l2-5h12l2 5v4"/><path d="M3 16h18"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg></div><div class="tx"><b data-c="r2n"></b><small data-c="r2s"></small></div><em class="pill" data-c="r2b"></em><div class="acts"><span data-c="ok"></span><span data-c="no"></span></div></div>
+          <div class="cd rw2 stg"><div class="th"><svg viewBox="0 0 160 90"><use href="#f-park"/></svg></div><div class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V12l2-5h12l2 5v4"/><path d="M3 16h18"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg></div><div class="tx"><b data-c="r3n"></b><small data-c="r3s"></small></div><em class="pill" data-c="r3b"></em><div class="acts"><span data-c="ok"></span><span data-c="no"></span></div></div>
+          <div class="cd rw2 stg"><div class="th"><svg viewBox="0 0 160 90"><use href="#f-yard"/></svg></div><div class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20c0-6 3-9 7-9s7 3 7 9"/><path d="M8 11L7 5l4 3M16 11l1-6-4 3"/></svg></div><div class="tx"><b data-c="r4n"></b><small data-c="r4s"></small></div><em class="pill" data-c="r4b"></em><div class="acts"><span data-c="ok"></span><span data-c="no"></span></div></div>
+            </div>
+            <div class="tb"><div class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="3"/><path d="M3.5 9.5h17"/></svg><span data-c="t0"></span></div><div class=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span data-c="t1"></span></div><div class=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 8.5a3 3 0 010 5.5M19 20c0-2-.8-3.700-2-4.800"/></svg><span data-c="t2"></span></div><div class=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.500-5.600-6.500-11a6.500 6.500 0 0113 0c0 5.400-6.500 11-6.500 11z"/><circle cx="12" cy="10" r="2.300"/></svg><span data-c="t3"></span></div><div class=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.200"/><circle cx="12" cy="12" r="1.200"/><circle cx="19" cy="12" r="1.200"/></svg><span data-c="t4"></span></div></div>
+          </div>
+        </div>
+        <div class="glare"></div>
+      </div>
+      <svg id="sys" viewBox="0 0 640 640" aria-hidden="true">
+        <defs>
+          <linearGradient id="vw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d4a39"/><stop offset="1" stop-color="#16271d"/></linearGradient>
+          <linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe3de"/><stop offset="1" stop-color="#9aa19b"/></linearGradient>
+          <radialGradient id="hg"><stop offset="0" stop-color="#b9ecce" stop-opacity=".9"/><stop offset="1" stop-color="#b9ecce" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect id="scrBg" x="217.6" y="86" width="204.8" height="468" rx="26" fill="#0b130e" opacity="0"/>
+        <g id="gSys">
+          <rect id="home" x="40" y="104" width="560" height="490" rx="64" fill="none" stroke="#8fd6ac" stroke-opacity=".6" stroke-width="1.6" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+          <g id="homeLbl" opacity="0"><rect x="226" y="88" width="188" height="32" rx="16" fill="#0E1811" stroke="rgba(143,214,172,.55)"/><g transform="translate(244 97)" fill="none" stroke="#8fd6ac" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="12" height="9" rx="2"/><path d="M3.5 7V5a3.5 3.5 0 017 0v2"/></g><text x="320" y="109" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11.5" font-weight="700" letter-spacing=".6" fill="#b9ecce" id="homeTxt"></text></g>
+          <g id="cloud" opacity="0" transform="translate(430 48)"><path d="M-20 10 a11 11 0 0 1 -1 -22 a15 15 0 0 1 28 -5 a13 13 0 0 1 14 13 a8 8 0 0 1 -6 14 z" fill="none" stroke="#9aa79f" stroke-width="2" stroke-linejoin="round"/><line x1="-27" y1="17" x2="30" y2="-21" stroke="#ff6b5e" stroke-width="3" stroke-linecap="round"/><text x="44" y="4" font-family="JetBrains Mono,monospace" font-size="11.5" font-weight="700" letter-spacing=".6" fill="#aab6ae" id="cloudTxt"></text></g>
+          <g id="links"></g>
+          <g id="pulses"></g>
+          <g id="hub" opacity="0"><circle cx="320" cy="320" r="26" fill="url(#hg)"/><circle cx="320" cy="320" r="7" fill="#b9ecce"/></g>
+          <g id="cams"></g>
+          <g id="own" opacity="0" transform="translate(320 424)"><rect x="-50" y="-13" width="100" height="26" rx="13" fill="#0E1811" stroke="rgba(143,214,172,.6)"/><g transform="translate(-37 -7)" fill="none" stroke="#8fd6ac" stroke-width="1.6" stroke-linecap="round"><circle cx="4" cy="7" r="3.2"/><path d="M7 7h9M12.5 7v3M16 7v2.5"/></g><text x="8" y="4" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" letter-spacing=".8" fill="#b9ecce" id="ownTxt"></text></g>
+          <g id="mini" opacity="0">
+            <defs>
+              <linearGradient id="mTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6f7f5"/><stop offset=".55" stop-color="#e2e5e2"/><stop offset="1" stop-color="#cfd3cf"/></linearGradient>
+              <linearGradient id="mFront" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d3d7d3"/><stop offset=".5" stop-color="#b3b9b4"/><stop offset="1" stop-color="#8d948f"/></linearGradient>
+              <radialGradient id="mGlow"><stop offset="0" stop-color="#8fd6ac" stop-opacity=".55"/><stop offset="1" stop-color="#8fd6ac" stop-opacity="0"/></radialGradient>
+              <radialGradient id="mShine" cx=".3" cy=".1" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+              <filter id="mBlur" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="9"/></filter>
+            </defs>
+            <g id="mShell">            <ellipse cx="0" cy="48" rx="124" ry="15" fill="url(#mGlow)"/>
+            <ellipse cx="0" cy="46" rx="112" ry="12" fill="#000" opacity=".55" filter="url(#mBlur)"/>
+            <path d="M-96 8Q-100 14 -99 20V30Q-99 42 -86 42H86Q99 42 99 30V20Q100 14 96 8Z" fill="url(#mFront)"/>
+            <path d="M-95 12Q-99 14 -98.500 20V30Q-98.500 40.500 -86 40.500H86Q98.500 40.500 98.500 30V20Q99 14 95 12Z" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
+            <path d="M-97 34H97" stroke="rgba(0,0,0,.22)" stroke-width="1"/>
+            <path d="M-72 -32H72Q84 -32 87 -22L97 8Q99 14 91 14H-91Q-99 14 -97 8L-87 -22Q-84 -32 -72 -32Z" fill="url(#mTop)"/>
+            <path d="M-72 -31.200H72Q83 -31.200 86 -22L96 7" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.200"/>
+            <path d="M-72 -32H72Q84 -32 87 -22L97 8Q99 14 91 14H-91Q-99 14 -97 8L-87 -22Q-84 -32 -72 -32Z" fill="url(#mShine)" opacity=".5"/>
+            <path d="M-91 14H91" stroke="rgba(0,0,0,.18)" stroke-width="1.300"/>
+            <rect x="-66" y="21" width="12" height="5" rx="2.500" fill="#1d2420"/><rect x="-48" y="21" width="12" height="5" rx="2.500" fill="#1d2420"/>
+            <circle cx="72" cy="25" r="2.200" fill="#fff"/><circle cx="72" cy="25" r="5" fill="#fff" opacity=".28"/>
+            <text y="70" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" letter-spacing=".6" fill="#cfe7d7" id="miniTxt"></text>
+            </g>
+            <g id="bFrame" opacity="0">
+              <rect x="-96" y="-46" width="192" height="98" rx="17" fill="rgba(7,15,10,.94)" stroke="rgba(143,214,172,.6)" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+              <rect x="-96" y="-46" width="192" height="98" rx="17" fill="none" stroke="rgba(143,214,172,.18)" stroke-width="10" vector-effect="non-scaling-stroke"/>
+            </g>
+            <g id="brain" opacity="0">
+              <path d="M-90 2H90" stroke="rgba(143,214,172,.12)" stroke-width="1" stroke-dasharray="2 3"/>
+              <g id="gates">
+                <rect x="-49.500" y="-30" width="7" height="64" rx="3.500" fill="rgba(143,214,172,.14)"/><rect x="-47" y="-30" width="2.400" height="64" rx="1.200" fill="#8fd6ac"/>
+                <rect x="-3.500" y="-30" width="7" height="64" rx="3.500" fill="rgba(143,214,172,.14)"/><rect x="-1.200" y="-30" width="2.400" height="64" rx="1.200" fill="#8fd6ac"/>
+                <rect x="42.500" y="-30" width="7" height="64" rx="3.500" fill="rgba(143,214,172,.14)"/><rect x="44.800" y="-30" width="2.400" height="64" rx="1.200" fill="#8fd6ac"/>
+              </g>
+              <g font-family="JetBrains Mono,monospace" font-weight="700" text-anchor="middle">
+                <text x="-46" y="-37" font-size="5.200" letter-spacing=".5" fill="#cfe7d7" id="bg0"></text><text x="0" y="-37" font-size="5.200" letter-spacing=".5" fill="#cfe7d7" id="bg1"></text><text x="46" y="-37" font-size="5.200" letter-spacing=".5" fill="#cfe7d7" id="bg2"></text>
+                <text x="-46" y="43" font-size="4.300" fill="#8fa597" id="bs0"></text><text x="0" y="43" font-size="4.300" fill="#8fa597" id="bs1"></text><text x="46" y="43" font-size="4.300" fill="#8fa597" id="bs2"></text>
+                <text x="-92" y="66" font-size="5.400" letter-spacing=".4" fill="#cfe7d7" text-anchor="start" id="bIn"></text><text x="92" y="66" font-size="5.400" letter-spacing=".4" fill="#ffb4ab" text-anchor="end" id="bOut"></text>
+              </g>
+              <g id="fx"></g>
+            </g>
+          </g>
+        </g>
+        <g id="sysHdr" opacity="0"><circle cx="233" cy="130" r="2.6" fill="#38e07a"/><text x="241" y="133.300" font-family="JetBrains Mono,monospace" font-size="9" font-weight="700" letter-spacing="1" fill="#b9ecce" id="sysT1"></text><text x="320" y="530" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8.500" font-weight="700" letter-spacing=".8" fill="#9fb3a6" id="sysT2"></text></g>
+      </svg>
+    </div>
+  </div>
+</div>
+  <div class="wrap" style="padding-top:64px;">
+    <div class="grid-2" style="align-items:start; margin-top:20px;">
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="vs-card reveal" style="background:var(--dark-surface); border:1px solid var(--dark-line); display:flex; gap:16px; align-items:flex-start;">
+          <div class="icon-circle" style="margin-bottom:0; width:44px; height:44px; flex:none; background:rgba(30,92,62,.35); color:#8fd6ac;"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div>
+          <div><h3 style="margin:0 0 5px; font-size:15.5px; color:#fff;">Procesamiento en el lugar</h3><p style="margin:0; font-size:14px; color:var(--dark-muted); line-height:1.6;">El video y el reconocimiento se calculan en tu propio hardware. Por defecto no sale nada de casa. En nuestra casa, 10 cámaras trabajan así en un solo Mac Mini.</p></div>
+        </div>
+        <div class="vs-card reveal" style="background:var(--dark-surface); border:1px solid var(--dark-line); display:flex; gap:16px; align-items:flex-start;">
+          <div class="icon-circle" style="margin-bottom:0; width:44px; height:44px; flex:none; background:rgba(30,92,62,.35); color:#8fd6ac;"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/><circle cx="12" cy="15" r="1.6" fill="currentColor" stroke="none"/></svg></div>
+          <div><h3 style="margin:0 0 5px; font-size:15.5px; color:#fff;">Acceso remoto — directo a casa</h3><p style="margin:0; font-size:14px; color:var(--dark-muted); line-height:1.6;">El celular se conecta a tu caja por una conexión HTTPS cifrada. No hay servidor del fabricante en el medio, y no se guarda video en el camino.</p></div>
+        </div>
+        <div class="vs-card reveal" style="background:var(--dark-surface); border:1px solid var(--dark-line); display:flex; gap:16px; align-items:flex-start;">
+          <div class="icon-circle" style="margin-bottom:0; width:44px; height:44px; flex:none; background:rgba(30,92,62,.35); color:#8fd6ac;"><svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><line x1="3" y1="3" x2="21" y2="21"/></svg></div>
+          <div><h3 style="margin:0 0 5px; font-size:15.5px; color:#fff;">Tu data es tuya</h3><p style="margin:0; font-size:14px; color:var(--dark-muted); line-height:1.6;">Vos decidís qué guardar y qué borrar. No hay intermediario que vea el archivo por defecto.</p></div>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="vs-card reveal" style="background:rgba(30,92,62,.18); border:1.5px solid rgba(30,92,62,.55);">
+          <div style="font-size:12.5px; font-weight:700; color:#8fd6ac; margin-bottom:4px;">Yolky Sense</div>
+          <div class="vs-row"><svg class="icon" viewBox="0 0 24 24" style="color:#4fd88a;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><div style="font-size:14px; color:#fff;">El video se procesa en tu lugar — nada va a un servidor del fabricante</div></div>
+          <div class="vs-row"><svg class="icon" viewBox="0 0 24 24" style="color:#4fd88a;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><div style="font-size:14px; color:#fff;">Los eventos básicos se ven sin suscripción</div></div>
+          <div class="vs-row"><svg class="icon" viewBox="0 0 24 24" style="color:#4fd88a;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><div style="font-size:14px; color:#fff;">El sistema recuerda falsas alarmas y con el tiempo deja de reaccionar</div></div>
+          <div class="vs-row"><svg class="icon" viewBox="0 0 24 24" style="color:#4fd88a;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><div style="font-size:14px; color:#fff;">Solo vos podés ver el archivo con las caras de tus visitas</div></div>
+        </div>
+        <div class="vs-card reveal" style="background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08);">
+          <div style="font-size:12.5px; font-weight:700; color:rgba(255,255,255,.4); margin-bottom:4px;">Una cámara cloud típica</div>
+          <div class="vs-row"><svg class="icon" viewBox="0 0 24 24" style="color:rgba(255,255,255,.3);"><circle cx="12" cy="12" r="9"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg><div style="font-size:14px; color:rgba(255,255,255,.55);">El video va al servidor del fabricante — dependés de su política de retención</div></div>
+          <div class="vs-row"><svg class="icon" viewBox="0 0 24 24" style="color:rgba(255,255,255,.3);"><circle cx="12" cy="12" r="9"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg><div style="font-size:14px; color:rgba(255,255,255,.55);">El acceso al historial de eventos suele estar detrás de una suscripción paga</div></div>
+          <div class="vs-row"><svg class="icon" viewBox="0 0 24 24" style="color:rgba(255,255,255,.3);"><circle cx="12" cy="12" r="9"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg><div style="font-size:14px; color:rgba(255,255,255,.55);">La misma falsa alarma se repite sin fin — el modelo no recuerda el lugar</div></div>
+          <div class="vs-row"><svg class="icon" viewBox="0 0 24 24" style="color:rgba(255,255,255,.3);"><circle cx="12" cy="12" r="9"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg><div style="font-size:14px; color:rgba(255,255,255,.55);">El archivo, en teoría, es accesible al fabricante y a quien tenga acceso a sus servidores</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- DEMO -->
+<div class="section" id="demo" style="background:var(--surface);">
+  <div class="wrap">
+    <div class="kicker"><span class="bar"></span><div class="eyebrow">Demo</div></div>
+    <h2 class="h reveal">Un minuto para ver el sistema entero</h2>
+    <p class="lead" style="margin-bottom:36px;">La interfaz en vivo de nuestra propia casa: eventos, entidades, zonas y reglas, analítica y el mapa 3D de la propiedad. Si querés probarlo vos, pedí un link de demo temporal — los nombres están reemplazados, los cuadros estilizados, y el acceso se puede revocar en cualquier momento.</p>
+    <div class="demo-frame reveal">
+      <video controls playsinline preload="none" poster="poster-en.jpg" aria-label="Video de recorrido del producto"><source src="intro-en.mp4" type="video/mp4"></video>
+    </div>
+    <div class="demo-cap">60 segundos · con sonido</div>
+    <div class="access-cta reveal" id="access">
+      <button type="button" class="btn btn-primary" data-demo-open>Pedir acceso al demo</button>
+      <p class="access-note">Revisamos cada pedido uno por uno. El acceso es temporal y se puede revocar en cualquier momento.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PLAYGROUND -->
+<div class="section dark" id="playground" style="color:var(--dark-text); background:radial-gradient(900px circle at 15% -10%, rgba(30,92,62,.28), transparent 60%), radial-gradient(rgba(255,255,255,.055) 1px, transparent 1.5px) 0 0/24px 24px, var(--dark-bg);">
+  <div class="wrap">
+    <div class="pg-head">
+      <div class="kicker"><span class="bar"></span><div class="eyebrow">Laboratorio</div></div>
+      <h2 class="h reveal">Alertas que no necesitan tu celular</h2>
+      <p class="lead">No toda notificación tiene que ser un buzz en el bolsillo. Acá probamos formas más calmadas y jugadas de ver qué pasa en casa — en la esquina de una pantalla Mac y en un display de pixels chiquito.</p>
+    </div>
+    <div class="pg-row reveal">
+      <div>
+        <div class="pg-video">
+          <video controls playsinline preload="none" poster="notch-poster-en.jpg" aria-label="Yolky Notch: notificaciones en el notch del MacBook"><source src="notch-en.mp4" type="video/mp4"></video>
+        </div>
+        <div class="pg-cap">30 segundos · con sonido. El material está renderizado a partir de eventos reales.</div>
+      </div>
+      <div class="pet-copy pg-copy">
+        <div class="pet-k">Yolky Notch · macOS</div>
+        <h3>El notch por fin tiene un laburo</h3>
+        <p>Una app chiquita en la barra de menú convierte el notch del MacBook en un ticker en vivo de tus cámaras. Cuando alguien llega, el notch se anima y muestra quién es. Un click abre la tarjeta del evento — el cuadro, la cámara, quién está — y un toque en el cuadro pasa a la vista en vivo.</p>
+        <p style="margin-top:14px;">¿Reconociste a alguien que conocés? Confirmá o corregí con un toque, y el sistema se pone más vivo. Los eventos recientes están a un swipe; un modo no molestar lo deja quieto cuando necesitás foco.</p>
+        <div class="pg-chips"><span>Vista en vivo</span><span>Etiquetado de un toque</span><span>Event queue</span><span>No molestar</span></div>
+      </div>
+    </div>
+    <div class="pet-row reveal">
+      <div class="pet-copy">
+        <div class="pet-k">Mascota Tamagotchi</div>
+        <h3>Una pantalla quieta en casa</h3>
+        <p>Una notificación no tiene que vivir en tu celular. Yolka es una mascota en una pantalla Pixoo 64×64 en nuestra casa: camina, come y duerme, y cuando la cámara del portón o de la puerta ve a una persona, un animal o un auto, la pantalla se corre y muestra al visitante — con calma, en silencio, y solo cuando importa.</p>
+        <p class="pet-note">Las escenas acá van en loop: los eventos son simulados.</p>
+      </div>
+      <div class="yolka">
+        <div class="yolka-bezel">
+          <canvas id="yolkaCanvas" width="384" height="384" aria-label="Yolka la pantalla-mascota: camina, come, duerme, saluda visitas de las cámaras"></canvas>
+          <div class="y-toast" id="yToast"><span class="y-dot"></span><span id="yToastT">Cámara · persona</span></div>
+        </div>
+        <div class="y-hud">
+          <span class="y-chip season" id="yHudSeason">Verano</span>
+          <span class="y-chip" id="yHudWx">día, despejado</span>
+          <span class="y-chip act" id="yHudAct">Yolka está caminando</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACTS -->
+<div class="section" id="cta" style="padding-bottom:110px;">
+  <div class="wrap">
+    <div class="faq reveal">
+      <div class="kicker"><span class="bar"></span><div class="eyebrow">FAQ</div></div>
+      <h2 class="h">Mirá el FAQ antes de escribir</h2>
+      <p class="lead" style="margin-bottom:28px;">Las preguntas técnicas más comunes viven acá. Si la tuya no está — escribinos y lo vemos.</p>
+      <div class="faq-topics" role="toolbar" aria-label="Temas del FAQ">
+        <button type="button" class="faq-topic is-on" data-faq-topic="all" aria-pressed="true">Todo</button>
+        <button type="button" class="faq-topic" data-faq-topic="general" aria-pressed="false">General</button>
+        <button type="button" class="faq-topic" data-faq-topic="hardware" aria-pressed="false">Técnico</button>
+        <button type="button" class="faq-topic" data-faq-topic="features" aria-pressed="false">Funciones</button>
+        <button type="button" class="faq-topic" data-faq-topic="collab" aria-pressed="false">Desarrollo</button>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" data-topic="general"><summary><span>¿Qué es Yolky Sense?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Yolky Sense es un sistema inteligente de videovigilancia que no solo detecta movimiento: trata de entender qué pasa alrededor de la casa. Reconoce gente conocida, analiza eventos, cruza observaciones y ayuda a separar lo que realmente importa del ruido de todos los días.</p></div></details>
+        <details class="faq-item" data-topic="general"><summary><span>¿En qué se diferencia Yolky Sense de una cámara con IA común?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>La mayoría de las cámaras smart reaccionan a eventos sueltos: apareció una persona, pasó un auto, se detectó movimiento.</p><p>Yolky Sense mira las cosas en contexto: quién apareció, dónde ya lo vieron, qué tan segura es el reconocimiento, y si vale la pena molestar al dueño.</p></div></details>
+        <details class="faq-item" data-topic="general"><summary><span>¿Es un producto terminado o un experimento?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Yolky Sense es un proyecto independiente que funciona. El sistema corre con cámaras reales las 24 horas, recibe funciones nuevas seguido y se prueba en condiciones de todos los días.</p><p>Ahora el foco está en la tecnología y la calidad del reconocimiento, no en la distribución masiva.</p></div></details>
+        <details class="faq-item" data-topic="general"><summary><span>¿Puedo instalar Yolky Sense en mi casa?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Todavía no. El sistema se desarrolla y se prueba en su propia infraestructura. Todavía no hay versión pública.</p></div></details>
+        <details class="faq-item" data-topic="general"><summary><span>¿Para quién es Yolky Sense?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Sobre todo para dueños de casas y propiedades privadas que quieren entender qué pasa alrededor — sin mirar cámaras todo el tiempo ni ahogarse en notificaciones.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>¿Cuáles son los requisitos mínimos del sistema?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>El sistema actual corre en un Mac mini M1 con 8 GB de RAM. Ese hardware alcanza para la configuración en vivo del proyecto.</p><p>Los requisitos mínimos para otros escenarios todavía no están definidos.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>¿Qué sistemas operativos están soportados?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>El entorno principal de trabajo es macOS. Windows y Linux se van a mirar por separado.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>¿Qué cámaras funcionan?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Yolky Sense funciona con cámaras IP que dan un stream de video RTSP. El proyecto usa y prueba cámaras TP-Link Tapo.</p><p>El soporte RTSP es un requisito importante, pero por sí solo no garantiza la compatibilidad de un modelo concreto.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>¿Puedo conectar varias cámaras?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Sí. El sistema procesa varios streams de video y puede cruzar observaciones entre cámaras.</p><p>Cuántas cámaras pueden correr a la vez depende del hardware y de la configuración de procesamiento.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>¿Necesito una computadora potente con GPU?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>No necesariamente. El setup actual usa un Mac mini compacto con Apple Silicon.</p><p>La performance que necesitás depende de la cantidad de cámaras y de qué tan complejo es el análisis.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>¿Necesito internet constante?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>El setup central está armado alrededor de un servidor local y cámaras en la red de casa. Algunas funciones, el acceso remoto y las notificaciones pueden seguir necesitando internet.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>¿Dónde se guarda la data?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>En el setup actual el sistema usa su propia infraestructura y almacenamiento local. Eso mantiene el control sobre el servidor y el acceso a la información.</p></div></details>
+        <details class="faq-item" data-topic="hardware"><summary><span>¿Cuánta energía consume el sistema?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>El consumo depende del hardware y de la carga. El setup actual usa un Mac mini eficiente pensado para funcionar de continuo.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>¿Yolky Sense puede reconocer personas?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Sí. El sistema reconoce gente conocida, usa observaciones anteriores y puede sugerir las coincidencias más probables.</p><p>Si la confianza es baja, el resultado se puede revisar y confirmar a mano.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>¿Tengo que entrenar el sistema todo el tiempo?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>No. Confirmar observaciones nuevas es parte del uso diario — con unas pocas acciones en la interfaz alcanza.</p><p>A medida que se acumula data confirmada, el sistema tiene más información para comparaciones después.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>¿El sistema se puede equivocar?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Sí. La luz, la distancia, el ángulo y la calidad de imagen afectan el reconocimiento.</p><p>En vez de esconder la incertidumbre, Yolky Sense te ayuda a ver por qué un resultado se ve dudoso — y te deja corregirlo.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>¿Funciona de noche?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Sí. Las observaciones nocturnas son parte de los escenarios centrales. Controles extra y el cruce entre cámaras ayudan a la confiabilidad.</p><p>El resultado igual depende de las condiciones de filmación.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>¿El sistema puede reconocer autos?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Sí. Yolky Sense analiza vehículos y usa pistas extra, incluido el color, para cruzar observaciones con más precisión.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>¿Puedo excluir ciertas zonas de la detección?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Sí. Hay zonas de detección y de exclusión. Ayudan a enfocar el análisis en las áreas correctas y bajar eventos al pedo.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>¿Cómo llegan las notificaciones?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>El sistema usa Telegram para las alertas. La idea es avisar eventos con sentido — no cada movimiento detectado.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>¿Puedo controlar el sistema de forma remota?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>El acceso remoto es parte del setup actual. Qué podés hacer depende de la configuración del servidor y de la red.</p></div></details>
+        <details class="faq-item" data-topic="features"><summary><span>¿Yolky Sense es totalmente autónomo?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>El sistema puede hacer gran parte del trabajo en su propia infraestructura, pero algunas funciones pueden depender de servicios externos y de internet.</p></div></details>
+        <details class="faq-item" data-topic="collab"><summary><span>¿Quién está armando Yolky Sense?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Es un proyecto independiente de un solo desarrollador que combina visión por computadora, inteligencia artificial, diseño de producto y automatización.</p></div></details>
+        <details class="faq-item" data-topic="collab"><summary><span>¿El proyecto usa inteligencia artificial?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Sí. La IA se usa para análisis de imagen, reconocimiento de objetos, chequeo de resultados y trabajo con observaciones acumuladas.</p></div></details>
+        <details class="faq-item" data-topic="collab"><summary><span>¿Yolky Sense es open source?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>El código fuente todavía no está publicado. Si abrir algunos componentes se va a decidir a medida que el proyecto crezca.</p></div></details>
+        <details class="faq-item" data-topic="collab"><summary><span>¿Puedo sugerir una función nueva?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Sí. Ideas útiles y escenarios de uso son bienvenidos. La prioridad principal de desarrollo, igual, es la confiabilidad de lo que ya funciona y menos notificaciones falsas.</p></div></details>
+        <details class="faq-item" data-topic="collab"><summary><span>¿Se puede usar Yolky Sense en proyectos comerciales?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Ahora el sistema se desarrolla para sus propios casos de uso. Aplicaciones comerciales y partnerships se pueden hablar caso por caso.</p></div></details>
+        <details class="faq-item" data-topic="collab"><summary><span>¿Puedo invertir en Yolky Sense?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>El proyecto está abierto a hablar partnership estratégico e inversión. La forma de colaboración depende de los objetivos, los recursos y la dirección de desarrollo.</p></div></details>
+        <details class="faq-item" data-topic="collab"><summary><span>¿Dónde puedo seguir el proyecto?</span><i aria-hidden="true"></i></summary><div class="faq-a"><p>Noticias, resultados de experimentos e informes del sistema se publican en los materiales de Yolky Sense. <a href="https://lugarvazio.github.io/yolky-sense-report/" target="_blank" rel="noopener">Ver el informe de avance del proyecto</a>.</p></div></details>
+      </div>
+      <div class="faq-more">
+        <div>
+          <b>¿No encontraste respuesta?</b>
+          <p>Para preguntas técnicas, mirá primero el FAQ. Ideas de funciones, partnership y casos especiales — por el formulario.</p>
+        </div>
+        <button type="button" class="btn btn-primary" data-contact-open>Escribinos</button>
+      </div>
+    </div>
+
+    <div class="reveal contact-panel">
+      <div class="eyebrow" style="color:#8fd6ac; margin-bottom:14px;">Contactos</div>
+      <h2 class="contact-h">Te muestro el sistema en vivo y te contesto las preguntas</h2>
+      <div class="contact-person"><b>Alexander Sheviakov</b><span>Fundador y Product Designer</span></div>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:lugarvazio@gmail.com">
+          <span class="contact-ic"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+          <span class="contact-t"><small>Email</small>lugarvazio@gmail.com</span>
+        </a>
+        <a class="contact-link" href="https://t.me/lugarvazio" target="_blank" rel="noopener">
+          <span class="contact-ic"><svg class="icon" viewBox="0 0 24 24"><path d="M21 3L2 10.5l7 3 2 7 3-4.5L21 3z"/></svg></span>
+          <span class="contact-t"><small>Telegram</small>@lugarvazio</span>
+        </a>
+        <a class="contact-link" href="https://www.instagram.com/yolky.sense" target="_blank" rel="noopener">
+          <span class="contact-ic"><svg class="icon" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg></span>
+          <span class="contact-t"><small>Instagram</small>@yolky.sense</span>
+        </a>
+        <a class="contact-link" href="https://www.tiktok.com/@yolky.sense" target="_blank" rel="noopener">
+          <span class="contact-ic"><svg class="icon" viewBox="0 0 24 24"><path d="M14.5 3.5v10.1a3.9 3.9 0 11-2.6-3.66"/><path d="M14.5 7.2A5.4 5.4 0 0019 8.7"/></svg></span>
+          <span class="contact-t"><small>TikTok</small>@yolky.sense</span>
+        </a>
+        <a class="contact-link" href="https://www.youtube.com/playlist?list=PLFPwmkqG3svs" target="_blank" rel="noopener">
+          <span class="contact-ic"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M10 9.5v5l5-2.5z"/></svg></span>
+          <span class="contact-t"><small>YouTube Shorts</small>Yolky Sense</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="wrap row">
+    <div style="font-family:Unbounded, sans-serif; font-size:14px; font-weight:700; color:var(--muted);">Yolky Sense</div>
+    <div style="font-size:12.5px; color:#A6ACA0;">Materiales de presentación · datos: 3 sep – 3 oct 2026</div>
+  </div>
+</div>
+
+<script>
+(function(){
+const N=64,S=6,cv=document.getElementById('yolkaCanvas'),ctx=cv.getContext('2d');let buf,world;
+const GY=52,FRESH=40,ZIN=2,ZSPEED=1.4,SUNX=8,SUNY=9,BEAT=60/112;
+function clr(){buf=new Array(N*N).fill(null)}
+function p(x,y,c){x=Math.round(x);y=Math.round(y);if(x<0||y<0||x>=N||y>=N)return;buf[y*N+x]=c}
+function rect(x,y,w,h,c){for(let j=0;j<h;j++)for(let i=0;i<w;i++)p(x+i,y+j,c)}
+function flush(){ctx.fillStyle='#0d0d0d';ctx.fillRect(0,0,N*S,N*S);for(let y=0;y<N;y++)for(let x=0;x<N;x++){ctx.fillStyle=buf[y*N+x]||'#171717';ctx.fillRect(x*S+.5,y*S+.5,S-1,S-1)}}
+const F={'0':['111','101','101','101','111'],'1':['010','110','010','010','111'],'2':['111','001','111','100','111'],'3':['111','001','111','001','111'],'4':['101','101','111','001','001'],'5':['111','100','111','001','111'],'6':['111','100','111','101','111'],'7':['111','001','010','010','010'],'8':['111','101','111','101','111'],'9':['111','101','111','001','111'],':':['0','1','0','1','0']};
+function tw(s){let w=0;for(const ch of s)w+=F[ch][0].length+1;return w-1}
+function txt(s,x,y,c,k){k=k||1;for(const ch of s){const g=F[ch];for(let r=0;r<5;r++)for(let i=0;i<g[r].length;i++)if(g[r][i]==='1')rect(x+i*k,y+r*k,k,k,c);x+=(g[0].length+1)*k}return x}
+function spr(a,x,y,pal,flip,from){const w=a[0].length;from=from||0;a.forEach((row,j)=>{for(let i=0;i<w;i++){const ch=row[flip?w-1-i:i];if(pal[ch]&&(flip?w-1-i:i)>=from)p(x+i,y+j,pal[ch])}})}
+const CAT=['1.1.......','111......1','121.....1.','1111111.1.','.11111111.','.1111111..'],CATL=['.1.1..1.1.','.1.1..1.1.'],CATL2=['..1.1..1.1','.1.1..1.1.'];
+const DOG=['.11........','1121.......','11111....1.','..11111111.','..11111111.','..1111111..'],DOGL=['..1..1.1.1.','..1..1.1.1.'],DOGL2=['...1.1..1.1','..1..1.1.1.'];
+const PERSON=['..hhh..','.hhhhh.','.seses.','.sssss.','..sss..','.ccccc.','ccccccc','s.ccc.s','s.ccc.s','..ppp..','.pp.pp.','.pp.pp.','.pp.pp.','.kk.kk.'],PWALK=['.pp.pp.','..p.p..','..p.p..','.k..k..'];
+const CAR=['....1111111.....','...133313331....','..13333133331...','1111111111111111','4111111111111111','1111111111111111','..22......22....','..22......22....'];
+const SQ=['1.....tt','11...ttt','121..ttt','1111.tt.','.11111..','.1111...','.1..1...'],SQP={'1':'#c8702a','2':'#1a0e05',t:'#e08a3c'};
+const HOG=['...ssss.','..ssssss','.fsshsss','2ffsssss','..1..1..'],HOGP={s:'#6b4a2b',h:'#9a7650',f:'#d9b38c','2':'#111','1':'#3a2a1a'};
+const BIRD=['.11..','3121.','.1111','..4..'],BIRDF1=['1...1','.111.','.3...'],BIRDF2=['.111.','1...1','.3...'];
+const BIRDP=[{'1':'#4da3ff','2':'#111','3':'#f2a33a','4':'#6a4a2a'},{'1':'#e04a4a','2':'#111','3':'#f2a33a','4':'#6a4a2a'},{'1':'#f5d442','2':'#111','3':'#f2a33a','4':'#6a4a2a'}];
+const NOTE=['..11','..1.','..1.','111.','11..'],NOTEC=['#ff7eb6','#ffd23f','#6fe3ff','#b98cff'];
+const MINI={animal:{a:['1...1','11111','12121','11111','.111.'],pal:{'1':'#ff9f1c','2':'#3a2200'},c:'#ff9f1c'},person:{a:['.1.','111','111','.1.','1.1'],pal:{'1':'#4da3ff'},c:'#4da3ff'},car:{a:['.111.','11111','11111','.1.1.'],pal:{'1':'#b98cff'},c:'#b98cff'}};
+const HEART=['.1.1.','11111','.111.','..1..'],BIGHEART=['.11.11.','1111111','1111111','.11111.','..111..','...1...'],FACE=['.11111.','1111111','1111111','1111111','1111111','1111111','.11111.'];
+const MOUTHS={happy:[[1,4],[5,4],[2,5],[3,5],[4,5]],ok:[[2,5],[3,5],[4,5]],sad:[[2,4],[3,4],[4,4],[1,5],[5,5]]};
+const ZS=['111','.1.','1..','111'],ZM=['1111','..1.','.1..','1111'],ZL=['11111','...1.','..1..','.1...','11111'];
+const FOODS=[{a:['..g..','.rrr.','rrrrr','rrrrr','.rrr.'],pal:{r:'#e0403a',g:'#3fae4a'}},{a:['bbbbb','yryyy','.yyr.','..y..'],pal:{b:'#b5793a',y:'#f2c14e',r:'#d9412f'}},{a:['....b','...y.','..yy.','yyy..','.yy..'],pal:{b:'#6b4a1e',y:'#f5d442'}},{a:['...gg','..og.','.oo..','oo...','o....'],pal:{o:'#f28c28',g:'#3fae4a'}},{a:['..r..','.ppp.','ppppp','.bbb.','.bbb.'],pal:{r:'#e0403a',p:'#f4a6c8',b:'#9a6a3a'}}];
+const CLOUD=['..111....','.11111.11','111111111','.1111111.'];
+const HAIR=['#3b2a1a','#e0c060','#222222','#a0522d'],SHIRT=['#4da3ff','#e04a6a','#3fbf8f','#f2a33a'],PANTS=['#2b3d6b','#555555','#5a3e2b'],SKIN=['#f1c9a5','#d9a47a','#8d5a3b'],CARC=['#b98cff','#e04a4a','#e8e8e8','#3a8dde'];
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const W=[1,3,5,7,5,7,9,11,9,11,13,15,15,15,13,11];
+const DROPS=[[5,-1],[7,2],[9,-3],[12,4],[13,-5],[14,1]];
+function pet(cx,yo,o){cx=Math.round(cx);const y0=GY-18+Math.round(yo);p(cx,y0-1,o.pale?'#b8a35a':'#ffd23f');
+const base=o.pale?'#6aa874':o.wet?'#279a42':'#33b54f',edge=o.snow?'#eef4fa':o.pale?'#3f6e47':(o.wet?'#17692c':'#1d7a33');
+W.forEach((w,r)=>{const x0=cx-(w-1)/2+(o.lean&&r<8?o.lean:0);for(let i=0;i<w;i++)p(x0+i,y0+r,(i===0||i===w-1||(o.snow&&r===0))?edge:base)});
+if(o.wet){DROPS.forEach(([r,dx],i)=>{if(Math.floor(o.t*2+i)%3)p(cx+dx,y0+r,'#8fd0ff')});const dp=(o.t*1.5)%1;p(cx-6,y0+15+Math.floor(dp*4),'#8fd0ff')}
+const ey=y0+10;[[cx-4,o.eyes==='one'?'closed':o.eyes],[cx+2,o.eyes]].forEach(([ex,st])=>{if(st==='closed'){p(ex,ey+1,'#0f3d1a');p(ex+1,ey+1,'#0f3d1a')}else if(st==='joy'){p(ex,ey+1,'#0f3d1a');p(ex+1,ey,'#0f3d1a');p(ex+2,ey+1,'#0f3d1a')}else{rect(ex,ey,2,2,'#f2f2f2');p(ex+(o.look>0?1:0),ey+(o.up?0:1),'#111');if(o.pale&&!o.up){p(ex,ey,base);p(ex+1,ey,base)}}});
+const mc='#0f3d1a';if(o.mouth)rect(cx-1,y0+13,2,2,'#5a1a1a');else if(o.face==='happy'){p(cx-2,y0+12,mc);p(cx+1,y0+12,mc);p(cx-1,y0+13,mc);p(cx,y0+13,mc)}else if(o.face==='sad'){p(cx-1,y0+13,mc);p(cx,y0+13,mc);p(cx-2,y0+14,mc);p(cx+1,y0+14,mc)}else{p(cx-1,y0+13,mc);p(cx,y0+13,mc)}
+const lf=o.step?1:0;rect(cx-3,y0+16,2,2-lf,'#7a4a22');rect(cx+2,y0+16,2,1+lf,'#7a4a22');
+if(o.alert&&Math.floor(o.t*4)%2===0){rect(cx,y0-7,1,3,'#ffd23f');p(cx,y0-3,'#ffd23f')}
+if(o.say){const bx=Math.max(0,Math.min(55,cx-4)),by=y0-10;rect(bx,by,9,7,'#e6e6e6');p(cx,by+7,'#e6e6e6');if(o.say==='heart')spr(HEART,bx+2,by+1,{'1':'#e0403a'});else{p(bx+2,by+3,'#333');p(bx+4,by+3,'#333');p(bx+6,by+3,'#333')}}}
+function bubble(cx,bottom,t){const bx=Math.max(0,Math.min(45,Math.round(cx)-9)),by=bottom-9;rect(bx,by,19,9,'#e6e6e6');p(Math.round(cx),by+9,'#e6e6e6');txt(t,bx+1,by+2,'#222')}
+let state='walk',ev=null,petX=24,dir=1,last=performance.now()/1000,zoom=ZIN,inY=58,tod='day',wx='clear',nextBolt=0,boltEnd=0,boltX=40,friend=null,nextFriend=0,music=false;
+let satiety=70,water=55,mood=55;
+let season='summer';const GCOL={summer:'#2c7a3a',autumn:'#8a6a22',winter:'#e8eef5',spring:'#46a043'},FLW=[5,11,17,23,30,37,44,50,57].map((x,i)=>({x,c:['#f7a8d0','#ffd23f','#ffffff'][i%3]}));
+function ground(x,y){if(y===GY)return wx==='snow'?'#e8eef5':GCOL[season];if(season==='spring'&&y===GY-1){const f=FLW.find(f=>f.x===((x%64)+64)%64);if(f)return f.c}if(season==='winter'&&y===GY-1&&((x*7)%11===0))return '#e8eef5';if(y>GY){const m=((x%9)+9)%9;if((y===GY+2&&m===3)||(y===62&&m===7))return '#3d2c20';return '#2a1e15'}return null}
+const fresh={animal:[],person:[],car:[]};
+const rain=[...Array(34)].map(()=>({x:Math.random()*72,y:Math.random()*60,v:Math.random()})),snow=[...Array(30)].map(()=>({x:Math.random()*64,y:Math.random()*60,v:5+Math.random()*5,ph:Math.random()*6})),stars=[...Array(16)].map(()=>({x:Math.floor(Math.random()*64),y:1+Math.floor(Math.random()*26),ph:Math.random()*6}));
+const clouds=[{x:4,y:9},{x:30,y:14},{x:52,y:7}];
+const LEAVES=[...Array(16)].map((_,i)=>({x:Math.random()*64,y:Math.random()*50,v:5+Math.random()*4,ph:Math.random()*6,c:['#d9822b','#c0502a','#e8b02a','#a8431f'][i%4]}));
+const stateNames={sleep:'Sueño',eat:'Comer',drink:'Tomar',walk:'Paseo',play:'Juego',idle:'Aburrido'},stateText={sleep:'está durmiendo',eat:'está comiendo',drink:'está tomando agua',walk:'está de paseo',play:'está jugando',idle:'está al pedo'};
+const todNames={day:'Día',night:'Noche'},wxNames={clear:'Despejado',cloudy:'Nublado',drizzle:'Llovizna',storm:'Tormenta',snow:'Nieve'},wxText={clear:'despejado',cloudy:'nublado',drizzle:'lloviznando',storm:'con tormenta',snow:'nevando'};
+const evNames={animal:'Animal',person:'Persona',group:'Grupo de personas',car:'Auto'};
+const friendText={squirrel:'se encontró una ardilla',hedgehog:'se encontró un erizo',birds:'se encontró unos pájaros'},gameText=['está jugando a la pelota','está tirando la pelota con una ardilla','está jugando a la mancha con un pájaro'];
+
+function hhmm(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function add(k,n){const t=performance.now()/1000;for(let i=0;i<n;i++)fresh[k].push(t)}
+function start(kind){friend=null;const side=kind==='car'?1:(petX<32?1:-1),anchor=kind==='car'?petX:(side>0?16:46);const e={kind,pending:true,start:0,wasSleep:state==='sleep',time:hhmm(),side,anchor,actors:[],jump:null};
+if(kind==='animal'){const dog=Math.random()<.5;e.actors.push({a:dog?DOG:CAT,l1:dog?DOGL:CATL,l2:dog?DOGL2:CATL2,pal:dog?{'1':'#b07a45','2':'#2a1a0a'}:{'1':'#ff9f1c','2':'#3a2200'},x:side>0?66:-12,tx:side>0?anchor+10:anchor-20,delay:.3,speed:22});e.cnt=['animal',1]}
+else if(kind==='person'||kind==='group'){const n=kind==='group'?3:1;for(let i=0;i<n;i++){e.actors.push({a:PERSON,walk:true,pal:{h:rnd(HAIR),s:rnd(SKIN),e:'#111',c:rnd(SHIRT),p:rnd(PANTS),k:'#222'},x:side>0?66:-8,tx:side>0?anchor+11+i*9:anchor-17-i*9,delay:.3+i*.7,speed:18})}e.cnt=['person',n]}
+else{e.actors.push({a:CAR,car:true,pal:{'1':rnd(CARC),'2':'#555','3':'#2a2f40','4':'#ffd23f'},x:66,tx:-24,delay:.2,speed:36});e.cnt=['car',1]}
+ev=e}
+function ui(){}
+function walkFriend(now,dt,o){
+if(!friend&&now>nextFriend){const side=petX>40?-1:petX<24?1:dir;const kd=rnd(['squirrel','hedgehog','birds']);friend={kd,side,ph:'in',x:side>0?70:-12,t:0,birds:[0,1,2].map(i=>({dx:i*6,pal:BIRDP[i]}))}}
+if(!friend)return false;const f=friend,w=f.kd==='birds'?5:8,tx=f.side>0?petX+9:petX-9-w,spd=f.kd==='hedgehog'?8:f.kd==='squirrel'?26:24;
+if(f.ph==='in'){const df=tx-f.x;if(Math.abs(df)>.5)f.x+=Math.sign(df)*Math.min(spd*dt,Math.abs(df));else{f.ph='greet';f.t=now}}
+else if(f.ph==='greet'&&now-f.t>2.8){f.ph='out'}
+else if(f.ph==='out'){f.x+=f.side*spd*dt;if(f.x>80||f.x<-30){friend=null;nextFriend=now+3+Math.random()*3;return false}}
+const facing=f.ph==='out'?f.side:-f.side,flip=facing>0,hop=f.ph!=='greet'&&f.kd==='squirrel'?-Math.abs(Math.sin(now*9))*2:(f.ph==='greet'&&f.kd==='squirrel'&&Math.floor(now*3)%2?-2:0);
+if(f.kd==='squirrel')spr(SQ,f.x,GY-7+hop,SQP,flip);
+else if(f.kd==='hedgehog')spr(HOG,f.x,GY-5,HOGP,flip);
+else f.birds.forEach((b,i)=>{const bx=f.x+b.dx*(f.side>0?1:-1);let by;if(f.ph==='in'){const d=Math.min(1,Math.abs(tx-f.x)/40);by=GY-4-d*20-i}else if(f.ph==='greet'){by=GY-4}else{by=GY-4-(now-f.t-2.8)*14-i*2}
+if(f.ph==='greet'){spr(BIRD,bx,by+Math.floor(now*3+i)%2,b.pal,flip)}else spr(Math.floor(now*8+i)%2?BIRDF1:BIRDF2,bx,by,b.pal,flip)});
+if(f.ph!=='out'){o.look=f.side;if(f.ph==='greet'){o.say=Math.floor((now-f.t)/.9)%2===0?'heart':null;o.mouth=o.say==='heart'&&Math.floor(now*6)%2===0}return f.ph}return false}
+function notes(now){for(let i=0;i<4;i++){const ph=((now/BEAT/4+i/4)%1),side=i%2?1:-1,nx=petX+(side>0?9:-13)+Math.sin(now*3+i)*2,ny=GY-12-ph*14;if(ph<.9)spr(NOTE,nx,ny,{'1':NOTEC[i]})}}
+const cl=v=>Math.max(0,Math.min(100,v));
+function frame(){const now=performance.now()/1000,dt=Math.min(.2,now-last);last=now;director(now);
+Object.keys(fresh).forEach(k=>fresh[k]=fresh[k].filter(t=>now-t<FRESH));const hasFresh=Object.values(fresh).some(a=>a.length);
+const target=ev?1:ZIN;if(zoom>target)zoom=Math.max(target,zoom-ZSPEED*dt);else if(zoom<target)zoom=Math.min(target,zoom+ZSPEED*dt);
+const inT=hasFresh?54:58;inY+=Math.sign(inT-inY)*Math.min(Math.abs(inT-inY),8*dt);
+if(ev&&ev.pending&&zoom<=1.0001){ev.pending=false;ev.start=now;add(ev.cnt[0],ev.cnt[1])}
+const wet=wx==='drizzle'||wx==='storm';
+if(wx==='storm'&&now>nextBolt){boltEnd=now+.18;boltX=14+Math.random()*40;nextBolt=now+3+Math.random()*4}
+const flash=wx==='storm'&&now<boltEnd;
+const health=(satiety+water)/2;
+clr();
+let o={eyes:'open',look:dir,step:false,mouth:false,alert:false,t:now,up:false,say:null,wet,snow:wx==='snow',pale:health<30,lean:0},yo=0,msg='',greeting=false,dancing=false;
+if(ev&&!ev.pending){const e=now-ev.start,leaving=ev.kind!=='car'&&e>8;
+if(ev.kind!=='car'){const df=ev.anchor-petX;if(Math.abs(df)>1){petX+=Math.sign(df)*Math.min(28*dt,Math.abs(df));o.step=Math.floor(now*8)%2===0}}
+let done=true;ev.actors.forEach((a,i)=>{if(e<a.delay){done=false;return}const tg=leaving?(ev.side>0?70:-20):a.tx,df=tg-a.x;const moving=Math.abs(df)>.5;if(moving){a.x+=Math.sign(df)*Math.min(a.speed*dt,Math.abs(df));done=false}const face=moving?(df<0):(a.x>petX);
+const h=a.a.length+(a.l1?2:0),y=GY-h;let hop=0;if(!moving&&ev.kind==='animal'&&Math.floor(e/.9)%2===1)hop=-Math.abs(Math.sin(e*8))*2;
+spr(a.a,a.x,y+hop,a.pal,!face);if(a.l1){spr(moving&&Math.floor(now*8)%2?a.l2:a.l1,a.x,y+a.a.length+hop,a.pal,!face)}if(a.walk&&moving&&Math.floor(now*6)%2)spr(PWALK,a.x,y+10,a.pal,!face);
+if(i===0)bubble(a.x+a.a[0].length/2,y-2+hop,ev.time)});
+if(ev.kind==='car'&&!ev.jump&&ev.actors[0].x<=petX+20&&ev.actors[0].x>petX-20)ev.jump=now;
+if(ev.wasSleep&&e<.6)o.eyes='closed';else if(ev.wasSleep&&e<1.2){o.eyes='one';o.look=ev.side}
+else{o.look=ev.kind==='car'?1:ev.side;
+if(ev.kind==='car'){if(ev.jump){const j=now-ev.jump;if(j<1.6){yo=-Math.sin(Math.PI*j/1.6)*14;o.up=true;o.mouth=true;o.step=true}}}
+else if(ev.kind==='animal'){const a=ev.actors[0];if(Math.abs(a.x-a.tx)<1&&!leaving){greeting=true;const turn=Math.floor(e/.9)%2===0;if(turn){o.say=Math.floor(e/1.8)%2?'heart':'dots';o.mouth=Math.floor(now*6)%2===0}}}
+else{o.alert=true;o.up=true}}
+if(done&&(ev.kind==='car'?ev.actors[0].x<=-23:leaving))ev=null;
+msg=ev?({animal:'Llegó un animal de visita, Yolka charla con él',person:'Llegó una persona, Yolka está en guardia',group:'Llegó un grupo de personas distintas',car:'Viene un auto, Yolka salta por encima'})[ev.kind]:'La visita se fue, la cámara vuelve a Yolka'}
+else if(ev&&ev.pending){if(ev.wasSleep)o.eyes='closed';msg='La cámara se corre, alguien está por aparecer'}
+else{const side=petX>44?-1:1,ax=side>0?petX+10:petX-15;let extra='';
+if(music&&state!=='sleep'){dancing=true;const b=now/BEAT,ph=b%1,beat=Math.floor(b);yo=-Math.abs(Math.sin(Math.PI*ph))*(o.pale?1:3);o.look=beat%2?1:-1;o.lean=beat%2?1:-1;o.step=beat%2===0;o.mouth=ph<.25;o.eyes=Math.floor(b/4)%2?'joy':'open';notes(now);msg='Yolka está bailando con la música. '+(tod==='day'?'Día':'Noche')+', '+wxText[wx]+'.'}
+else{if(state==='sleep'){o.eyes='closed';for(let i=0;i<3;i++){const ph=((now+i*.7)%2.1)/2.1,z=ph<.33?ZS:ph<.66?ZM:ZL;spr(z,petX+7+Math.round(ph*3),GY-14-Math.round(ph*8)-z.length,{'1':ph>.85?'#4a6a99':'#8fb3ff'})}if(music){o.lean=Math.floor(now/BEAT)%2?1:0;for(let i=0;i<2;i++){const ph=((now/BEAT/4+i/2)%1);if(ph<.9)spr(NOTE,petX-13+Math.sin(now*2+i)*2,GY-12-ph*12,{'1':NOTEC[i]})}extra=', se mece con la música'}}
+else if(state==='eat'){const f=FOODS[Math.floor(now/3)%FOODS.length],ph=(now%3)/3,bite=Math.min(4,Math.floor(ph*5));spr(f.a,ax,GY-f.a.length,f.pal,side<0,bite);o.mouth=Math.floor(now*3)%2===0;o.look=side}
+else if(state==='drink'){const ph=(now%3)/3,L=Math.max(0,4-Math.floor(ph*5)),gx=ax,gy=GY-6;for(let j=0;j<5;j++){p(gx,gy+j,'#bfc8d0');p(gx+4,gy+j,'#bfc8d0')}rect(gx,gy+5,5,1,'#bfc8d0');rect(gx+1,gy+5-L,3,L,'#3a8dde');const sip=Math.floor(now*2.5)%2===0;o.mouth=sip;o.look=side;if(sip&&L>0)p(petX+side*2,GY-4,'#8fd0ff')}
+else if(state==='walk'){const busy=walkFriend(now,dt,o);if(busy==='greet')greeting=true;if(!busy){petX+=dir*(o.pale?6:12)*dt;if(petX>52)dir=-1;if(petX<11)dir=1;o.look=dir;o.step=Math.floor(now*(o.pale?3:6))%2===0}if(friend)extra=' y '+friendText[friend.kd]}
+else if(state==='play'){const g=Math.floor(now/9)%3;
+if(g===0){const bx=petX+11,by=GY-3-Math.abs(Math.sin(now*3))*14;rect(bx,by,3,3,'#ffd23f');yo=-Math.abs(Math.sin(now*3+1.2))*3;o.up=by<GY-11;o.look=1}
+else if(g===1){const sd=petX>40?-1:1,sx=sd>0?petX+14:petX-22,u=(now%1.6)/1.6,fwd=Math.floor(now/1.6)%2===0,px0=petX,py0=GY-20,qx=sx+4,qy=GY-10,fx=fwd?px0:qx,fy=fwd?py0:qy,tx2=fwd?qx:px0,ty2=fwd?qy:py0,bxx=fx+(tx2-fx)*u,byy=fy+(ty2-fy)*u-Math.sin(Math.PI*u)*12;
+spr(SQ,sx,GY-7+(fwd&&u>.8?-2:0),SQP,sd<0);rect(bxx-1,byy,3,3,'#ffd23f');o.look=sd;o.up=byy<GY-20;if(!fwd&&u>.8){yo=-2;o.mouth=true}}
+else{const bxp=32+18*Math.sin(now*.9),vel=Math.cos(now*.9),byp=GY-12-Math.abs(Math.sin(now*5))*5;const tgt=bxp-10*Math.sign(vel),df=tgt-petX;petX+=Math.sign(df)*Math.min(18*dt,Math.abs(df));yo=-Math.abs(Math.sin(now*6))*3;o.look=bxp>petX?1:-1;o.up=true;o.step=true;o.mouth=Math.floor(now*4)%2===0;spr(Math.floor(now*10)%2?BIRDF1:BIRDF2,bxp-2,byp,BIRDP[1],vel>0)}
+stateText.play=gameText[g]}
+else{o.look=Math.sin(now*.5)>0?1:-1;if(Math.floor(now/4)%3===0)o.eyes='one'}
+msg='Yolka '+stateText[state]+extra+'. '+(tod==='day'?'Día':'Noche')+', '+wxText[wx]+'.'}
+if(flash&&state!=='sleep')o.up=true}
+satiety=cl(satiety+dt*(state==='eat'&&!ev&&!dancing?10:-1.5));water=cl(water+dt*(state==='drink'&&!ev&&!dancing?12:-2));
+let dm=-1;if(dancing)dm=7;else if(!ev&&state==='play')dm=8;else if(greeting)dm=6;else if(!ev&&state==='walk')dm=1.5;else if(!ev&&state==='sleep')dm=music?1:0;
+if(wx==='storm')dm-=4;else if(wx==='drizzle')dm-=1.5;else if(wx==='clear'&&tod==='day')dm+=.5;if(health<30)dm-=2;mood=cl(mood+dm*dt);
+const face=wx==='storm'?'sad':mood>66?'happy':mood>33?'ok':'sad';o.face=face;
+pet(petX,yo,o);
+world=buf;clr();
+const k=(zoom-1)/(ZIN-1),aSx=petX+(32-petX)*k,aSy=GY+(inY-GY)*k;
+for(let sy=0;sy<N;sy++)for(let sx=0;sx<N;sx++){const X=Math.floor(petX+(sx+.5-aSx)/zoom),Y=Math.floor(GY+(sy+.5-aSy)/zoom);let c=null;if(X>=0&&X<N&&Y>=0&&Y<N)c=world[Y*N+X];if(!c)c=ground(X,Y);if(c)buf[sy*N+sx]=c}
+const gTop=Math.round(aSy),night=tod==='night';
+let sky=night?'#07090f':wx==='clear'?'#0e2238':wx==='cloudy'?'#182029':wx==='drizzle'?'#141c26':wx==='storm'?'#0e131a':'#1b222c';if(flash)sky='#4a5672';
+for(let y=0;y<gTop;y++)for(let x=0;x<N;x++)if(!buf[y*N+x])buf[y*N+x]=sky;
+function sky1(x,y,c){x=Math.round(x);y=Math.round(y);if(y<gTop&&x>=0&&x<N&&y>=0&&buf[y*N+x]===sky)p(x,y,c)}
+if(night&&(wx==='clear'||wx==='cloudy'))stars.forEach(s=>{if(Math.sin(now*2+s.ph)>-.3)sky1(s.x,s.y,'#c9d3ff')});
+if(wx==='clear'||wx==='cloudy'){for(let dy=-3;dy<=3;dy++)for(let dx=-3;dx<=3;dx++){if(dx*dx+dy*dy<=9){if(night){const d2=(dx+2)*(dx+2)+(dy+1)*(dy+1);if(d2>6)sky1(SUNX+dx,SUNY+dy,'#e8e2c0')}else sky1(SUNX+dx,SUNY+dy,'#ffd23f')}}if(!night&&wx==='clear'&&Math.floor(now*2)%2){[[-5,0],[5,0],[0,-5],[0,5],[-4,-4],[4,4],[-4,4],[4,-4]].forEach(([dx,dy])=>sky1(SUNX+dx,SUNY+dy,'#ffb400'))}}
+if(wx!=='clear'){const cc=night?'#3a404a':wx==='cloudy'?'#c8ced6':wx==='storm'?'#5a626d':'#8a939e';clouds.forEach(c=>{c.x-=2*dt;if(c.x<-10)c.x=66;CLOUD.forEach((r,j)=>{for(let i=0;i<r.length;i++)if(r[i]==='1')sky1(Math.round(c.x)+i,c.y+j,cc)})})}
+if(wet){const n=wx==='drizzle'?12:34;rain.forEach((d,i)=>{if(i>=n)return;const v=wx==='drizzle'?26+d.v*10:60+d.v*20;d.y+=v*dt;d.x-=(wx==='drizzle'?3:10)*dt;if(d.y>gTop){d.y=-Math.random()*10;d.x=Math.random()*72}if(wx==='drizzle')p(d.x,d.y,'#5f9fd6');else{p(d.x,d.y,'#4da3ff');p(d.x+.3,d.y-1,'#2f6fb0')}})}
+if(flash){let bx=boltX,by=12;while(by<Math.min(gTop-4,34)){p(bx,by,'#fff6c2');by++;if(by%3===0)bx+=(Math.random()<.5?-1:1)}}
+if(wx==='snow')snow.forEach(f=>{f.y+=f.v*dt;if(f.y>gTop){f.y=-Math.random()*6;f.x=Math.random()*64}p(f.x+Math.sin(now+f.ph)*1.5,f.y,'#eef4fa')});
+if(season==='autumn')LEAVES.forEach(f=>{f.y+=f.v*dt;f.x+=Math.sin(now*1.3+f.ph)*dt*6-dt*2;if(f.y>GY-1||f.x<-2){f.y=-Math.random()*10;f.x=Math.random()*70}p(f.x,f.y,f.c)});
+if(!ev)txt(hhmm(),23,2,'#d9d9d9',1);
+const fillRows=Math.ceil(health/100*6),low=health<25&&Math.floor(now*2)%2===0;
+BIGHEART.forEach((r,j)=>{for(let i=0;i<7;i++)if(r[i]==='1')p(14+i,1+j,j>=6-fillRows&&!low?'#e0403a':'#4a1c1c')});
+const fc=face==='happy'?'#ffd23f':face==='ok'?'#d9b640':'#7aa6e0',fd=face==='sad'?'#1c2d4a':'#3a2a00';
+FACE.forEach((r,j)=>{for(let i=0;i<7;i++)if(r[i]==='1')p(43+i,1+j,fc)});p(45,3,fd);p(47,3,fd);MOUTHS[face].forEach(([i,j])=>p(43+i,1+j,fd));
+const soilTop=Math.ceil(aSy+zoom),cy=soilTop+Math.floor((64-soilTop-5)/2);
+const items=Object.keys(fresh).filter(kk=>fresh[kk].length).map(kk=>{const s=String(fresh[kk].length),m=MINI[kk];return{s,m,w:m.a[0].length+2+tw(s),newest:Math.max(...fresh[kk])}});
+let total=items.reduce((a,b)=>a+b.w,0)+Math.max(0,items.length-1)*6,x=Math.round((64-total)/2);
+if(64-soilTop>=5)items.forEach(it=>{const blink=now-it.newest<3&&Math.floor(now*4)%2===0;spr(it.m.a,x,cy,it.m.pal);txt(it.s,x+it.m.a[0].length+2,cy,blink?'#ffffff':it.m.c);x+=it.w+6});
+flush();
+window.__yolka={state:()=>state,tod:()=>tod,wx:()=>wx,season:()=>season,ev:()=>ev&&ev.kind,evPending:()=>ev&&ev.pending,jump:i=>{pi=i;pt=0;pFired=false;ev=null;zoom=ZIN;applyScene(PROG[i])}}}
+
+/* ---- landing autopilot: seasons, day/night, weather, activity, camera guests ---- */
+const PROG=[
+ [10,'summer','day','clear','walk',null],
+ [15,'summer','day','clear','walk','person'],
+ [9,'summer','day','clear','eat',null],
+ [10,'summer','day','clear','play',null],
+ [11,'summer','night','clear','sleep',null],
+ [9,'autumn','day','cloudy','walk',null],
+ [15,'autumn','day','drizzle','walk','animal'],
+ [9,'autumn','day','drizzle','drink',null],
+ [9,'autumn','day','cloudy','walk','car'],
+ [10,'autumn','night','storm','sleep',null],
+ [15,'winter','day','snow','walk','group'],
+ [9,'winter','day','snow','eat',null],
+ [10,'winter','night','snow','sleep',null],
+ [9,'spring','day','drizzle','drink',null],
+ [10,'spring','day','clear','play',null],
+ [9,'spring','day','clear','walk','car'],
+];
+let pi=0,pt=0,pFired=false;
+function applyScene(s){season=s[1];tod=s[2];wx=s[3];state=s[4];friend=null;nextFriend=0}
+applyScene(PROG[0]);
+function director(now){
+ if(!pt)pt=now;
+ const s=PROG[pi];
+ if(!pFired&&s[5]&&!ev&&now-pt>2.2){start(s[5]);pFired=true}
+ if(now-pt>s[0]&&!ev){pi=(pi+1)%PROG.length;pt=now;pFired=false;applyScene(PROG[pi])}
+}
+
+const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let tmr=null;const run=on=>{if(on&&!tmr){last=performance.now()/1000;tmr=setInterval(frame,70)}else if(!on&&tmr){clearInterval(tmr);tmr=null}};
+if(reduce){season='summer';tod='day';wx='clear';state='idle';frame();frame()}
+else{frame();if('IntersectionObserver' in window){new IntersectionObserver(es=>run(es[0].isIntersecting),{threshold:0}).observe(cv)}else run(true)}
+})();
+
+(function(){
+  var seasonRu={summer:'Verano',autumn:'Autumn',winter:'Winter',spring:'Spring'};
+  var wxRu={clear:'clear',cloudy:'cloudy',drizzle:'drizzle',storm:'storm',snow:'snow'};
+  var stRu={sleep:'is sleeping',eat:'is eating',drink:'is drinking',walk:'is walking',play:'is playing',idle:'is bored'};
+  var evRu={animal:'animal',person:'persona',group:'grupo de personas',car:'auto'};
+  var camRu={animal:'Puerta',person:'Más allá del portón',group:'Más allá del portón',car:'Más allá del portón'};
+  var elS=document.getElementById('yHudSeason'),elW=document.getElementById('yHudWx'),elA=document.getElementById('yHudAct'),toast=document.getElementById('yToast'),toastT=document.getElementById('yToastT');
+  var lastEv=null;
+  function tick(){
+    var y=window.__yolka; if(!y||!elS)return;
+    elS.textContent=seasonRu[y.season()];
+    elW.textContent=(y.tod()==='night'?'night':'day')+', '+wxRu[y.wx()];
+    elA.textContent='Yolka '+stRu[y.state()];
+    var e=y.ev();
+    if(e&&!y.evPending()){
+      if(e!==lastEv){lastEv=e; toastT.textContent=camRu[e]+' · '+evRu[e]; toast.classList.add('on')}
+    } else if(!e){ lastEv=null; toast.classList.remove('on') }
+  }
+  setInterval(tick,300); tick();
+})();
+
+</script>
+<script>
+(function(){
+  try {
+    document.documentElement.classList.add('js');
+    var targets = document.querySelectorAll('.reveal');
+    if (typeof IntersectionObserver !== 'undefined') {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+      targets.forEach(function(t){ io.observe(t); });
+    } else {
+      targets.forEach(function(t){ t.classList.add('in'); });
+    }
+  } catch (e) {}
+
+  // collapsing header
+  try {
+    var sentinel = document.getElementById('topSentinel');
+    var nav = document.getElementById('nav');
+    if (sentinel && nav && typeof IntersectionObserver !== 'undefined') {
+      var navIo = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){ nav.classList.toggle('scrolled', !entry.isIntersecting); });
+      }, { threshold: 0, rootMargin: '-1px 0px 0px 0px' });
+      navIo.observe(sentinel);
+    }
+  } catch (e) {}
+
+
+  // mobile burger menu
+  try {
+    var burger = document.getElementById('navBurger');
+    var drawer = document.getElementById('navDrawer');
+    var scrim = document.getElementById('navScrim');
+    var navEl = document.getElementById('nav');
+    function setNavOpen(open) {
+      if (!navEl) return;
+      navEl.classList.toggle('is-open', open);
+      document.body.classList.toggle('nav-open', open);
+      if (burger) burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (drawer) {
+        if (open) drawer.removeAttribute('hidden');
+        else drawer.setAttribute('hidden', '');
+      }
+      if (scrim) {
+        if (open) scrim.removeAttribute('hidden');
+        else scrim.setAttribute('hidden', '');
+        scrim.setAttribute('aria-hidden', open ? 'false' : 'true');
+      }
+    }
+    function closeNavMenu() { setNavOpen(false); }
+    window.closeNavMenu = closeNavMenu;
+    if (burger) {
+      burger.addEventListener('click', function(){
+        setNavOpen(!navEl.classList.contains('is-open'));
+      });
+    }
+    if (scrim) scrim.addEventListener('click', closeNavMenu);
+    if (drawer) {
+      drawer.querySelectorAll('a[href^="#"]').forEach(function(a){
+        a.addEventListener('click', function(){ closeNavMenu(); });
+      });
+    }
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeNavMenu();
+    });
+    window.addEventListener('resize', function(){
+      if (window.innerWidth > 960) closeNavMenu();
+    });
+  } catch (e) {}
+
+  // nav indicator + scrollspy + smooth anchor scroll
+  try {
+    var navLinksEl = document.getElementById('navLinks');
+    var indicator = document.getElementById('navIndicator');
+    var navLinks = document.querySelectorAll('#navLinks a[href^="#"]');
+    var linkMap = {};
+    navLinks.forEach(function(a){ linkMap[a.getAttribute('href').slice(1)] = a; });
+
+    function moveIndicatorTo(link) {
+      if (!indicator || !navLinksEl || !link) return;
+      var lr = link.getBoundingClientRect();
+      var wr = navLinksEl.getBoundingClientRect();
+      indicator.style.left = (lr.left - wr.left) + 'px';
+      indicator.style.width = lr.width + 'px';
+      indicator.classList.add('show');
+    }
+    function setActive(link) {
+      if (!link) return;
+      navLinks.forEach(function(l){ l.classList.remove('active'); });
+      link.classList.add('active');
+      moveIndicatorTo(link);
+    }
+    var clickLock = false;
+    var spySections = Object.keys(linkMap).map(function(id){ return document.getElementById(id); }).filter(Boolean);
+    if (spySections.length && typeof IntersectionObserver !== 'undefined') {
+      var spyIo = new IntersectionObserver(function(entries){
+        if (clickLock) return;
+        entries.forEach(function(entry){
+          if (!entry.isIntersecting) return;
+          setActive(linkMap[entry.target.id]);
+        });
+      }, { threshold: 0, rootMargin: '-45% 0px -50% 0px' });
+      spySections.forEach(function(s){ spyIo.observe(s); });
+    }
+    window.addEventListener('resize', function(){
+      var current = document.querySelector('#navLinks a.active');
+      if (current) moveIndicatorTo(current);
+    });
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        var id = a.getAttribute('href').slice(1);
+        var target = document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        if (linkMap[id]) {
+          clickLock = true;
+          setActive(linkMap[id]);
+          window.setTimeout(function(){ clickLock = false; }, 700);
+        }
+        var headerH = nav ? nav.offsetHeight : 0;
+        var top = target.getBoundingClientRect().top + window.pageYOffset - headerH - 16;
+        if (typeof window.closeNavMenu === 'function') window.closeNavMenu();
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      });
+    });
+  } catch (e) {}
+
+  // animated logo: eye-tracking blend across 9 directional frames
+  try {
+    var canvas = document.getElementById('logoCanvas');
+    var stage = canvas ? canvas.parentElement : null;
+    if (canvas && stage) {
+      var ctx = canvas.getContext('2d');
+      var W = canvas.width, H = canvas.height;
+      var maskCanvas = document.createElement('canvas');
+      maskCanvas.width = W; maskCanvas.height = H;
+      var maskCtx = maskCanvas.getContext('2d');
+      var imgs = {
+        front: document.getElementById('lf_front'), left: document.getElementById('lf_left'),
+        right: document.getElementById('lf_right'), up: document.getElementById('lf_up'),
+        down: document.getElementById('lf_down'), upLeft: document.getElementById('lf_upLeft'),
+        upRight: document.getElementById('lf_upRight'), downLeft: document.getElementById('lf_downLeft'),
+        downRight: document.getElementById('lf_downRight')
+      };
+      var EYE_CX = 100.5, EYE_CY = 132.8, EYE_RX = 60.9, EYE_RY = 26.35;
+      var FEATHER_X = 11.2, FEATHER_Y = 11.15;
+      var OUTER_RX = EYE_RX + FEATHER_X, OUTER_RY = EYE_RY + FEATHER_Y;
+      var INNER_FRAC = EYE_RX / OUTER_RX;
+      var MAX_RANGE_X = 420, MAX_RANGE_Y = 320;
+      var targetNX = 0, targetNY = 0, curNX = 0, curNY = 0;
+
+      function onPointerMove(clientX, clientY) {
+        var r = stage.getBoundingClientRect();
+        var cx = r.left + r.width / 2, cy = r.top + r.height * 0.42;
+        var dx = clientX - cx, dy = clientY - cy;
+        targetNX = Math.max(-1, Math.min(1, dx / MAX_RANGE_X));
+        targetNY = Math.max(-1, Math.min(1, dy / MAX_RANGE_Y));
+      }
+      window.addEventListener('mousemove', function(e){ onPointerMove(e.clientX, e.clientY); });
+      window.addEventListener('touchmove', function(e){ if (e.touches.length) onPointerMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+
+      function pickCorners() {
+        var fx, fy, cImg, hImg, vImg, dImg;
+        if (curNX >= 0 && curNY <= 0) { fx = curNX; fy = -curNY; cImg = imgs.front; hImg = imgs.right; vImg = imgs.up; dImg = imgs.upRight; }
+        else if (curNX >= 0 && curNY >= 0) { fx = curNX; fy = curNY; cImg = imgs.front; hImg = imgs.right; vImg = imgs.down; dImg = imgs.downRight; }
+        else if (curNX <= 0 && curNY <= 0) { fx = -curNX; fy = -curNY; cImg = imgs.front; hImg = imgs.left; vImg = imgs.up; dImg = imgs.upLeft; }
+        else { fx = -curNX; fy = curNY; cImg = imgs.front; hImg = imgs.left; vImg = imgs.down; dImg = imgs.downLeft; }
+        var wC = (1 - fx) * (1 - fy), wH = fx * (1 - fy), wV = (1 - fx) * fy, wD = fx * fy;
+        return [[cImg, wC], [hImg, wH], [vImg, wV], [dImg, wD]].filter(function(p){ return p[1] > 0.0005; });
+      }
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalAlpha = 1;
+        ctx.drawImage(imgs.front, 0, 0, W, H);
+        var layers = pickCorners();
+        maskCtx.clearRect(0, 0, W, H);
+        var cumulative = 0;
+        for (var i = 0; i < layers.length; i++) {
+          cumulative += layers[i][1];
+          maskCtx.globalAlpha = layers[i][1] / cumulative;
+          maskCtx.drawImage(layers[i][0], 0, 0, W, H);
+        }
+        maskCtx.globalAlpha = 1;
+        maskCtx.save();
+        maskCtx.globalCompositeOperation = 'destination-in';
+        maskCtx.translate(EYE_CX, EYE_CY);
+        maskCtx.scale(OUTER_RX, OUTER_RY);
+        var grad = maskCtx.createRadialGradient(0, 0, INNER_FRAC, 0, 0, 1);
+        grad.addColorStop(0, 'rgba(0,0,0,1)'); grad.addColorStop(1, 'rgba(0,0,0,0)');
+        maskCtx.fillStyle = grad;
+        maskCtx.fillRect(-1, -1, 2, 2);
+        maskCtx.restore();
+        ctx.drawImage(maskCanvas, 0, 0);
+      }
+      function animate() {
+        curNX += (targetNX - curNX) * 0.15;
+        curNY += (targetNY - curNY) * 0.15;
+        draw();
+        requestAnimationFrame(animate);
+      }
+      if (imgs.front.complete) animate(); else imgs.front.onload = animate;
+    }
+  } catch (e) {}
+})();
+</script>
+<script>
+// подписи ленты событий: сцена шлёт 'world:event', здесь они становятся «уведомлениями»
+(function(){
+  var lang = (document.documentElement.lang || 'en').toLowerCase();
+  var ru = lang === 'ru';
+  var es = lang.indexOf('es') === 0;
+  var CAM = ru ? {} : es ? {'За воротами':'Más allá del portón','Парковка':'Estacionamiento','Дом. Общий вид':'Casa · vista general','Панорама':'Panorama','Дверь':'Puerta'} : {'За воротами':'Beyond the gate','Парковка':'Parking','Дом. Общий вид':'House overview','Панорама':'Panorama','Дверь':'Door'};
+  var WHO = {
+    guest:   ru ? ['незнакомый человек','Уведомление',true]   : es ? ['persona desconocida','Aviso',true] : ['unknown person','Notified',true],
+    owner:   ru ? ['свой человек','Без шума',false]          : es ? ['residente conocido','En silencio',false] : ['known resident','Silent',false],
+    'own-car': ru ? ['ваша машина','Без шума',false]         : es ? ['tu auto','En silencio',false] : ['your car','Silent',false],
+    passing: ru ? ['машина проезжает мимо','Отфильтровано',false] : es ? ['auto de paso','Filtrado',false] : ['car passing by','Filtered',false]
+  };
+  var list = document.getElementById('wList'), seenEl = document.getElementById('wSeen'), alertEl = document.getElementById('wAlert');
+  var SEA = ru ? {summer:'Лето',autumn:'Осень',winter:'Зима',spring:'Весна'} : es ? {summer:'Verano',autumn:'Otoño',winter:'Invierno',spring:'Primavera'} : {summer:'Verano',autumn:'Autumn',winter:'Winter',spring:'Spring'};
+  var WX = ru ? {clear:'ясно',cloudy:'облачно',drizzle:'дождик',storm:'гроза',snow:'снег'} : es ? {clear:'despejado',cloudy:'nublado',drizzle:'llovizna',storm:'tormenta',snow:'nieve'} : {clear:'clear',cloudy:'cloudy',drizzle:'drizzle',storm:'storm',snow:'snow'};
+  var hs = document.getElementById('wHudSeason'), ht = document.getElementById('wHudTime'), hw = document.getElementById('wHudWx');
+  var seen = 0, alerts = 0, last = {};
+  window.addEventListener('world:event', function(e){
+    var d = e.detail || {};
+    if (d.type === 'hud') {
+      var hh = Math.floor(d.h), mm = Math.floor((d.h % 1) * 60);
+      if (hs) hs.textContent = SEA[d.season] || d.season;
+      if (ht) ht.textContent = (hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm;
+      if (hw) hw.textContent = WX[d.wx] || d.wx;
+      return;
+    }
+    if (d.type !== 'cam' || !WHO[d.kind] || !list) return;
+    var key = d.cam + d.kind, now = Date.now();
+    if (last[key] && now - last[key] < 5000) return;
+    last[key] = now;
+    var w = WHO[d.kind];
+    seen++; seenEl.textContent = seen;
+    if (w[2]) { alerts++; alertEl.textContent = alerts; }
+    var row = document.createElement('div');
+    row.className = 'w-ev' + (w[2] ? ' alert' : '');
+    row.innerHTML = '<i></i><span></span><em></em>';
+    var sp = row.children[1];
+    sp.textContent = CAM[d.cam] || d.cam;
+    var sm = document.createElement('small'); sm.textContent = w[0]; sp.appendChild(sm);
+    row.children[2].textContent = w[1];
+    list.insertBefore(row, list.firstChild);
+    var rows = list.children;
+    for (var i = 0; i < rows.length; i++) rows[i].classList.toggle('old', i > 0);
+    while (rows.length > 4) list.removeChild(rows[rows.length - 1]);
+    setTimeout(function(){ row.classList.add('gone'); setTimeout(function(){ if (row.parentNode) row.parentNode.removeChild(row); }, 700); }, 16000);
+  });
+})();
+
+</script>
+<script type="module" src="world.js"></script>
+<script src="charts-anim.js" defer></script>
+<script src="crowd.js" defer></script>
+<script src="split.js" defer></script>
+<script src="trust-story.js" defer></script>
+<script src="demo-request.js" defer></script>
+<script src="faq.js" defer></script>
+
+<div class="modal-root" id="demoModal" aria-hidden="true">
+  <div class="modal-backdrop" data-demo-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle">
+    <button type="button" class="modal-close" data-demo-close aria-label="Cerrar">×</button>
+    <div class="modal-form-wrap">
+      <h3 class="modal-title" id="demoModalTitle">Pedir acceso al demo</h3>
+      <p class="modal-lead">Contanos quién sos y por qué necesitás un link temporal. Respondemos si el pedido se ve convincente.</p>
+      <form class="modal-form" id="demoRequestForm" novalidate>
+        <div class="hp-field" aria-hidden="true"><label>Company<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+        <div class="field">
+          <label for="demoName">Nombre <span class="req">*</span></label>
+          <input id="demoName" name="name" type="text" required autocomplete="name" maxlength="120">
+        </div>
+        <div class="field">
+          <label for="demoEmail">Email <span class="req">*</span></label>
+          <input id="demoEmail" name="email" type="email" required autocomplete="email" maxlength="160">
+        </div>
+        <div class="field">
+          <label for="demoTelegram">Telegram</label>
+          <input id="demoTelegram" name="telegram" type="text" autocomplete="off" placeholder="@username" maxlength="80">
+        </div>
+        <div class="field">
+          <label for="demoPurpose">Motivo del pedido <span class="req">*</span></label>
+          <textarea id="demoPurpose" name="purpose" required maxlength="2000" placeholder="Quién sos y por qué necesitás acceso al demo"></textarea>
+        </div>
+        <p class="modal-legal">El administrador puede rechazar un pedido sin explicación. Por favor, dejá un motivo claro y respetuoso.</p>
+        <p class="modal-error" id="demoFormError" role="alert"></p>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" id="demoSubmitBtn">Enviar pedido</button>
+          <button type="button" class="btn btn-ghost" data-demo-close>Cancelar</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal-thanks" id="demoThanks">
+      <h3>Gracias</h3>
+      <p>Vamos a revisar tu pedido y, si se ve convincente, te escribimos.</p>
+      <button type="button" class="btn btn-primary" data-demo-close>Cerrar</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-root" id="contactModal" aria-hidden="true">
+  <div class="modal-backdrop" data-contact-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+    <button type="button" class="modal-close" data-contact-close aria-label="Cerrar">×</button>
+    <div class="modal-form-wrap">
+      <h3 class="modal-title" id="contactModalTitle">Escribinos</h3>
+      <p class="modal-lead">Para preguntas técnicas, mirá primero el FAQ. Usá este formulario para ideas de funciones, partnership o casos que el FAQ no cubre.</p>
+      <form class="modal-form" id="contactForm" novalidate>
+        <div class="hp-field" aria-hidden="true"><label>Company<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+        <div class="field">
+          <label for="contactName">Nombre <span class="req">*</span></label>
+          <input id="contactName" name="name" type="text" required autocomplete="name" maxlength="120">
+        </div>
+        <div class="field">
+          <label for="contactEmail">Email <span class="req">*</span></label>
+          <input id="contactEmail" name="email" type="email" required autocomplete="email" maxlength="160">
+        </div>
+        <div class="field">
+          <label for="contactTelegram">Telegram</label>
+          <input id="contactTelegram" name="telegram" type="text" autocomplete="off" placeholder="@username" maxlength="80">
+        </div>
+        <div class="field">
+          <label for="contactTopic">Tema <span class="req">*</span></label>
+          <select id="contactTopic" name="topic" required>
+            <option value="">Elegí un tema</option>
+            <option value="Pregunta técnica">Pregunta técnica</option>
+            <option value="Idea de función">Idea de función</option>
+            <option value="Partnership / inversión">Partnership / inversión</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="contactMessage">Mensaje <span class="req">*</span></label>
+          <textarea id="contactMessage" name="message" required maxlength="3000" placeholder="¿Qué querés preguntar o proponer?"></textarea>
+        </div>
+        <p class="modal-legal">Respondemos de forma selectiva. Las preguntas técnicas que ya están en el FAQ pueden quedar sin respuesta.</p>
+        <p class="modal-error" id="contactFormError" role="alert"></p>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" id="contactSubmitBtn">Enviar</button>
+          <button type="button" class="btn btn-ghost" data-contact-close>Cancelar</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal-thanks" id="contactThanks">
+      <h3>Gracias</h3>
+      <p>Recibimos tu mensaje. Si hace falta respuesta, te escribimos.</p>
+      <button type="button" class="btn btn-primary" data-contact-close>Cerrar</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
